@@ -1,0 +1,144 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* =========================================================================
+       Banner Direct Design Tokens - Premium E-Commerce Palette
+       Inspired by: Canva, Vistaprint, Moo
+       ========================================================================= */
+    
+    /* Background - Clean white with subtle warmth */
+    --background: 0 0% 100%;
+    --foreground: 220 13% 9%;
+    
+    /* Cards - Pure white for contrast against gray sections */
+    --card: 0 0% 100%;
+    --card-foreground: 220 13% 9%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 13% 9%;
+    
+    /* Primary - Rich Emerald Green (premium, trustworthy) */
+    --primary: 160 84% 39%;
+    --primary-foreground: 0 0% 100%;
+    
+    /* Secondary - Warm neutral for subtle highlights */
+    --secondary: 30 20% 96%;
+    --secondary-foreground: 220 13% 9%;
+    
+    /* Muted - Soft gray for backgrounds */
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
+    
+    /* Accent - Emerald for interactive elements */
+    --accent: 160 84% 39%;
+    --accent-foreground: 0 0% 100%;
+    --accent-hover: 160 84% 33%;
+    --accent-light: 160 76% 95%;
+    
+    /* Warm highlight for special callouts */
+    --warm: 30 100% 97%;
+    --warm-foreground: 30 80% 30%;
+    
+    /* Support - Blue for links/info */
+    --support: 217 91% 60%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    /* Borders - Subtle gray */
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 160 84% 39%;
+    
+    /* Radius - Slightly rounded for modern feel */
+    --radius: 0.5rem;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-semibold tracking-tight;
+  }
+  
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold;
+  }
+  
+  h2 {
+    @apply text-3xl md:text-4xl font-bold;
+  }
+  
+  h3 {
+    @apply text-2xl md:text-3xl;
+  }
+  
+  h4 {
+    @apply text-xl md:text-2xl;
+  }
+  
+  /* Accessibility: Focus ring */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+  
+  /* Ensure minimum touch target size */
+  button, 
+  [role="button"],
+  a,
+  input[type="checkbox"],
+  input[type="radio"] {
+    @apply min-h-touch min-w-touch;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  /* GPU-accelerated animations for smooth performance */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+  
+  /* Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+  
+  /* Smooth scrolling for the page */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Content visibility for off-screen content */
+  .content-visibility-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px;
+  }
+}
