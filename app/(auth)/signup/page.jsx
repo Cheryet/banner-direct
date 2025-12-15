@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useAuth } from '@/lib/supabase/auth-context';
@@ -12,13 +13,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Separator } from '@/components/ui/separator';
 import { Mail, Lock, User, ArrowRight, Loader2, CheckCircle, ShoppingCart } from 'lucide-react';
 
-export default function SignUpPage() {
+function SignUpPageContent() {
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get('redirectTo') || '/account';
   const message = searchParams.get('message');
-  
+
   const { signUp, isAnonymous, user } = useAuth();
-  
+
   const [fullName, setFullName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -88,17 +89,15 @@ export default function SignUpPage() {
             {isAnonymous ? 'Save Your Progress' : 'Create an Account'}
           </CardTitle>
           <CardDescription>
-            {message || (isAnonymous 
-              ? 'Create an account to save your cart and order history'
-              : 'Join Banner Direct to start ordering custom banners'
-            )}
+            {message ||
+              (isAnonymous
+                ? 'Create an account to save your cart and order history'
+                : 'Join Banner Direct to start ordering custom banners')}
           </CardDescription>
         </CardHeader>
         <CardContent>
           {error && (
-            <div className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-600">
-              {error}
-            </div>
+            <div className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-600">{error}</div>
           )}
 
           {isAnonymous && (
@@ -163,9 +162,7 @@ export default function SignUpPage() {
                   required
                 />
               </div>
-              <p className="mt-1 text-xs text-muted-foreground">
-                Must be at least 8 characters
-              </p>
+              <p className="mt-1 text-xs text-muted-foreground">Must be at least 8 characters</p>
             </div>
 
             <Button type="submit" className="w-full" disabled={isLoading}>
@@ -207,5 +204,25 @@ export default function SignUpPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function SignUpPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="container flex min-h-[60vh] items-center justify-center py-12">
+          <Card className="w-full max-w-md">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-center">
+                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      }
+    >
+      <SignUpPageContent />
+    </Suspense>
   );
 }

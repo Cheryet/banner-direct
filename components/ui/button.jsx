@@ -5,14 +5,14 @@ import { cn } from '@/lib/utils';
 
 /**
  * Button Component - Modern E-Commerce Styling
- * 
+ *
  * Size Guide:
  * - sm: Compact actions, inline buttons (h-9, text-sm)
  * - default: Standard buttons (h-10, text-sm)
  * - lg: Prominent actions, form submits (h-11, text-base)
  * - xl: Hero CTAs only (h-12, text-base)
  * - icon: Icon-only buttons (h-10 w-10)
- * 
+ *
  * Variant Guide:
  * - default: Primary actions (emerald)
  * - outline: Secondary actions (gray border)
@@ -28,7 +28,8 @@ const buttonVariants = cva(
       variant: {
         default: 'bg-emerald-500 text-white hover:bg-emerald-600 active:bg-emerald-700 shadow-sm',
         destructive: 'bg-red-500 text-white hover:bg-red-600 active:bg-red-700',
-        outline: 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-400',
+        outline:
+          'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-400',
         secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200',
         ghost: 'text-gray-700 hover:bg-gray-100',
         link: 'text-emerald-600 underline-offset-4 hover:underline p-0 h-auto',
@@ -48,18 +49,10 @@ const buttonVariants = cva(
   }
 );
 
-const Button = React.forwardRef(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : 'button';
-    return (
-      <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
-        {...props}
-      />
-    );
-  }
-);
+const Button = React.forwardRef(({ className, variant, size, asChild = false, ...props }, ref) => {
+  const Comp = asChild ? Slot : 'button';
+  return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />;
+});
 Button.displayName = 'Button';
 
 export { Button, buttonVariants };

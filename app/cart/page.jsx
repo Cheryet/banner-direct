@@ -29,9 +29,7 @@ export default function CartPage() {
   const updateQuantity = (id, delta) => {
     setCartItems((items) =>
       items.map((item) =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
-          : item
+        item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item
       )
     );
   };
@@ -49,9 +47,7 @@ export default function CartPage() {
       <div className="container py-16 text-center">
         <ShoppingBag className="mx-auto h-16 w-16 text-muted-foreground" />
         <h1 className="mt-4 text-2xl font-semibold">Your cart is empty</h1>
-        <p className="mt-2 text-muted-foreground">
-          Looks like you haven't added any banners yet.
-        </p>
+        <p className="mt-2 text-muted-foreground">Looks like you haven't added any banners yet.</p>
         <LinkButton href="/products" className="mt-6">
           Browse Products
         </LinkButton>
@@ -118,7 +114,7 @@ export default function CartPage() {
                         </Button>
                       </div>
                       <div className="flex gap-2">
-                        <Link 
+                        <Link
                           href={`/product/${item.id}`}
                           className="inline-flex h-9 items-center justify-center rounded-lg px-3 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100"
                         >
@@ -164,9 +160,7 @@ export default function CartPage() {
                   <span>{shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}</span>
                 </div>
                 {shipping > 0 && (
-                  <p className="text-xs text-muted-foreground">
-                    Free shipping on orders over $200
-                  </p>
+                  <p className="text-xs text-muted-foreground">Free shipping on orders over $200</p>
                 )}
 
                 <Separator />

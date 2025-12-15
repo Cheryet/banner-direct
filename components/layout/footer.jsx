@@ -35,10 +35,10 @@ function Footer() {
       <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
-      
+
       {/* Top accent bar */}
       <div className="h-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-500" />
-      
+
       <div className="container py-12 lg:py-16">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           {/* Brand section */}

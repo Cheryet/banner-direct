@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { LinkButton } from '@/components/ui/link-button';
 import Link from 'next/link';
-import { 
+import {
   ArrowLeft,
   User,
   Mail,
@@ -14,7 +14,7 @@ import {
   DollarSign,
   Package,
   Eye,
-  Clock
+  Clock,
 } from 'lucide-react';
 
 export async function generateMetadata({ params }) {
@@ -51,8 +51,10 @@ function getStatusBadge(status) {
   };
 
   return (
-    <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${styles[status] || styles.pending}`}>
-      {status.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+    <span
+      className={`rounded-full px-2.5 py-1 text-xs font-medium ${styles[status] || styles.pending}`}
+    >
+      {status.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
     </span>
   );
 }
@@ -88,8 +90,8 @@ export default async function AdminCustomerDetailPage({ params }) {
     <div className="min-w-0">
       {/* Header */}
       <div className="mb-6">
-        <Link 
-          href="/admin/customers" 
+        <Link
+          href="/admin/customers"
           className="mb-3 inline-flex items-center gap-2 text-sm text-gray-600 hover:text-emerald-600"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -110,7 +112,11 @@ export default async function AdminCustomerDetailPage({ params }) {
             </div>
           </div>
           {customer.email && (
-            <LinkButton href={`mailto:${customer.email}`} variant="outline" className="w-full sm:w-auto">
+            <LinkButton
+              href={`mailto:${customer.email}`}
+              variant="outline"
+              className="w-full sm:w-auto"
+            >
               <Mail className="mr-2 h-4 w-4" />
               Send Email
             </LinkButton>
@@ -165,15 +171,11 @@ export default async function AdminCustomerDetailPage({ params }) {
                 <ShoppingCart className="h-5 w-5" />
                 Order History
               </CardTitle>
-              <CardDescription>
-                All orders placed by this customer
-              </CardDescription>
+              <CardDescription>All orders placed by this customer</CardDescription>
             </CardHeader>
             <CardContent>
               {!orders || orders.length === 0 ? (
-                <div className="py-8 text-center text-gray-500">
-                  No orders yet
-                </div>
+                <div className="py-8 text-center text-gray-500">No orders yet</div>
               ) : (
                 <div className="space-y-3">
                   {orders.map((order) => (
@@ -190,16 +192,12 @@ export default async function AdminCustomerDetailPage({ params }) {
                           <p className="font-medium text-gray-900">
                             {order.order_number || `#${order.id.slice(0, 8)}`}
                           </p>
-                          <p className="text-sm text-gray-500">
-                            {formatDate(order.created_at)}
-                          </p>
+                          <p className="text-sm text-gray-500">{formatDate(order.created_at)}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-4">
                         {getStatusBadge(order.status)}
-                        <p className="font-semibold text-gray-900">
-                          {formatCurrency(order.total)}
-                        </p>
+                        <p className="font-semibold text-gray-900">{formatCurrency(order.total)}</p>
                         <Eye className="h-4 w-4 text-gray-400" />
                       </div>
                     </Link>
@@ -226,7 +224,7 @@ export default async function AdminCustomerDetailPage({ params }) {
                   <Mail className="mt-0.5 h-4 w-4 text-gray-400" />
                   <div>
                     <p className="text-sm font-medium text-gray-500">Email</p>
-                    <a 
+                    <a
                       href={`mailto:${customer.email}`}
                       className="text-gray-900 hover:text-emerald-600"
                     >
@@ -240,7 +238,7 @@ export default async function AdminCustomerDetailPage({ params }) {
                   <Phone className="mt-0.5 h-4 w-4 text-gray-400" />
                   <div>
                     <p className="text-sm font-medium text-gray-500">Phone</p>
-                    <a 
+                    <a
                       href={`tel:${customer.phone}`}
                       className="text-gray-900 hover:text-emerald-600"
                     >
@@ -284,7 +282,8 @@ export default async function AdminCustomerDetailPage({ params }) {
                       <p>{customer.default_address.line1}</p>
                       {customer.default_address.line2 && <p>{customer.default_address.line2}</p>}
                       <p>
-                        {customer.default_address.city}, {customer.default_address.province} {customer.default_address.postal_code}
+                        {customer.default_address.city}, {customer.default_address.province}{' '}
+                        {customer.default_address.postal_code}
                       </p>
                       <p>{customer.default_address.country}</p>
                     </>
@@ -305,11 +304,13 @@ export default async function AdminCustomerDetailPage({ params }) {
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-600">Role</span>
-                  <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${
-                    customer.role === 'admin' 
-                      ? 'bg-purple-100 text-purple-700' 
-                      : 'bg-gray-100 text-gray-700'
-                  }`}>
+                  <span
+                    className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+                      customer.role === 'admin'
+                        ? 'bg-purple-100 text-purple-700'
+                        : 'bg-gray-100 text-gray-700'
+                    }`}
+                  >
                     {customer.role || 'Customer'}
                   </span>
                 </div>

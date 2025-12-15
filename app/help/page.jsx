@@ -224,9 +224,7 @@ export default function HelpPage() {
           ==================================================================== */}
       <section className="border-b py-12 md:py-16">
         <div className="container">
-          <h2 className="mb-10 text-center text-xl font-semibold md:text-2xl">
-            How It Works
-          </h2>
+          <h2 className="mb-10 text-center text-xl font-semibold md:text-2xl">How It Works</h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {howItWorks.map((step, index) => (
               <div key={step.title} className="flex items-start gap-4">
@@ -334,14 +332,14 @@ export default function HelpPage() {
                   We usually respond within one business day. Real humans, not bots.
                 </p>
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
-                  <a 
+                  <a
                     href="mailto:support@bannerdirect.ca"
                     className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-emerald-500 px-6 text-base font-medium text-white shadow-sm transition-all hover:bg-emerald-600 active:bg-emerald-700"
                   >
                     <Mail className="h-4 w-4" aria-hidden="true" />
                     Email Support
                   </a>
-                  <a 
+                  <a
                     href="tel:+18005551234"
                     className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-6 text-base font-medium text-gray-700 transition-colors hover:bg-gray-50 hover:border-gray-400"
                   >

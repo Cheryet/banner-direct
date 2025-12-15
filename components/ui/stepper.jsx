@@ -39,15 +39,13 @@ function Stepper({ steps, currentStep, className }) {
                     'flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium transition-colors',
                     isCompleted && 'bg-primary text-primary-foreground',
                     isCurrent && 'border-2 border-primary bg-background text-primary',
-                    !isCompleted && !isCurrent && 'border-2 border-muted bg-background text-muted-foreground'
+                    !isCompleted &&
+                      !isCurrent &&
+                      'border-2 border-muted bg-background text-muted-foreground'
                   )}
                   aria-current={isCurrent ? 'step' : undefined}
                 >
-                  {isCompleted ? (
-                    <Check className="h-4 w-4" aria-hidden="true" />
-                  ) : (
-                    stepNumber
-                  )}
+                  {isCompleted ? <Check className="h-4 w-4" aria-hidden="true" /> : stepNumber}
                 </span>
 
                 {/* Step label */}

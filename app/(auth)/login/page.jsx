@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useAuth } from '@/lib/supabase/auth-context';
@@ -11,13 +12,19 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Separator } from '@/components/ui/separator';
 import { Mail, Lock, ArrowRight, Loader2, CheckCircle } from 'lucide-react';
 
-export default function LoginPage() {
+function LoginPageContent() {
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get('redirectTo') || '/account';
   const message = searchParams.get('message');
-  
-  const { signInWithEmail, signInWithMagicLink, isAnonymous, isAuthenticated, isLoading: authLoading } = useAuth();
-  
+
+  const {
+    signInWithEmail,
+    signInWithMagicLink,
+    isAnonymous,
+    isAuthenticated,
+    isLoading: authLoading,
+  } = useAuth();
+
   const [mode, setMode] = React.useState('password'); // 'password' | 'magic-link'
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -59,10 +66,7 @@ export default function LoginPage() {
     setIsLoading(true);
     setError(null);
 
-    const { error } = await signInWithMagicLink(
-      email,
-      `${window.location.origin}${redirectTo}`
-    );
+    const { error } = await signInWithMagicLink(email, `${window.location.origin}${redirectTo}`);
 
     if (error) {
       setError(error.message);
@@ -89,11 +93,7 @@ export default function LoginPage() {
             <p className="mt-4 text-sm text-muted-foreground">
               Click the link in the email to sign in. The link expires in 1 hour.
             </p>
-            <Button
-              variant="outline"
-              className="mt-6"
-              onClick={() => setMagicLinkSent(false)}
-            >
+            <Button variant="outline" className="mt-6" onClick={() => setMagicLinkSent(false)}>
               Try a different email
             </Button>
           </CardContent>
@@ -107,15 +107,11 @@ export default function LoginPage() {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl">Welcome back</CardTitle>
-          <CardDescription>
-            {message || 'Sign in to your account to continue'}
-          </CardDescription>
+          <CardDescription>{message || 'Sign in to your account to continue'}</CardDescription>
         </CardHeader>
         <CardContent>
           {error && (
-            <div className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-600">
-              {error}
-            </div>
+            <div className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-600">{error}</div>
           )}
 
           {isAnonymous && (
@@ -251,5 +247,25 @@ export default function LoginPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="container flex min-h-[60vh] items-center justify-center py-12">
+          <Card className="w-full max-w-md">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-center">
+                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      }
+    >
+      <LoginPageContent />
+    </Suspense>
   );
 }

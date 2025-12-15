@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { 
+import {
   Settings,
   Store,
   Mail,
@@ -22,7 +22,7 @@ import {
   Globe,
   Percent,
   DollarSign,
-  Package
+  Package,
 } from 'lucide-react';
 
 export default function AdminSettingsPage() {
@@ -73,7 +73,7 @@ export default function AdminSettingsPage() {
     setSuccess(null);
 
     // Simulate save - in production, this would save to database
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     setSuccess('Settings saved successfully');
     setIsSaving(false);
@@ -159,9 +159,7 @@ export default function AdminSettingsPage() {
                   <Store className="h-5 w-5" />
                   Store Details
                 </CardTitle>
-                <CardDescription>
-                  Basic information about your store
-                </CardDescription>
+                <CardDescription>Basic information about your store</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid gap-6 sm:grid-cols-2">
@@ -170,7 +168,9 @@ export default function AdminSettingsPage() {
                     <Input
                       id="store_name"
                       value={storeSettings.store_name}
-                      onChange={(e) => setStoreSettings({ ...storeSettings, store_name: e.target.value })}
+                      onChange={(e) =>
+                        setStoreSettings({ ...storeSettings, store_name: e.target.value })
+                      }
                       className="mt-1"
                     />
                   </div>
@@ -183,7 +183,9 @@ export default function AdminSettingsPage() {
                         id="store_email"
                         type="email"
                         value={storeSettings.store_email}
-                        onChange={(e) => setStoreSettings({ ...storeSettings, store_email: e.target.value })}
+                        onChange={(e) =>
+                          setStoreSettings({ ...storeSettings, store_email: e.target.value })
+                        }
                         className="pl-10"
                       />
                     </div>
@@ -194,7 +196,9 @@ export default function AdminSettingsPage() {
                     <Input
                       id="store_phone"
                       value={storeSettings.store_phone}
-                      onChange={(e) => setStoreSettings({ ...storeSettings, store_phone: e.target.value })}
+                      onChange={(e) =>
+                        setStoreSettings({ ...storeSettings, store_phone: e.target.value })
+                      }
                       className="mt-1"
                     />
                   </div>
@@ -204,7 +208,9 @@ export default function AdminSettingsPage() {
                     <Input
                       id="store_address"
                       value={storeSettings.store_address}
-                      onChange={(e) => setStoreSettings({ ...storeSettings, store_address: e.target.value })}
+                      onChange={(e) =>
+                        setStoreSettings({ ...storeSettings, store_address: e.target.value })
+                      }
                       className="mt-1"
                     />
                   </div>
@@ -214,7 +220,9 @@ export default function AdminSettingsPage() {
                     <select
                       id="currency"
                       value={storeSettings.currency}
-                      onChange={(e) => setStoreSettings({ ...storeSettings, currency: e.target.value })}
+                      onChange={(e) =>
+                        setStoreSettings({ ...storeSettings, currency: e.target.value })
+                      }
                       className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                     >
                       <option value="CAD">CAD - Canadian Dollar</option>
@@ -227,7 +235,9 @@ export default function AdminSettingsPage() {
                     <select
                       id="timezone"
                       value={storeSettings.timezone}
-                      onChange={(e) => setStoreSettings({ ...storeSettings, timezone: e.target.value })}
+                      onChange={(e) =>
+                        setStoreSettings({ ...storeSettings, timezone: e.target.value })
+                      }
                       className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                     >
                       <option value="America/Toronto">Eastern Time (Toronto)</option>
@@ -250,9 +260,7 @@ export default function AdminSettingsPage() {
                   <Truck className="h-5 w-5" />
                   Shipping Settings
                 </CardTitle>
-                <CardDescription>
-                  Configure shipping rates and options
-                </CardDescription>
+                <CardDescription>Configure shipping rates and options</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid gap-6 sm:grid-cols-2">
@@ -264,7 +272,12 @@ export default function AdminSettingsPage() {
                         id="free_shipping_threshold"
                         type="number"
                         value={shippingSettings.free_shipping_threshold}
-                        onChange={(e) => setShippingSettings({ ...shippingSettings, free_shipping_threshold: e.target.value })}
+                        onChange={(e) =>
+                          setShippingSettings({
+                            ...shippingSettings,
+                            free_shipping_threshold: e.target.value,
+                          })
+                        }
                         className="pl-10"
                       />
                     </div>
@@ -278,7 +291,12 @@ export default function AdminSettingsPage() {
                     <Input
                       id="processing_days"
                       value={shippingSettings.processing_days}
-                      onChange={(e) => setShippingSettings({ ...shippingSettings, processing_days: e.target.value })}
+                      onChange={(e) =>
+                        setShippingSettings({
+                          ...shippingSettings,
+                          processing_days: e.target.value,
+                        })
+                      }
                       placeholder="2-3 business days"
                       className="mt-1"
                     />
@@ -293,7 +311,12 @@ export default function AdminSettingsPage() {
                         type="number"
                         step="0.01"
                         value={shippingSettings.standard_shipping_rate}
-                        onChange={(e) => setShippingSettings({ ...shippingSettings, standard_shipping_rate: e.target.value })}
+                        onChange={(e) =>
+                          setShippingSettings({
+                            ...shippingSettings,
+                            standard_shipping_rate: e.target.value,
+                          })
+                        }
                         className="pl-10"
                       />
                     </div>
@@ -308,7 +331,12 @@ export default function AdminSettingsPage() {
                         type="number"
                         step="0.01"
                         value={shippingSettings.express_shipping_rate}
-                        onChange={(e) => setShippingSettings({ ...shippingSettings, express_shipping_rate: e.target.value })}
+                        onChange={(e) =>
+                          setShippingSettings({
+                            ...shippingSettings,
+                            express_shipping_rate: e.target.value,
+                          })
+                        }
                         className="pl-10"
                       />
                     </div>
@@ -319,13 +347,13 @@ export default function AdminSettingsPage() {
                     <Input
                       id="shipping_zones"
                       value={shippingSettings.shipping_zones}
-                      onChange={(e) => setShippingSettings({ ...shippingSettings, shipping_zones: e.target.value })}
+                      onChange={(e) =>
+                        setShippingSettings({ ...shippingSettings, shipping_zones: e.target.value })
+                      }
                       placeholder="Canada, United States"
                       className="mt-1"
                     />
-                    <p className="mt-1 text-xs text-gray-500">
-                      Countries/regions you ship to
-                    </p>
+                    <p className="mt-1 text-xs text-gray-500">Countries/regions you ship to</p>
                   </div>
                 </div>
               </CardContent>
@@ -340,21 +368,23 @@ export default function AdminSettingsPage() {
                   <Percent className="h-5 w-5" />
                   Tax Settings
                 </CardTitle>
-                <CardDescription>
-                  Configure tax rates and collection
-                </CardDescription>
+                <CardDescription>Configure tax rates and collection</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={taxSettings.tax_enabled}
-                    onChange={(e) => setTaxSettings({ ...taxSettings, tax_enabled: e.target.checked })}
+                    onChange={(e) =>
+                      setTaxSettings({ ...taxSettings, tax_enabled: e.target.checked })
+                    }
                     className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
                   />
                   <div>
                     <p className="font-medium text-gray-900">Enable Tax Collection</p>
-                    <p className="text-sm text-gray-500">Automatically calculate and add tax to orders</p>
+                    <p className="text-sm text-gray-500">
+                      Automatically calculate and add tax to orders
+                    </p>
                   </div>
                 </label>
 
@@ -365,7 +395,9 @@ export default function AdminSettingsPage() {
                       <Input
                         id="tax_name"
                         value={taxSettings.tax_name}
-                        onChange={(e) => setTaxSettings({ ...taxSettings, tax_name: e.target.value })}
+                        onChange={(e) =>
+                          setTaxSettings({ ...taxSettings, tax_name: e.target.value })
+                        }
                         placeholder="HST, GST, PST, etc."
                         className="mt-1"
                       />
@@ -379,10 +411,14 @@ export default function AdminSettingsPage() {
                           type="number"
                           step="0.01"
                           value={taxSettings.tax_rate}
-                          onChange={(e) => setTaxSettings({ ...taxSettings, tax_rate: e.target.value })}
+                          onChange={(e) =>
+                            setTaxSettings({ ...taxSettings, tax_rate: e.target.value })
+                          }
                           className="pr-8"
                         />
-                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">%</span>
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                          %
+                        </span>
                       </div>
                     </div>
 
@@ -391,12 +427,16 @@ export default function AdminSettingsPage() {
                         <input
                           type="checkbox"
                           checked={taxSettings.tax_included}
-                          onChange={(e) => setTaxSettings({ ...taxSettings, tax_included: e.target.checked })}
+                          onChange={(e) =>
+                            setTaxSettings({ ...taxSettings, tax_included: e.target.checked })
+                          }
                           className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
                         />
                         <div>
                           <p className="font-medium text-gray-900">Prices Include Tax</p>
-                          <p className="text-sm text-gray-500">Display prices with tax already included</p>
+                          <p className="text-sm text-gray-500">
+                            Display prices with tax already included
+                          </p>
                         </div>
                       </label>
                     </div>
@@ -414,9 +454,7 @@ export default function AdminSettingsPage() {
                   <Bell className="h-5 w-5" />
                   Notification Settings
                 </CardTitle>
-                <CardDescription>
-                  Configure admin notifications and alerts
-                </CardDescription>
+                <CardDescription>Configure admin notifications and alerts</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div>
@@ -427,7 +465,12 @@ export default function AdminSettingsPage() {
                       id="notification_email"
                       type="email"
                       value={notificationSettings.notification_email}
-                      onChange={(e) => setNotificationSettings({ ...notificationSettings, notification_email: e.target.value })}
+                      onChange={(e) =>
+                        setNotificationSettings({
+                          ...notificationSettings,
+                          notification_email: e.target.value,
+                        })
+                      }
                       className="pl-10"
                     />
                   </div>
@@ -439,12 +482,19 @@ export default function AdminSettingsPage() {
                   <label className="flex items-center justify-between cursor-pointer rounded-lg border p-4 hover:bg-gray-50">
                     <div>
                       <p className="font-medium text-gray-900">New Order Notifications</p>
-                      <p className="text-sm text-gray-500">Get notified when a new order is placed</p>
+                      <p className="text-sm text-gray-500">
+                        Get notified when a new order is placed
+                      </p>
                     </div>
                     <input
                       type="checkbox"
                       checked={notificationSettings.order_notifications}
-                      onChange={(e) => setNotificationSettings({ ...notificationSettings, order_notifications: e.target.checked })}
+                      onChange={(e) =>
+                        setNotificationSettings({
+                          ...notificationSettings,
+                          order_notifications: e.target.checked,
+                        })
+                      }
                       className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
                     />
                   </label>
@@ -452,12 +502,19 @@ export default function AdminSettingsPage() {
                   <label className="flex items-center justify-between cursor-pointer rounded-lg border p-4 hover:bg-gray-50">
                     <div>
                       <p className="font-medium text-gray-900">Low Stock Alerts</p>
-                      <p className="text-sm text-gray-500">Get notified when inventory is running low</p>
+                      <p className="text-sm text-gray-500">
+                        Get notified when inventory is running low
+                      </p>
                     </div>
                     <input
                       type="checkbox"
                       checked={notificationSettings.low_stock_alerts}
-                      onChange={(e) => setNotificationSettings({ ...notificationSettings, low_stock_alerts: e.target.checked })}
+                      onChange={(e) =>
+                        setNotificationSettings({
+                          ...notificationSettings,
+                          low_stock_alerts: e.target.checked,
+                        })
+                      }
                       className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
                     />
                   </label>
@@ -465,12 +522,19 @@ export default function AdminSettingsPage() {
                   <label className="flex items-center justify-between cursor-pointer rounded-lg border p-4 hover:bg-gray-50">
                     <div>
                       <p className="font-medium text-gray-900">Customer Signup Alerts</p>
-                      <p className="text-sm text-gray-500">Get notified when a new customer registers</p>
+                      <p className="text-sm text-gray-500">
+                        Get notified when a new customer registers
+                      </p>
                     </div>
                     <input
                       type="checkbox"
                       checked={notificationSettings.customer_signup_alerts}
-                      onChange={(e) => setNotificationSettings({ ...notificationSettings, customer_signup_alerts: e.target.checked })}
+                      onChange={(e) =>
+                        setNotificationSettings({
+                          ...notificationSettings,
+                          customer_signup_alerts: e.target.checked,
+                        })
+                      }
                       className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
                     />
                   </label>
@@ -478,12 +542,19 @@ export default function AdminSettingsPage() {
                   <label className="flex items-center justify-between cursor-pointer rounded-lg border p-4 hover:bg-gray-50">
                     <div>
                       <p className="font-medium text-gray-900">Daily Summary</p>
-                      <p className="text-sm text-gray-500">Receive a daily summary of store activity</p>
+                      <p className="text-sm text-gray-500">
+                        Receive a daily summary of store activity
+                      </p>
                     </div>
                     <input
                       type="checkbox"
                       checked={notificationSettings.daily_summary}
-                      onChange={(e) => setNotificationSettings({ ...notificationSettings, daily_summary: e.target.checked })}
+                      onChange={(e) =>
+                        setNotificationSettings({
+                          ...notificationSettings,
+                          daily_summary: e.target.checked,
+                        })
+                      }
                       className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
                     />
                   </label>

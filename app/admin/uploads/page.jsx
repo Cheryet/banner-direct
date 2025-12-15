@@ -2,8 +2,8 @@ import { createClient } from '@/lib/supabase/server';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { LinkButton } from '@/components/ui/link-button';
 import Link from 'next/link';
-import { 
-  FileImage, 
+import {
+  FileImage,
   Search,
   Eye,
   Download,
@@ -19,7 +19,7 @@ import {
   ChevronRight,
   Image as ImageIcon,
   FileText,
-  File
+  File,
 } from 'lucide-react';
 
 export const metadata = {
@@ -58,7 +58,12 @@ function getFileIcon(mimeType) {
 function getStatusBadge(status) {
   const styles = {
     pending: { bg: 'bg-yellow-100', text: 'text-yellow-700', icon: Clock, label: 'Pending Review' },
-    approved: { bg: 'bg-emerald-100', text: 'text-emerald-700', icon: CheckCircle, label: 'Approved' },
+    approved: {
+      bg: 'bg-emerald-100',
+      text: 'text-emerald-700',
+      icon: CheckCircle,
+      label: 'Approved',
+    },
     rejected: { bg: 'bg-red-100', text: 'text-red-700', icon: XCircle, label: 'Rejected' },
   };
 
@@ -66,7 +71,9 @@ function getStatusBadge(status) {
   const Icon = style.icon;
 
   return (
-    <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${style.bg} ${style.text}`}>
+    <span
+      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${style.bg} ${style.text}`}
+    >
       <Icon className="h-3 w-3" />
       {style.label}
     </span>
@@ -76,7 +83,7 @@ function getStatusBadge(status) {
 export default async function AdminUploadsPage({ searchParams }) {
   const supabase = await createClient();
   const params = await searchParams;
-  
+
   const statusFilter = params?.status || 'all';
   const page = parseInt(params?.page || '1');
   const perPage = 20;
@@ -85,13 +92,16 @@ export default async function AdminUploadsPage({ searchParams }) {
   // Build query
   let query = supabase
     .from('uploads')
-    .select(`
+    .select(
+      `
       *,
       profiles:user_id (
         full_name,
         email
       )
-    `, { count: 'exact' })
+    `,
+      { count: 'exact' }
+    )
     .order('created_at', { ascending: false })
     .range(offset, offset + perPage - 1);
 
@@ -102,15 +112,13 @@ export default async function AdminUploadsPage({ searchParams }) {
   const { data: uploads, count, error } = await query;
 
   // Get stats
-  const { data: allUploads } = await supabase
-    .from('uploads')
-    .select('status, file_size');
+  const { data: allUploads } = await supabase.from('uploads').select('status, file_size');
 
   const stats = {
     total: allUploads?.length || 0,
-    pending: allUploads?.filter(u => u.status === 'pending').length || 0,
-    approved: allUploads?.filter(u => u.status === 'approved').length || 0,
-    rejected: allUploads?.filter(u => u.status === 'rejected').length || 0,
+    pending: allUploads?.filter((u) => u.status === 'pending').length || 0,
+    approved: allUploads?.filter((u) => u.status === 'approved').length || 0,
+    rejected: allUploads?.filter((u) => u.status === 'rejected').length || 0,
     totalSize: allUploads?.reduce((sum, u) => sum + (u.file_size || 0), 0) || 0,
   };
 
@@ -127,9 +135,7 @@ export default async function AdminUploadsPage({ searchParams }) {
     <div className="min-w-0">
       <div className="mb-6">
         <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">Uploads</h1>
-        <p className="text-sm text-muted-foreground">
-          Review and manage customer artwork uploads
-        </p>
+        <p className="text-sm text-muted-foreground">Review and manage customer artwork uploads</p>
       </div>
 
       {/* Stats Cards */}
@@ -204,11 +210,13 @@ export default async function AdminUploadsPage({ searchParams }) {
             }`}
           >
             {filter.label}
-            <span className={`rounded-full px-2 py-0.5 text-xs ${
-              statusFilter === filter.value
-                ? 'bg-emerald-500 text-white'
-                : 'bg-gray-200 text-gray-600'
-            }`}>
+            <span
+              className={`rounded-full px-2 py-0.5 text-xs ${
+                statusFilter === filter.value
+                  ? 'bg-emerald-500 text-white'
+                  : 'bg-gray-200 text-gray-600'
+              }`}
+            >
               {filter.count}
             </span>
           </Link>
@@ -222,7 +230,7 @@ export default async function AdminUploadsPage({ searchParams }) {
             <FileImage className="h-12 w-12 text-gray-300" />
             <h3 className="mt-4 text-lg font-medium text-gray-900">No uploads found</h3>
             <p className="mt-1 text-sm text-gray-500">
-              {statusFilter !== 'all' 
+              {statusFilter !== 'all'
                 ? `No ${statusFilter} uploads at the moment.`
                 : 'Customer uploads will appear here.'}
             </p>
@@ -237,8 +245,8 @@ export default async function AdminUploadsPage({ searchParams }) {
                 <Card key={upload.id} className="overflow-hidden">
                   <div className="aspect-square bg-gray-100 relative">
                     {upload.mime_type?.startsWith('image/') && upload.url ? (
-                      <img 
-                        src={upload.url} 
+                      <img
+                        src={upload.url}
                         alt={upload.file_name}
                         className="h-full w-full object-cover"
                       />
@@ -247,9 +255,7 @@ export default async function AdminUploadsPage({ searchParams }) {
                         <FileIcon className="h-16 w-16 text-gray-300" />
                       </div>
                     )}
-                    <div className="absolute top-2 right-2">
-                      {getStatusBadge(upload.status)}
-                    </div>
+                    <div className="absolute top-2 right-2">{getStatusBadge(upload.status)}</div>
                   </div>
                   <CardContent className="p-4">
                     <h3 className="truncate font-medium text-gray-900" title={upload.file_name}>
@@ -306,9 +312,7 @@ export default async function AdminUploadsPage({ searchParams }) {
                 <Link
                   href={`/admin/uploads?page=${page - 1}${statusFilter !== 'all' ? `&status=${statusFilter}` : ''}`}
                   className={`inline-flex items-center gap-1 rounded-lg border px-3 py-1.5 text-sm font-medium ${
-                    page === 1
-                      ? 'pointer-events-none opacity-50'
-                      : 'hover:bg-gray-50'
+                    page === 1 ? 'pointer-events-none opacity-50' : 'hover:bg-gray-50'
                   }`}
                 >
                   <ChevronLeft className="h-4 w-4" />
@@ -317,9 +321,7 @@ export default async function AdminUploadsPage({ searchParams }) {
                 <Link
                   href={`/admin/uploads?page=${page + 1}${statusFilter !== 'all' ? `&status=${statusFilter}` : ''}`}
                   className={`inline-flex items-center gap-1 rounded-lg border px-3 py-1.5 text-sm font-medium ${
-                    page >= totalPages
-                      ? 'pointer-events-none opacity-50'
-                      : 'hover:bg-gray-50'
+                    page >= totalPages ? 'pointer-events-none opacity-50' : 'hover:bg-gray-50'
                   }`}
                 >
                   Next

@@ -15,7 +15,8 @@ import {
 
 export const metadata = {
   title: 'Templates',
-  description: 'Browse pre-designed banner templates. Customize text, colors, and logos for quick ordering.',
+  description:
+    'Browse pre-designed banner templates. Customize text, colors, and logos for quick ordering.',
 };
 
 const categories = [
@@ -106,9 +107,7 @@ export default function TemplatesPage() {
           Upload your own design or start from scratch with our easy configurator.
         </p>
         <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:justify-center">
-          <LinkButton href="/product/pvc-banner-3x6">
-            Upload Your Design
-          </LinkButton>
+          <LinkButton href="/product/pvc-banner-3x6">Upload Your Design</LinkButton>
           <LinkButton href="/help/file-specs" variant="outline">
             View File Specs
           </LinkButton>

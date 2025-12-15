@@ -29,11 +29,14 @@ function FileUpload({
   const [error, setError] = React.useState(null);
   const inputRef = React.useRef(null);
 
-  const handleDragOver = React.useCallback((e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!disabled) setIsDragging(true);
-  }, [disabled]);
+  const handleDragOver = React.useCallback(
+    (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (!disabled) setIsDragging(true);
+    },
+    [disabled]
+  );
 
   const handleDragLeave = React.useCallback((e) => {
     e.preventDefault();
@@ -41,71 +44,86 @@ function FileUpload({
     setIsDragging(false);
   }, []);
 
-  const validateFile = React.useCallback((file) => {
-    const acceptedTypes = Object.keys(accept);
-    if (!acceptedTypes.some((type) => file.type === type)) {
-      return 'File type not supported. Please upload JPG, PNG, SVG, PDF, or TIFF files.';
-    }
-    if (file.size > maxSize) {
-      return `File size exceeds ${Math.round(maxSize / 1024 / 1024)}MB limit.`;
-    }
-    return null;
-  }, [accept, maxSize]);
-
-  const processFiles = React.useCallback((newFiles) => {
-    setError(null);
-    const validFiles = [];
-
-    for (const file of newFiles) {
-      if (files.length + validFiles.length >= maxFiles) {
-        setError(`Maximum ${maxFiles} files allowed.`);
-        break;
+  const validateFile = React.useCallback(
+    (file) => {
+      const acceptedTypes = Object.keys(accept);
+      if (!acceptedTypes.some((type) => file.type === type)) {
+        return 'File type not supported. Please upload JPG, PNG, SVG, PDF, or TIFF files.';
       }
-      const validationError = validateFile(file);
-      if (validationError) {
-        setError(validationError);
-        continue;
+      if (file.size > maxSize) {
+        return `File size exceeds ${Math.round(maxSize / 1024 / 1024)}MB limit.`;
       }
-      validFiles.push({
-        file,
-        id: `${file.name}-${Date.now()}`,
-        preview: file.type.startsWith('image/') ? URL.createObjectURL(file) : null,
-      });
-    }
+      return null;
+    },
+    [accept, maxSize]
+  );
 
-    if (validFiles.length > 0) {
-      const updatedFiles = [...files, ...validFiles];
+  const processFiles = React.useCallback(
+    (newFiles) => {
+      setError(null);
+      const validFiles = [];
+
+      for (const file of newFiles) {
+        if (files.length + validFiles.length >= maxFiles) {
+          setError(`Maximum ${maxFiles} files allowed.`);
+          break;
+        }
+        const validationError = validateFile(file);
+        if (validationError) {
+          setError(validationError);
+          continue;
+        }
+        validFiles.push({
+          file,
+          id: `${file.name}-${Date.now()}`,
+          preview: file.type.startsWith('image/') ? URL.createObjectURL(file) : null,
+        });
+      }
+
+      if (validFiles.length > 0) {
+        const updatedFiles = [...files, ...validFiles];
+        setFiles(updatedFiles);
+        onFilesChange?.(updatedFiles.map((f) => f.file));
+      }
+    },
+    [files, maxFiles, validateFile, onFilesChange]
+  );
+
+  const handleDrop = React.useCallback(
+    (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setIsDragging(false);
+      if (disabled) return;
+
+      const droppedFiles = Array.from(e.dataTransfer.files);
+      processFiles(droppedFiles);
+    },
+    [disabled, processFiles]
+  );
+
+  const handleFileSelect = React.useCallback(
+    (e) => {
+      const selectedFiles = Array.from(e.target.files || []);
+      processFiles(selectedFiles);
+      if (inputRef.current) inputRef.current.value = '';
+    },
+    [processFiles]
+  );
+
+  const removeFile = React.useCallback(
+    (id) => {
+      const fileToRemove = files.find((f) => f.id === id);
+      if (fileToRemove?.preview) {
+        URL.revokeObjectURL(fileToRemove.preview);
+      }
+      const updatedFiles = files.filter((f) => f.id !== id);
       setFiles(updatedFiles);
       onFilesChange?.(updatedFiles.map((f) => f.file));
-    }
-  }, [files, maxFiles, validateFile, onFilesChange]);
-
-  const handleDrop = React.useCallback((e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(false);
-    if (disabled) return;
-
-    const droppedFiles = Array.from(e.dataTransfer.files);
-    processFiles(droppedFiles);
-  }, [disabled, processFiles]);
-
-  const handleFileSelect = React.useCallback((e) => {
-    const selectedFiles = Array.from(e.target.files || []);
-    processFiles(selectedFiles);
-    if (inputRef.current) inputRef.current.value = '';
-  }, [processFiles]);
-
-  const removeFile = React.useCallback((id) => {
-    const fileToRemove = files.find((f) => f.id === id);
-    if (fileToRemove?.preview) {
-      URL.revokeObjectURL(fileToRemove.preview);
-    }
-    const updatedFiles = files.filter((f) => f.id !== id);
-    setFiles(updatedFiles);
-    onFilesChange?.(updatedFiles.map((f) => f.file));
-    setError(null);
-  }, [files, onFilesChange]);
+      setError(null);
+    },
+    [files, onFilesChange]
+  );
 
   React.useEffect(() => {
     return () => {

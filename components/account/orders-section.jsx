@@ -33,7 +33,9 @@ export function OrdersSection({ orders }) {
     };
 
     return (
-      <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${styles[status] || styles.pending}`}>
+      <span
+        className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${styles[status] || styles.pending}`}
+      >
         {labels[status] || status}
       </span>
     );
@@ -95,12 +97,8 @@ export function OrdersSection({ orders }) {
               <table className="w-full">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">
-                      Order
-                    </th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">
-                      Date
-                    </th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Order</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">Date</th>
                     <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">
                       Status
                     </th>
@@ -116,16 +114,12 @@ export function OrdersSection({ orders }) {
                   {orders.map((order) => (
                     <tr key={order.id} className="hover:bg-gray-50">
                       <td className="px-4 py-3">
-                        <span className="font-medium text-gray-900">
-                          {order.order_number}
-                        </span>
+                        <span className="font-medium text-gray-900">{order.order_number}</span>
                       </td>
                       <td className="px-4 py-3 text-sm text-gray-600">
                         {formatDate(order.created_at)}
                       </td>
-                      <td className="px-4 py-3">
-                        {getStatusBadge(order.status)}
-                      </td>
+                      <td className="px-4 py-3">{getStatusBadge(order.status)}</td>
                       <td className="px-4 py-3 text-right font-medium text-gray-900">
                         {formatCurrency(order.total)}
                       </td>
@@ -153,18 +147,12 @@ export function OrdersSection({ orders }) {
                   className="block rounded-lg border p-4 transition-colors hover:border-emerald-300 hover:bg-gray-50"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-medium text-gray-900">
-                      {order.order_number}
-                    </span>
+                    <span className="font-medium text-gray-900">{order.order_number}</span>
                     {getStatusBadge(order.status)}
                   </div>
                   <div className="mt-2 flex items-center justify-between text-sm">
-                    <span className="text-gray-500">
-                      {formatDate(order.created_at)}
-                    </span>
-                    <span className="font-medium text-gray-900">
-                      {formatCurrency(order.total)}
-                    </span>
+                    <span className="text-gray-500">{formatDate(order.created_at)}</span>
+                    <span className="font-medium text-gray-900">{formatCurrency(order.total)}</span>
                   </div>
                 </Link>
               ))}

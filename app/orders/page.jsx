@@ -2,7 +2,16 @@ import { redirect } from 'next/navigation';
 import { createClient, getUser } from '@/lib/supabase/server';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { LinkButton } from '@/components/ui/link-button';
-import { Package, ShoppingBag, ArrowRight, ArrowLeft, RefreshCw, Eye, Calendar, Truck } from 'lucide-react';
+import {
+  Package,
+  ShoppingBag,
+  ArrowRight,
+  ArrowLeft,
+  RefreshCw,
+  Eye,
+  Calendar,
+  Truck,
+} from 'lucide-react';
 import Link from 'next/link';
 
 export const metadata = {
@@ -36,7 +45,9 @@ function getStatusBadge(status) {
   };
 
   return (
-    <span className={`rounded-full border px-3 py-1 text-xs font-medium ${styles[status] || styles.pending}`}>
+    <span
+      className={`rounded-full border px-3 py-1 text-xs font-medium ${styles[status] || styles.pending}`}
+    >
       {labels[status] || status}
     </span>
   );
@@ -69,7 +80,8 @@ export default async function OrdersPage() {
   // Fetch all orders for the user
   const { data: orders } = await supabase
     .from('orders')
-    .select(`
+    .select(
+      `
       *,
       order_items (
         id,
@@ -78,7 +90,8 @@ export default async function OrdersPage() {
         product_name,
         product_options
       )
-    `)
+    `
+    )
     .eq('user_id', user.id)
     .order('created_at', { ascending: false });
 
@@ -86,8 +99,8 @@ export default async function OrdersPage() {
     <div className="container py-8 md:py-12">
       {/* Breadcrumb */}
       <nav className="mb-6">
-        <Link 
-          href="/account" 
+        <Link
+          href="/account"
           className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-emerald-600 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -148,18 +161,19 @@ export default async function OrdersPage() {
                       <p className="font-semibold text-gray-900">{formatCurrency(order.total)}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    {getStatusBadge(order.status)}
-                  </div>
+                  <div className="flex items-center gap-3">{getStatusBadge(order.status)}</div>
                 </div>
               </div>
-              
+
               <CardContent className="p-6">
                 {/* Order Items */}
                 <div className="space-y-3">
                   {order.order_items && order.order_items.length > 0 ? (
                     order.order_items.slice(0, 3).map((item) => (
-                      <div key={item.id} className="flex items-center justify-between rounded-lg bg-gray-50 p-3">
+                      <div
+                        key={item.id}
+                        className="flex items-center justify-between rounded-lg bg-gray-50 p-3"
+                      >
                         <div className="flex items-center gap-3">
                           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100">
                             <Package className="h-5 w-5 text-emerald-600" />
@@ -179,7 +193,7 @@ export default async function OrdersPage() {
                       Order details not available
                     </div>
                   )}
-                  
+
                   {order.order_items && order.order_items.length > 3 && (
                     <p className="text-center text-sm text-gray-500">
                       +{order.order_items.length - 3} more item(s)
@@ -204,19 +218,11 @@ export default async function OrdersPage() {
                     )}
                   </div>
                   <div className="flex gap-2">
-                    <LinkButton 
-                      href={`/orders/${order.id}`} 
-                      variant="outline" 
-                      size="sm"
-                    >
+                    <LinkButton href={`/orders/${order.id}`} variant="outline" size="sm">
                       <Eye className="mr-1.5 h-4 w-4" />
                       View Details
                     </LinkButton>
-                    <LinkButton 
-                      href={`/orders/${order.id}/reorder`} 
-                      variant="default" 
-                      size="sm"
-                    >
+                    <LinkButton href={`/orders/${order.id}/reorder`} variant="default" size="sm">
                       <RefreshCw className="mr-1.5 h-4 w-4" />
                       Reorder
                     </LinkButton>

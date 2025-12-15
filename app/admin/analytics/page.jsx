@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { 
-  BarChart3, 
+import {
+  BarChart3,
   TrendingUp,
   TrendingDown,
   DollarSign,
@@ -10,7 +10,7 @@ import {
   Package,
   Calendar,
   ArrowUpRight,
-  ArrowDownRight
+  ArrowDownRight,
 } from 'lucide-react';
 
 export const metadata = {
@@ -31,6 +31,9 @@ function formatPercent(value) {
   const sign = value >= 0 ? '+' : '';
   return `${sign}${value.toFixed(1)}%`;
 }
+
+// Force dynamic rendering - this page requires database access
+export const dynamic = 'force-dynamic';
 
 export default async function AdminAnalyticsPage() {
   const supabase = await createClient();
@@ -59,18 +62,18 @@ export default async function AdminAnalyticsPage() {
   const customers = allCustomers || [];
 
   // This month's orders
-  const thisMonthOrders = orders.filter(o => new Date(o.created_at) >= startOfMonth);
+  const thisMonthOrders = orders.filter((o) => new Date(o.created_at) >= startOfMonth);
   const thisMonthRevenue = thisMonthOrders.reduce((sum, o) => sum + (parseFloat(o.total) || 0), 0);
 
   // Last month's orders
-  const lastMonthOrders = orders.filter(o => {
+  const lastMonthOrders = orders.filter((o) => {
     const date = new Date(o.created_at);
     return date >= startOfLastMonth && date <= endOfLastMonth;
   });
   const lastMonthRevenue = lastMonthOrders.reduce((sum, o) => sum + (parseFloat(o.total) || 0), 0);
 
   // Year to date
-  const ytdOrders = orders.filter(o => new Date(o.created_at) >= startOfYear);
+  const ytdOrders = orders.filter((o) => new Date(o.created_at) >= startOfYear);
   const ytdRevenue = ytdOrders.reduce((sum, o) => sum + (parseFloat(o.total) || 0), 0);
 
   // All time
@@ -79,30 +82,35 @@ export default async function AdminAnalyticsPage() {
   const avgOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
 
   // Growth calculations
-  const revenueGrowth = lastMonthRevenue > 0 
-    ? ((thisMonthRevenue - lastMonthRevenue) / lastMonthRevenue) * 100 
-    : 0;
-  const orderGrowth = lastMonthOrders.length > 0 
-    ? ((thisMonthOrders.length - lastMonthOrders.length) / lastMonthOrders.length) * 100 
-    : 0;
+  const revenueGrowth =
+    lastMonthRevenue > 0 ? ((thisMonthRevenue - lastMonthRevenue) / lastMonthRevenue) * 100 : 0;
+  const orderGrowth =
+    lastMonthOrders.length > 0
+      ? ((thisMonthOrders.length - lastMonthOrders.length) / lastMonthOrders.length) * 100
+      : 0;
 
   // New customers this month
-  const newCustomersThisMonth = customers.filter(c => new Date(c.created_at) >= startOfMonth).length;
-  const newCustomersLastMonth = customers.filter(c => {
+  const newCustomersThisMonth = customers.filter(
+    (c) => new Date(c.created_at) >= startOfMonth
+  ).length;
+  const newCustomersLastMonth = customers.filter((c) => {
     const date = new Date(c.created_at);
     return date >= startOfLastMonth && date <= endOfLastMonth;
   }).length;
-  const customerGrowth = newCustomersLastMonth > 0 
-    ? ((newCustomersThisMonth - newCustomersLastMonth) / newCustomersLastMonth) * 100 
-    : 0;
+  const customerGrowth =
+    newCustomersLastMonth > 0
+      ? ((newCustomersThisMonth - newCustomersLastMonth) / newCustomersLastMonth) * 100
+      : 0;
 
   // Orders by status
   const ordersByStatus = {
-    pending: orders.filter(o => o.status === 'pending').length,
-    processing: orders.filter(o => ['confirmed', 'processing', 'printing', 'quality_check'].includes(o.status)).length,
-    shipped: orders.filter(o => o.status === 'shipped').length,
-    delivered: orders.filter(o => o.status === 'delivered').length,
-    cancelled: orders.filter(o => o.status === 'cancelled').length,
+    pending: orders.filter((o) => o.status === 'pending').length,
+    processing: orders.filter((o) =>
+      ['confirmed', 'processing', 'printing', 'quality_check'].includes(o.status)
+    ).length,
+    shipped: orders.filter((o) => o.status === 'shipped').length,
+    delivered: orders.filter((o) => o.status === 'delivered').length,
+    cancelled: orders.filter((o) => o.status === 'cancelled').length,
   };
 
   // Monthly revenue for chart (last 6 months)
@@ -110,7 +118,7 @@ export default async function AdminAnalyticsPage() {
   for (let i = 5; i >= 0; i--) {
     const monthStart = new Date(now.getFullYear(), now.getMonth() - i, 1);
     const monthEnd = new Date(now.getFullYear(), now.getMonth() - i + 1, 0);
-    const monthOrders = orders.filter(o => {
+    const monthOrders = orders.filter((o) => {
       const date = new Date(o.created_at);
       return date >= monthStart && date <= monthEnd;
     });
@@ -122,15 +130,13 @@ export default async function AdminAnalyticsPage() {
     });
   }
 
-  const maxRevenue = Math.max(...monthlyData.map(d => d.revenue), 1);
+  const maxRevenue = Math.max(...monthlyData.map((d) => d.revenue), 1);
 
   return (
     <div className="min-w-0">
       <div className="mb-6">
         <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">Analytics</h1>
-        <p className="text-sm text-muted-foreground">
-          Track your store's performance and growth
-        </p>
+        <p className="text-sm text-muted-foreground">Track your store's performance and growth</p>
       </div>
 
       {/* Key Metrics */}
@@ -141,7 +147,9 @@ export default async function AdminAnalyticsPage() {
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Revenue (This Month)</p>
                 <p className="mt-1 text-3xl font-bold">{formatCurrency(thisMonthRevenue)}</p>
-                <div className={`mt-2 flex items-center gap-1 text-sm ${revenueGrowth >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
+                <div
+                  className={`mt-2 flex items-center gap-1 text-sm ${revenueGrowth >= 0 ? 'text-emerald-600' : 'text-red-600'}`}
+                >
                   {revenueGrowth >= 0 ? (
                     <ArrowUpRight className="h-4 w-4" />
                   ) : (
@@ -163,7 +171,9 @@ export default async function AdminAnalyticsPage() {
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Orders (This Month)</p>
                 <p className="mt-1 text-3xl font-bold">{thisMonthOrders.length}</p>
-                <div className={`mt-2 flex items-center gap-1 text-sm ${orderGrowth >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
+                <div
+                  className={`mt-2 flex items-center gap-1 text-sm ${orderGrowth >= 0 ? 'text-emerald-600' : 'text-red-600'}`}
+                >
                   {orderGrowth >= 0 ? (
                     <ArrowUpRight className="h-4 w-4" />
                   ) : (
@@ -185,7 +195,9 @@ export default async function AdminAnalyticsPage() {
               <div>
                 <p className="text-sm font-medium text-muted-foreground">New Customers</p>
                 <p className="mt-1 text-3xl font-bold">{newCustomersThisMonth}</p>
-                <div className={`mt-2 flex items-center gap-1 text-sm ${customerGrowth >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
+                <div
+                  className={`mt-2 flex items-center gap-1 text-sm ${customerGrowth >= 0 ? 'text-emerald-600' : 'text-red-600'}`}
+                >
                   {customerGrowth >= 0 ? (
                     <ArrowUpRight className="h-4 w-4" />
                   ) : (
@@ -207,9 +219,7 @@ export default async function AdminAnalyticsPage() {
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Avg. Order Value</p>
                 <p className="mt-1 text-3xl font-bold">{formatCurrency(avgOrderValue)}</p>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  All time average
-                </p>
+                <p className="mt-2 text-sm text-muted-foreground">All time average</p>
               </div>
               <div className="rounded-full bg-orange-100 p-3">
                 <TrendingUp className="h-6 w-6 text-orange-600" />
@@ -236,8 +246,11 @@ export default async function AdminAnalyticsPage() {
                   <div className="w-12 text-sm font-medium text-gray-600">{data.month}</div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <div className="h-8 rounded-lg bg-emerald-100 relative overflow-hidden" style={{ width: '100%' }}>
-                        <div 
+                      <div
+                        className="h-8 rounded-lg bg-emerald-100 relative overflow-hidden"
+                        style={{ width: '100%' }}
+                      >
+                        <div
                           className="h-full bg-emerald-500 rounded-lg transition-all duration-500"
                           style={{ width: `${(data.revenue / maxRevenue) * 100}%` }}
                         />
@@ -307,24 +320,24 @@ export default async function AdminAnalyticsPage() {
               <div className="flex h-4 overflow-hidden rounded-full bg-gray-100">
                 {totalOrders > 0 && (
                   <>
-                    <div 
-                      className="bg-yellow-500" 
+                    <div
+                      className="bg-yellow-500"
                       style={{ width: `${(ordersByStatus.pending / totalOrders) * 100}%` }}
                     />
-                    <div 
-                      className="bg-blue-500" 
+                    <div
+                      className="bg-blue-500"
                       style={{ width: `${(ordersByStatus.processing / totalOrders) * 100}%` }}
                     />
-                    <div 
-                      className="bg-purple-500" 
+                    <div
+                      className="bg-purple-500"
                       style={{ width: `${(ordersByStatus.shipped / totalOrders) * 100}%` }}
                     />
-                    <div 
-                      className="bg-emerald-500" 
+                    <div
+                      className="bg-emerald-500"
                       style={{ width: `${(ordersByStatus.delivered / totalOrders) * 100}%` }}
                     />
-                    <div 
-                      className="bg-gray-400" 
+                    <div
+                      className="bg-gray-400"
                       style={{ width: `${(ordersByStatus.cancelled / totalOrders) * 100}%` }}
                     />
                   </>

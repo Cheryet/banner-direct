@@ -23,11 +23,7 @@ export default async function AccountPage() {
   }
 
   // Fetch profile data
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single();
+  const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single();
 
   // Fetch user's uploads (saved designs)
   const { data: uploads } = await supabase
@@ -68,27 +64,15 @@ export default async function AccountPage() {
               <CardTitle className="text-lg">Quick Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <LinkButton
-                href="/products"
-                variant="outline"
-                className="w-full justify-between"
-              >
+              <LinkButton href="/products" variant="outline" className="w-full justify-between">
                 Browse Banners
                 <ArrowRight className="h-4 w-4" />
               </LinkButton>
-              <LinkButton
-                href="/cart"
-                variant="outline"
-                className="w-full justify-between"
-              >
+              <LinkButton href="/cart" variant="outline" className="w-full justify-between">
                 View Cart
                 <ArrowRight className="h-4 w-4" />
               </LinkButton>
-              <LinkButton
-                href="/help"
-                variant="outline"
-                className="w-full justify-between"
-              >
+              <LinkButton href="/help" variant="outline" className="w-full justify-between">
                 Get Help
                 <ArrowRight className="h-4 w-4" />
               </LinkButton>

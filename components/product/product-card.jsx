@@ -20,7 +20,9 @@ const ProductCard = React.memo(function ProductCard({
   className,
 }) {
   return (
-    <Card className={cn('group overflow-hidden transition-shadow hover:shadow-card-hover', className)}>
+    <Card
+      className={cn('group overflow-hidden transition-shadow hover:shadow-card-hover', className)}
+    >
       <Link href={`/product/${slug}`} className="block" prefetch={false}>
         <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-muted to-muted/50">
           {image ? (
@@ -56,9 +58,7 @@ const ProductCard = React.memo(function ProductCard({
             {title}
           </h3>
         </Link>
-        {specs && (
-          <p className="mb-2 text-sm text-muted-foreground">{specs}</p>
-        )}
+        {specs && <p className="mb-2 text-sm text-muted-foreground">{specs}</p>}
         <p className="text-lg font-semibold text-foreground">
           From <span className="text-primary">${priceFrom.toFixed(2)}</span>
         </p>

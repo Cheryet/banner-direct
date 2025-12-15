@@ -22,12 +22,7 @@ function PriceSummary({
   const total = subtotal + addOnsTotal + rushFee;
 
   return (
-    <div
-      className={cn(
-        'rounded-lg border bg-card p-6 shadow-card',
-        className
-      )}
-    >
+    <div className={cn('rounded-lg border bg-card p-6 shadow-card', className)}>
       <h3 className="mb-4 font-heading text-lg font-semibold">Order Summary</h3>
 
       <div className="space-y-3 text-sm">
@@ -83,13 +78,7 @@ function PriceSummary({
       )}
 
       <div className="mt-4 space-y-2">
-        <Button
-          variant="cta"
-          size="xl"
-          className="w-full"
-          disabled={!isValid}
-          onClick={onCheckout}
-        >
+        <Button variant="cta" size="xl" className="w-full" disabled={!isValid} onClick={onCheckout}>
           {isValid ? 'Add to Cart' : 'Complete Configuration'}
         </Button>
 

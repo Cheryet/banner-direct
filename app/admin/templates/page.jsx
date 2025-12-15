@@ -2,8 +2,8 @@ import { createClient } from '@/lib/supabase/server';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { LinkButton } from '@/components/ui/link-button';
 import Link from 'next/link';
-import { 
-  Layers, 
+import {
+  Layers,
   Plus,
   Edit,
   Eye,
@@ -11,7 +11,7 @@ import {
   Search,
   Filter,
   Image as ImageIcon,
-  Tag
+  Tag,
 } from 'lucide-react';
 
 export const metadata = {
@@ -25,10 +25,7 @@ export default async function AdminTemplatesPage({ searchParams }) {
   const categoryFilter = params?.category || 'all';
 
   // Fetch templates
-  let query = supabase
-    .from('templates')
-    .select('*')
-    .order('created_at', { ascending: false });
+  let query = supabase.from('templates').select('*').order('created_at', { ascending: false });
 
   if (categoryFilter !== 'all') {
     query = query.eq('category', categoryFilter);
@@ -42,11 +39,11 @@ export default async function AdminTemplatesPage({ searchParams }) {
     .select('category')
     .not('category', 'is', null);
 
-  const uniqueCategories = [...new Set(categories?.map(c => c.category).filter(Boolean) || [])];
+  const uniqueCategories = [...new Set(categories?.map((c) => c.category).filter(Boolean) || [])];
 
   const stats = {
     total: templates?.length || 0,
-    active: templates?.filter(t => t.is_active).length || 0,
+    active: templates?.filter((t) => t.is_active).length || 0,
   };
 
   return (
@@ -54,9 +51,7 @@ export default async function AdminTemplatesPage({ searchParams }) {
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">Templates</h1>
-          <p className="text-sm text-muted-foreground">
-            Manage design templates for customers
-          </p>
+          <p className="text-sm text-muted-foreground">Manage design templates for customers</p>
         </div>
         <LinkButton href="/admin/templates/new" className="w-full sm:w-auto">
           <Plus className="mr-2 h-4 w-4" />
@@ -149,8 +144,8 @@ export default async function AdminTemplatesPage({ searchParams }) {
             <Card key={template.id} className="overflow-hidden">
               <div className="aspect-[4/3] bg-gray-100 relative">
                 {template.thumbnail_url ? (
-                  <img 
-                    src={template.thumbnail_url} 
+                  <img
+                    src={template.thumbnail_url}
                     alt={template.title}
                     className="h-full w-full object-cover"
                   />

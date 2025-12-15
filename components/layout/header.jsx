@@ -3,7 +3,17 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, ShoppingCart, MapPin, Phone, Truck, ChevronDown, Search, User } from 'lucide-react';
+import {
+  Menu,
+  X,
+  ShoppingCart,
+  MapPin,
+  Phone,
+  Truck,
+  ChevronDown,
+  Search,
+  User,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -151,9 +161,7 @@ function Header() {
                       href={item.href}
                       className={cn(
                         'flex h-full items-center px-4 text-[14px] font-medium transition-colors',
-                        isActive
-                          ? 'text-gray-900'
-                          : 'text-gray-500 hover:text-gray-900'
+                        isActive ? 'text-gray-900' : 'text-gray-500 hover:text-gray-900'
                       )}
                       aria-current={isActive ? 'page' : undefined}
                     >
@@ -178,7 +186,7 @@ function Header() {
                   0
                 </span>
               </Link>
-              <Link 
+              <Link
                 href="/product/pvc-banner-3x6"
                 className="ml-2 flex h-10 items-center rounded-full bg-emerald-600 px-5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-emerald-700 hover:shadow"
               >
@@ -217,10 +225,7 @@ function Header() {
 
       {/* Mobile drawer overlay */}
       {mobileMenuOpen && (
-        <div
-          className="fixed inset-0 z-50 bg-black/50 md:hidden"
-          aria-hidden="true"
-        />
+        <div className="fixed inset-0 z-50 bg-black/50 md:hidden" aria-hidden="true" />
       )}
 
       {/* Mobile drawer */}
@@ -269,9 +274,7 @@ function Header() {
                     onClick={handleNavClick}
                     className={cn(
                       'block rounded-md px-3 py-2.5 text-base font-medium transition-colors',
-                      isActive
-                        ? 'bg-emerald-50 text-emerald-600'
-                        : 'text-gray-700 hover:bg-gray-50'
+                      isActive ? 'bg-emerald-50 text-emerald-600' : 'text-gray-700 hover:bg-gray-50'
                     )}
                     aria-current={isActive ? 'page' : undefined}
                   >
@@ -290,7 +293,7 @@ function Header() {
 
         {/* CTA */}
         <div className="border-t p-4">
-          <Link 
+          <Link
             href="/product/pvc-banner-3x6"
             onClick={handleNavClick}
             className="block w-full rounded-md bg-emerald-600 px-4 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-emerald-700"

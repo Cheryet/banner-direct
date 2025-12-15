@@ -3,20 +3,20 @@ import { createClient, getUser } from '@/lib/supabase/server';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { LinkButton } from '@/components/ui/link-button';
 import { Separator } from '@/components/ui/separator';
-import { 
-  Package, 
-  ArrowLeft, 
-  RefreshCw, 
-  Truck, 
-  Calendar, 
-  MapPin, 
+import {
+  Package,
+  ArrowLeft,
+  RefreshCw,
+  Truck,
+  Calendar,
+  MapPin,
   CreditCard,
   FileText,
   CheckCircle,
   Clock,
   Printer,
   Search,
-  PackageCheck
+  PackageCheck,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -29,59 +29,59 @@ export async function generateMetadata({ params }) {
 
 function getStatusInfo(status) {
   const statusMap = {
-    pending: { 
-      label: 'Pending', 
+    pending: {
+      label: 'Pending',
       color: 'bg-yellow-100 text-yellow-700 border-yellow-200',
       icon: Clock,
-      description: 'Your order has been received and is awaiting confirmation.'
+      description: 'Your order has been received and is awaiting confirmation.',
     },
-    confirmed: { 
-      label: 'Confirmed', 
+    confirmed: {
+      label: 'Confirmed',
       color: 'bg-blue-100 text-blue-700 border-blue-200',
       icon: CheckCircle,
-      description: 'Your order has been confirmed and is being prepared.'
+      description: 'Your order has been confirmed and is being prepared.',
     },
-    processing: { 
-      label: 'Processing', 
+    processing: {
+      label: 'Processing',
       color: 'bg-blue-100 text-blue-700 border-blue-200',
       icon: Clock,
-      description: 'Your order is being processed.'
+      description: 'Your order is being processed.',
     },
-    printing: { 
-      label: 'Printing', 
+    printing: {
+      label: 'Printing',
       color: 'bg-purple-100 text-purple-700 border-purple-200',
       icon: Printer,
-      description: 'Your banners are currently being printed.'
+      description: 'Your banners are currently being printed.',
     },
-    quality_check: { 
-      label: 'Quality Check', 
+    quality_check: {
+      label: 'Quality Check',
       color: 'bg-indigo-100 text-indigo-700 border-indigo-200',
       icon: Search,
-      description: 'Your order is undergoing quality inspection.'
+      description: 'Your order is undergoing quality inspection.',
     },
-    shipped: { 
-      label: 'Shipped', 
+    shipped: {
+      label: 'Shipped',
       color: 'bg-emerald-100 text-emerald-700 border-emerald-200',
       icon: Truck,
-      description: 'Your order is on its way!'
+      description: 'Your order is on its way!',
     },
-    delivered: { 
-      label: 'Delivered', 
+    delivered: {
+      label: 'Delivered',
       color: 'bg-emerald-100 text-emerald-700 border-emerald-200',
       icon: PackageCheck,
-      description: 'Your order has been delivered.'
+      description: 'Your order has been delivered.',
     },
-    cancelled: { 
-      label: 'Cancelled', 
+    cancelled: {
+      label: 'Cancelled',
       color: 'bg-gray-100 text-gray-700 border-gray-200',
       icon: Clock,
-      description: 'This order has been cancelled.'
+      description: 'This order has been cancelled.',
     },
-    refunded: { 
-      label: 'Refunded', 
+    refunded: {
+      label: 'Refunded',
       color: 'bg-red-100 text-red-700 border-red-200',
       icon: CreditCard,
-      description: 'This order has been refunded.'
+      description: 'This order has been refunded.',
     },
   };
 
@@ -116,7 +116,8 @@ export default async function OrderDetailPage({ params }) {
   // Fetch the order with items
   const { data: order, error: orderError } = await supabase
     .from('orders')
-    .select(`
+    .select(
+      `
       *,
       order_items (
         id,
@@ -126,7 +127,8 @@ export default async function OrderDetailPage({ params }) {
         product_options,
         upload_id
       )
-    `)
+    `
+    )
     .eq('id', id)
     .eq('user_id', user.id)
     .single();
@@ -147,15 +149,23 @@ export default async function OrderDetailPage({ params }) {
     { status: 'delivered', label: 'Delivered', icon: PackageCheck },
   ];
 
-  const statusOrder = ['pending', 'confirmed', 'processing', 'printing', 'quality_check', 'shipped', 'delivered'];
+  const statusOrder = [
+    'pending',
+    'confirmed',
+    'processing',
+    'printing',
+    'quality_check',
+    'shipped',
+    'delivered',
+  ];
   const currentStatusIndex = statusOrder.indexOf(order.status);
 
   return (
     <div className="container py-8 md:py-12">
       {/* Breadcrumb */}
       <nav className="mb-6">
-        <Link 
-          href="/orders" 
+        <Link
+          href="/orders"
           className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-emerald-600 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -168,13 +178,13 @@ export default async function OrderDetailPage({ params }) {
         <div>
           <div className="flex items-center gap-3">
             <h1 className="text-3xl font-bold text-gray-900">Order {order.order_number}</h1>
-            <span className={`rounded-full border px-3 py-1 text-sm font-medium ${statusInfo.color}`}>
+            <span
+              className={`rounded-full border px-3 py-1 text-sm font-medium ${statusInfo.color}`}
+            >
               {statusInfo.label}
             </span>
           </div>
-          <p className="mt-2 text-gray-600">
-            Placed on {formatDate(order.created_at)}
-          </p>
+          <p className="mt-2 text-gray-600">Placed on {formatDate(order.created_at)}</p>
         </div>
         <LinkButton href={`/orders/${order.id}/reorder`}>
           <RefreshCw className="mr-2 h-4 w-4" />
@@ -204,19 +214,21 @@ export default async function OrderDetailPage({ params }) {
                       const isCompleted = currentStatusIndex >= stepIndex;
                       const isCurrent = order.status === step.status;
                       const StepIcon = step.icon;
-                      
+
                       return (
                         <div key={step.status} className="flex flex-col items-center">
-                          <div 
+                          <div
                             className={`flex h-10 w-10 items-center justify-center rounded-full border-2 transition-colors ${
-                              isCompleted 
-                                ? 'border-emerald-500 bg-emerald-500 text-white' 
+                              isCompleted
+                                ? 'border-emerald-500 bg-emerald-500 text-white'
                                 : 'border-gray-300 bg-white text-gray-400'
                             } ${isCurrent ? 'ring-4 ring-emerald-100' : ''}`}
                           >
                             <StepIcon className="h-5 w-5" />
                           </div>
-                          <span className={`mt-2 text-xs font-medium ${isCompleted ? 'text-emerald-600' : 'text-gray-500'}`}>
+                          <span
+                            className={`mt-2 text-xs font-medium ${isCompleted ? 'text-emerald-600' : 'text-gray-500'}`}
+                          >
                             {step.label}
                           </span>
                         </div>
@@ -225,10 +237,10 @@ export default async function OrderDetailPage({ params }) {
                   </div>
                   {/* Progress Line */}
                   <div className="absolute left-0 right-0 top-5 -z-10 h-0.5 bg-gray-200">
-                    <div 
+                    <div
                       className="h-full bg-emerald-500 transition-all"
-                      style={{ 
-                        width: `${Math.min(100, (currentStatusIndex / (timelineSteps.length - 1)) * 100)}%` 
+                      style={{
+                        width: `${Math.min(100, (currentStatusIndex / (timelineSteps.length - 1)) * 100)}%`,
                       }}
                     />
                   </div>
@@ -244,7 +256,7 @@ export default async function OrderDetailPage({ params }) {
                     <span>{order.tracking_number}</span>
                   </div>
                   {order.tracking_url && (
-                    <a 
+                    <a
                       href={order.tracking_url}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -270,10 +282,7 @@ export default async function OrderDetailPage({ params }) {
               <div className="space-y-4">
                 {order.order_items && order.order_items.length > 0 ? (
                   order.order_items.map((item) => (
-                    <div 
-                      key={item.id} 
-                      className="flex items-start gap-4 rounded-lg border p-4"
-                    >
+                    <div key={item.id} className="flex items-start gap-4 rounded-lg border p-4">
                       <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-gray-100">
                         <Package className="h-8 w-8 text-gray-400" />
                       </div>
@@ -281,14 +290,13 @@ export default async function OrderDetailPage({ params }) {
                         <h3 className="font-medium text-gray-900">{item.product_name}</h3>
                         {item.product_options && (
                           <div className="mt-1 text-sm text-gray-500">
-                            {typeof item.product_options === 'object' 
+                            {typeof item.product_options === 'object'
                               ? Object.entries(item.product_options).map(([key, value]) => (
                                   <span key={key} className="mr-3">
                                     {key}: {value}
                                   </span>
                                 ))
-                              : item.product_options
-                            }
+                              : item.product_options}
                           </div>
                         )}
                         <div className="mt-2 flex items-center gap-4 text-sm">
@@ -326,7 +334,9 @@ export default async function OrderDetailPage({ params }) {
             <CardContent className="space-y-3">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Subtotal</span>
-                <span className="text-gray-900">{formatCurrency(order.subtotal || order.total)}</span>
+                <span className="text-gray-900">
+                  {formatCurrency(order.subtotal || order.total)}
+                </span>
               </div>
               {order.shipping_cost > 0 && (
                 <div className="flex justify-between text-sm">
@@ -371,7 +381,8 @@ export default async function OrderDetailPage({ params }) {
                       <p>{order.shipping_address.line1}</p>
                       {order.shipping_address.line2 && <p>{order.shipping_address.line2}</p>}
                       <p>
-                        {order.shipping_address.city}, {order.shipping_address.province} {order.shipping_address.postal_code}
+                        {order.shipping_address.city}, {order.shipping_address.province}{' '}
+                        {order.shipping_address.postal_code}
                       </p>
                       <p>{order.shipping_address.country}</p>
                     </>
@@ -393,9 +404,7 @@ export default async function OrderDetailPage({ params }) {
             </CardHeader>
             <CardContent>
               <div className="text-sm text-gray-600">
-                <p className="font-medium text-gray-900">
-                  {order.payment_method || 'Credit Card'}
-                </p>
+                <p className="font-medium text-gray-900">{order.payment_method || 'Credit Card'}</p>
                 {order.payment_status && (
                   <p className="mt-1">
                     Status: <span className="capitalize">{order.payment_status}</span>

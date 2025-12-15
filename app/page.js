@@ -75,8 +75,11 @@ export default function Home() {
           ============================================ */}
       <section className="relative overflow-hidden bg-white">
         {/* Subtle gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/50 via-transparent to-transparent" aria-hidden="true" />
-        
+        <div
+          className="absolute inset-0 bg-gradient-to-br from-emerald-50/50 via-transparent to-transparent"
+          aria-hidden="true"
+        />
+
         <div className="container relative">
           <div className="grid min-h-[80vh] items-center gap-12 py-16 lg:grid-cols-2 lg:py-20">
             {/* Left Column - Content */}
@@ -88,11 +91,11 @@ export default function Home() {
               </div>
 
               <h1 className="text-4xl font-bold tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
-                Your banner,{' '}
-                <span className="text-primary">your way</span>
+                Your banner, <span className="text-primary">your way</span>
               </h1>
               <p className="mt-6 text-lg leading-relaxed text-gray-600 md:text-xl">
-                Custom banners printed on commercial equipment. Fast turnaround, durable materials, and shipped across Canada.
+                Custom banners printed on commercial equipment. Fast turnaround, durable materials,
+                and shipped across Canada.
               </p>
 
               {/* CTAs - Premium button styling */}
@@ -131,15 +134,13 @@ export default function Home() {
                     <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-2xl bg-white shadow-lg">
                       <Package className="h-12 w-12 text-emerald-500" aria-hidden="true" />
                     </div>
-                    <p className="text-lg font-semibold text-gray-700">
-                      Hero Image
-                    </p>
+                    <p className="text-lg font-semibold text-gray-700">Hero Image</p>
                     <p className="mt-1 text-sm text-gray-500">
                       Trade show, event, or storefront banner
                     </p>
                   </div>
                 </div>
-                
+
                 {/* Floating badge */}
                 <div className="absolute bottom-4 left-4 rounded-lg bg-white/95 px-4 py-2 shadow-lg backdrop-blur">
                   <p className="text-xs font-medium text-gray-500">Starting from</p>
@@ -191,12 +192,8 @@ export default function Home() {
       <section className="bg-white py-16 md:py-24">
         <div className="container">
           <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
-              How it works
-            </h2>
-            <p className="mt-4 text-lg text-gray-600">
-              Three simple steps to your custom banner.
-            </p>
+            <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">How it works</h2>
+            <p className="mt-4 text-lg text-gray-600">Three simple steps to your custom banner.</p>
           </div>
 
           {/* Steps - Clean horizontal layout */}
@@ -205,19 +202,22 @@ export default function Home() {
               <div key={step.number} className="relative text-center">
                 {/* Connector line (desktop only) */}
                 {index < steps.length - 1 && (
-                  <div className="absolute left-[60%] right-0 top-8 hidden h-px bg-gray-200 md:block" aria-hidden="true" />
+                  <div
+                    className="absolute left-[60%] right-0 top-8 hidden h-px bg-gray-200 md:block"
+                    aria-hidden="true"
+                  />
                 )}
-                
+
                 {/* Step number */}
                 <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500 text-2xl font-bold text-white shadow-lg shadow-emerald-500/30">
                   {step.number}
                 </div>
-                
+
                 {/* Icon */}
                 <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-gray-100">
                   <step.icon className="h-7 w-7 text-gray-600" aria-hidden="true" />
                 </div>
-                
+
                 <h3 className="mb-2 text-lg font-semibold text-gray-900">{step.title}</h3>
                 <p className="text-gray-600">{step.description}</p>
               </div>
@@ -233,9 +233,7 @@ export default function Home() {
       <section className="bg-gray-50 py-16 md:py-24">
         <div className="container">
           <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
-              Popular banner sizes
-            </h2>
+            <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">Popular banner sizes</h2>
             <p className="mt-4 text-lg text-gray-600">
               Start with our most popular options, or customize your own.
             </p>
@@ -281,7 +279,7 @@ export default function Home() {
                     <p className="mt-1 text-sm text-gray-500">Commercial printing equipment</p>
                   </div>
                 </div>
-                
+
                 {/* Canadian flag badge */}
                 <div className="absolute right-4 top-4 flex items-center gap-2 rounded-full bg-white/95 px-3 py-1.5 text-sm font-medium shadow-lg backdrop-blur">
                   <span className="text-lg">🇨🇦</span>
@@ -293,11 +291,11 @@ export default function Home() {
             {/* Content */}
             <div className="order-1 lg:order-2">
               <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
-                Built locally.{' '}
-                <span className="text-emerald-600">Trusted nationally.</span>
+                Built locally. <span className="text-emerald-600">Trusted nationally.</span>
               </h2>
               <p className="mt-6 text-lg leading-relaxed text-gray-600">
-                We're not a dropshipper. Every banner is printed in our Canadian facility on commercial-grade equipment.
+                We're not a dropshipper. Every banner is printed in our Canadian facility on
+                commercial-grade equipment.
               </p>
               <ul className="mt-8 space-y-4">
                 <li className="flex items-start gap-4">
@@ -306,7 +304,9 @@ export default function Home() {
                   </div>
                   <div>
                     <p className="font-medium text-gray-900">Commercial equipment</p>
-                    <p className="text-gray-600">HP & Mimaki printers for vibrant, durable prints</p>
+                    <p className="text-gray-600">
+                      HP & Mimaki printers for vibrant, durable prints
+                    </p>
                   </div>
                 </li>
                 <li className="flex items-start gap-4">
@@ -348,7 +348,11 @@ export default function Home() {
                 Volume pricing • Consistent production • Easy reorders
               </p>
             </div>
-            <LinkButton href="/bulk" variant="outline" className="bg-white text-emerald-600 hover:bg-gray-50">
+            <LinkButton
+              href="/bulk"
+              variant="outline"
+              className="bg-white text-emerald-600 hover:bg-gray-50"
+            >
               Get Bulk Pricing →
             </LinkButton>
           </div>
@@ -362,9 +366,7 @@ export default function Home() {
       <section className="bg-gray-50 py-16 md:py-24">
         <div className="container">
           <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
-              Ready to get started?
-            </h2>
+            <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">Ready to get started?</h2>
             <p className="mt-4 text-lg text-gray-600">
               Create your custom banner in minutes. Printed in Canada, delivered to your door.
             </p>

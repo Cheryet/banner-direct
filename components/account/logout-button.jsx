@@ -12,7 +12,7 @@ export function LogoutButton() {
 
   const handleLogout = async () => {
     setIsLoading(true);
-    
+
     try {
       const supabase = createClient();
       await supabase.auth.signOut();

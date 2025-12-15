@@ -14,7 +14,8 @@ const linkButtonVariants = cva(
       variant: {
         default: 'bg-emerald-500 text-white hover:bg-emerald-600 active:bg-emerald-700 shadow-sm',
         destructive: 'bg-red-500 text-white hover:bg-red-600 active:bg-red-700',
-        outline: 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-400',
+        outline:
+          'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-400',
         secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200',
         ghost: 'text-gray-700 hover:bg-gray-100',
       },

@@ -7,7 +7,7 @@ import { createClient } from '@/lib/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { 
+import {
   ArrowLeft,
   FileImage,
   User,
@@ -23,7 +23,7 @@ import {
   FileText,
   File,
   Mail,
-  ExternalLink
+  ExternalLink,
 } from 'lucide-react';
 
 function formatDate(dateString) {
@@ -68,10 +68,11 @@ export default function AdminUploadDetailPage({ params }) {
     async function fetchUpload() {
       const supabase = createClient();
       const { id } = await params;
-      
+
       const { data, error } = await supabase
         .from('uploads')
-        .select(`
+        .select(
+          `
           *,
           profiles:user_id (
             id,
@@ -79,7 +80,8 @@ export default function AdminUploadDetailPage({ params }) {
             email,
             phone
           )
-        `)
+        `
+        )
         .eq('id', id)
         .single();
 
@@ -105,7 +107,7 @@ export default function AdminUploadDetailPage({ params }) {
     try {
       const supabase = createClient();
       const { id } = await params;
-      
+
       const updateData = {
         status: newStatus,
         reviewed_at: new Date().toISOString(),
@@ -115,10 +117,7 @@ export default function AdminUploadDetailPage({ params }) {
         updateData.rejection_reason = rejectionReason;
       }
 
-      const { error } = await supabase
-        .from('uploads')
-        .update(updateData)
-        .eq('id', id);
+      const { error } = await supabase.from('uploads').update(updateData).eq('id', id);
 
       if (error) throw error;
 
@@ -158,8 +157,8 @@ export default function AdminUploadDetailPage({ params }) {
     <div className="min-w-0">
       {/* Header */}
       <div className="mb-6">
-        <Link 
-          href="/admin/uploads" 
+        <Link
+          href="/admin/uploads"
           className="mb-3 inline-flex items-center gap-2 text-sm text-gray-600 hover:text-emerald-600"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -168,9 +167,7 @@ export default function AdminUploadDetailPage({ params }) {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
             <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">Review Upload</h1>
-            <p className="truncate text-sm text-muted-foreground">
-              {upload.file_name}
-            </p>
+            <p className="truncate text-sm text-muted-foreground">{upload.file_name}</p>
           </div>
           <div className="flex gap-2">
             {upload.url && (
@@ -212,8 +209,8 @@ export default function AdminUploadDetailPage({ params }) {
             <CardContent>
               <div className="rounded-lg border bg-gray-50 overflow-hidden">
                 {isImage && upload.url ? (
-                  <img 
-                    src={upload.url} 
+                  <img
+                    src={upload.url}
                     alt={upload.file_name}
                     className="w-full h-auto max-h-[600px] object-contain"
                   />
@@ -242,9 +239,7 @@ export default function AdminUploadDetailPage({ params }) {
           <Card className="mt-6">
             <CardHeader>
               <CardTitle>Review Actions</CardTitle>
-              <CardDescription>
-                Approve or reject this upload
-              </CardDescription>
+              <CardDescription>Approve or reject this upload</CardDescription>
             </CardHeader>
             <CardContent>
               {upload.status === 'pending' ? (
@@ -289,25 +284,23 @@ export default function AdminUploadDetailPage({ params }) {
                   </div>
                 </div>
               ) : (
-                <div className={`rounded-lg p-4 ${
-                  upload.status === 'approved' 
-                    ? 'bg-emerald-50 text-emerald-700' 
-                    : 'bg-red-50 text-red-700'
-                }`}>
+                <div
+                  className={`rounded-lg p-4 ${
+                    upload.status === 'approved'
+                      ? 'bg-emerald-50 text-emerald-700'
+                      : 'bg-red-50 text-red-700'
+                  }`}
+                >
                   <div className="flex items-center gap-2">
                     {upload.status === 'approved' ? (
                       <CheckCircle className="h-5 w-5" />
                     ) : (
                       <XCircle className="h-5 w-5" />
                     )}
-                    <span className="font-medium">
-                      This upload has been {upload.status}
-                    </span>
+                    <span className="font-medium">This upload has been {upload.status}</span>
                   </div>
                   {upload.rejection_reason && (
-                    <p className="mt-2 text-sm">
-                      Reason: {upload.rejection_reason}
-                    </p>
+                    <p className="mt-2 text-sm">Reason: {upload.rejection_reason}</p>
                   )}
                   {upload.reviewed_at && (
                     <p className="mt-1 text-sm opacity-75">
@@ -349,13 +342,15 @@ export default function AdminUploadDetailPage({ params }) {
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-500">Status</p>
-                <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${
-                  upload.status === 'approved' 
-                    ? 'bg-emerald-100 text-emerald-700'
-                    : upload.status === 'rejected'
-                    ? 'bg-red-100 text-red-700'
-                    : 'bg-yellow-100 text-yellow-700'
-                }`}>
+                <span
+                  className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${
+                    upload.status === 'approved'
+                      ? 'bg-emerald-100 text-emerald-700'
+                      : upload.status === 'rejected'
+                        ? 'bg-red-100 text-red-700'
+                        : 'bg-yellow-100 text-yellow-700'
+                  }`}
+                >
                   {upload.status === 'approved' && <CheckCircle className="h-3 w-3" />}
                   {upload.status === 'rejected' && <XCircle className="h-3 w-3" />}
                   {upload.status === 'pending' && <Clock className="h-3 w-3" />}
@@ -377,7 +372,9 @@ export default function AdminUploadDetailPage({ params }) {
               <CardContent className="space-y-3">
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-sm font-medium text-emerald-700">
-                    {(upload.profiles.full_name || upload.profiles.email || 'U').charAt(0).toUpperCase()}
+                    {(upload.profiles.full_name || upload.profiles.email || 'U')
+                      .charAt(0)
+                      .toUpperCase()}
                   </div>
                   <div>
                     <p className="font-medium text-gray-900">

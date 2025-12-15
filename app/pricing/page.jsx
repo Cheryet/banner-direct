@@ -27,7 +27,8 @@ import {
 
 export const metadata = {
   title: 'Pricing',
-  description: 'Clear, competitive banner pricing. High-quality banners printed in Canada with pricing that scales as you do.',
+  description:
+    'Clear, competitive banner pricing. High-quality banners printed in Canada with pricing that scales as you do.',
 };
 
 // =============================================================================
@@ -84,23 +85,28 @@ const shippingInfo = [
 const faqs = [
   {
     question: 'Why do prices vary by size and material?',
-    answer: 'Larger banners require more material and printing time. Different materials (vinyl, mesh, fabric) have different base costs and are suited for different uses. Your exact price is always shown before checkout.',
+    answer:
+      'Larger banners require more material and printing time. Different materials (vinyl, mesh, fabric) have different base costs and are suited for different uses. Your exact price is always shown before checkout.',
   },
   {
     question: 'Do prices include tax?',
-    answer: 'Prices shown are before applicable taxes. GST/HST will be calculated at checkout based on your shipping location.',
+    answer:
+      'Prices shown are before applicable taxes. GST/HST will be calculated at checkout based on your shipping location.',
   },
   {
     question: 'Can I reorder at the same price?',
-    answer: 'Yes, as long as the specifications are the same. We save your order details for easy reordering. Prices may adjust if material costs change significantly.',
+    answer:
+      'Yes, as long as the specifications are the same. We save your order details for easy reordering. Prices may adjust if material costs change significantly.',
   },
   {
     question: 'Are volume discounts applied automatically?',
-    answer: 'Yes. When you increase the quantity in the product builder, the per-unit price automatically adjusts to reflect volume savings.',
+    answer:
+      'Yes. When you increase the quantity in the product builder, the per-unit price automatically adjusts to reflect volume savings.',
   },
   {
     question: 'Can I lock in pricing for future orders?',
-    answer: 'For bulk and enterprise customers, we can discuss pricing agreements. Contact our bulk team to learn more about volume commitments.',
+    answer:
+      'For bulk and enterprise customers, we can discuss pricing agreements. Contact our bulk team to learn more about volume commitments.',
   },
 ];
 
@@ -126,7 +132,10 @@ export default function PricingPage() {
               <LinkButton href="/product/pvc-banner-3x6" size="lg">
                 Price Your Banner
               </LinkButton>
-              <Link href="/bulk" className="inline-flex h-11 items-center justify-center px-6 text-base font-medium text-emerald-600 underline-offset-4 hover:underline">
+              <Link
+                href="/bulk"
+                className="inline-flex h-11 items-center justify-center px-6 text-base font-medium text-emerald-600 underline-offset-4 hover:underline"
+              >
                 Request a Bulk Quote →
               </Link>
             </div>
@@ -139,9 +148,7 @@ export default function PricingPage() {
           ==================================================================== */}
       <section className="border-y py-12 md:py-16">
         <div className="container">
-          <h2 className="mb-10 text-center text-xl font-semibold md:text-2xl">
-            How Pricing Works
-          </h2>
+          <h2 className="mb-10 text-center text-xl font-semibold md:text-2xl">How Pricing Works</h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {pricingSteps.map((step, index) => (
               <div key={step.title} className="flex items-start gap-4">
@@ -175,17 +182,29 @@ export default function PricingPage() {
                   <caption className="sr-only">Banner pricing by size and material</caption>
                   <thead>
                     <tr className="bg-muted/50">
-                      <th scope="col" className="p-4 text-left font-semibold">Size</th>
+                      <th scope="col" className="p-4 text-left font-semibold">
+                        Size
+                      </th>
                       <th scope="col" className="p-4 text-center font-semibold">
                         <div className="flex flex-col items-center gap-1">
                           <span>Vinyl</span>
-                          <Badge variant="secondary" className="text-xs">Popular</Badge>
+                          <Badge variant="secondary" className="text-xs">
+                            Popular
+                          </Badge>
                         </div>
                       </th>
-                      <th scope="col" className="p-4 text-center font-semibold">Mesh</th>
-                      <th scope="col" className="p-4 text-center font-semibold">Fabric</th>
-                      <th scope="col" className="p-4 text-center font-semibold">5+ Units</th>
-                      <th scope="col" className="p-4 text-center font-semibold">10+ Units</th>
+                      <th scope="col" className="p-4 text-center font-semibold">
+                        Mesh
+                      </th>
+                      <th scope="col" className="p-4 text-center font-semibold">
+                        Fabric
+                      </th>
+                      <th scope="col" className="p-4 text-center font-semibold">
+                        5+ Units
+                      </th>
+                      <th scope="col" className="p-4 text-center font-semibold">
+                        10+ Units
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -194,7 +213,9 @@ export default function PricingPage() {
                         key={tier.size}
                         className={`border-t ${index % 2 === 0 ? 'bg-background' : 'bg-muted/20'}`}
                       >
-                        <th scope="row" className="p-4 text-left font-medium">{tier.size}</th>
+                        <th scope="row" className="p-4 text-left font-medium">
+                          {tier.size}
+                        </th>
                         <td className="p-4 text-center">${tier.vinyl.toFixed(2)}</td>
                         <td className="p-4 text-center">${tier.mesh.toFixed(2)}</td>
                         <td className="p-4 text-center">${tier.fabric.toFixed(2)}</td>
@@ -248,7 +269,8 @@ export default function PricingPage() {
               Custom sizes and higher volumes available via{' '}
               <Link href="/bulk" className="text-primary hover:underline">
                 bulk orders
-              </Link>.
+              </Link>
+              .
             </p>
           </div>
         </div>
@@ -265,8 +287,8 @@ export default function PricingPage() {
               The more you order, the lower your per-unit cost.
             </h2>
             <p className="mt-3 text-muted-foreground">
-              Volume savings are applied automatically in the product builder. 
-              For orders of 25+ banners, our bulk team can provide custom quotes.
+              Volume savings are applied automatically in the product builder. For orders of 25+
+              banners, our bulk team can provide custom quotes.
             </p>
             <LinkButton href="/bulk" variant="outline" className="mt-6">
               Learn About Bulk Pricing
@@ -312,9 +334,7 @@ export default function PricingPage() {
                 <MapPin className="h-3 w-3" aria-hidden="true" />
                 Printed in Canada
               </Badge>
-              <h2 className="text-2xl font-semibold md:text-3xl">
-                Shipping & Timelines
-              </h2>
+              <h2 className="text-2xl font-semibold md:text-3xl">Shipping & Timelines</h2>
               <p className="mt-2 text-muted-foreground">
                 Printed and shipped from Canada for faster, more reliable delivery.
               </p>
@@ -327,15 +347,26 @@ export default function PricingPage() {
                     <caption className="sr-only">Shipping timelines by region</caption>
                     <thead>
                       <tr className="border-b bg-muted/50">
-                        <th scope="col" className="p-4 text-left font-semibold">Region</th>
-                        <th scope="col" className="p-4 text-center font-semibold">Production</th>
-                        <th scope="col" className="p-4 text-center font-semibold">Shipping</th>
+                        <th scope="col" className="p-4 text-left font-semibold">
+                          Region
+                        </th>
+                        <th scope="col" className="p-4 text-center font-semibold">
+                          Production
+                        </th>
+                        <th scope="col" className="p-4 text-center font-semibold">
+                          Shipping
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       {shippingInfo.map((info, index) => (
-                        <tr key={info.region} className={index < shippingInfo.length - 1 ? 'border-b' : ''}>
-                          <th scope="row" className="p-4 text-left font-medium">{info.region}</th>
+                        <tr
+                          key={info.region}
+                          className={index < shippingInfo.length - 1 ? 'border-b' : ''}
+                        >
+                          <th scope="row" className="p-4 text-left font-medium">
+                            {info.region}
+                          </th>
                           <td className="p-4 text-center">{info.production}</td>
                           <td className="p-4 text-center">{info.shipping}</td>
                         </tr>
@@ -407,9 +438,7 @@ export default function PricingPage() {
       <section className="py-16 md:py-20">
         <div className="container">
           <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-2xl font-semibold md:text-3xl">
-              Ready to price your banner?
-            </h2>
+            <h2 className="text-2xl font-semibold md:text-3xl">Ready to price your banner?</h2>
             <p className="mt-3 text-muted-foreground">
               See your exact price in the product builder — no surprises.
             </p>

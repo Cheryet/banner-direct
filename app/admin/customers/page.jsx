@@ -2,8 +2,8 @@ import { createClient } from '@/lib/supabase/server';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { LinkButton } from '@/components/ui/link-button';
 import Link from 'next/link';
-import { 
-  Users, 
+import {
+  Users,
   Search,
   Mail,
   Phone,
@@ -14,7 +14,7 @@ import {
   UserPlus,
   TrendingUp,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
 } from 'lucide-react';
 
 export const metadata = {
@@ -40,7 +40,7 @@ function formatCurrency(amount) {
 export default async function AdminCustomersPage({ searchParams }) {
   const supabase = await createClient();
   const params = await searchParams;
-  
+
   const page = parseInt(params?.page || '1');
   const perPage = 20;
   const offset = (page - 1) * perPage;
@@ -62,9 +62,9 @@ export default async function AdminCustomersPage({ searchParams }) {
   const { data: customers, count, error } = await query;
 
   // Fetch order stats for each customer
-  const customerIds = customers?.map(c => c.id) || [];
+  const customerIds = customers?.map((c) => c.id) || [];
   let orderStats = {};
-  
+
   if (customerIds.length > 0) {
     const { data: orders } = await supabase
       .from('orders')
@@ -72,7 +72,7 @@ export default async function AdminCustomersPage({ searchParams }) {
       .in('user_id', customerIds);
 
     if (orders) {
-      orders.forEach(order => {
+      orders.forEach((order) => {
         if (!orderStats[order.user_id]) {
           orderStats[order.user_id] = { count: 0, total: 0 };
         }
@@ -89,9 +89,7 @@ export default async function AdminCustomersPage({ searchParams }) {
     .eq('is_anonymous', false)
     .neq('role', 'admin');
 
-  const { data: allOrders } = await supabase
-    .from('orders')
-    .select('total');
+  const { data: allOrders } = await supabase.from('orders').select('total');
 
   const totalRevenue = allOrders?.reduce((sum, o) => sum + (parseFloat(o.total) || 0), 0) || 0;
   const avgOrderValue = allOrders?.length ? totalRevenue / allOrders.length : 0;
@@ -100,7 +98,7 @@ export default async function AdminCustomersPage({ searchParams }) {
   const startOfMonth = new Date();
   startOfMonth.setDate(1);
   startOfMonth.setHours(0, 0, 0, 0);
-  
+
   const { count: newThisMonth } = await supabase
     .from('profiles')
     .select('id', { count: 'exact', head: true })
@@ -119,7 +117,10 @@ export default async function AdminCustomersPage({ searchParams }) {
 
       {/* Stats Cards - Horizontal scroll on mobile */}
       <div className="mb-6 overflow-x-auto">
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4" style={{ minWidth: '320px' }}>
+        <div
+          className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4"
+          style={{ minWidth: '320px' }}
+        >
           <Card>
             <CardContent className="p-3 sm:p-4">
               <div className="flex items-center justify-between">
@@ -136,7 +137,9 @@ export default async function AdminCustomersPage({ searchParams }) {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs text-muted-foreground sm:text-sm">New</p>
-                  <p className="text-xl font-bold text-emerald-600 sm:text-2xl">{newThisMonth || 0}</p>
+                  <p className="text-xl font-bold text-emerald-600 sm:text-2xl">
+                    {newThisMonth || 0}
+                  </p>
                 </div>
                 <UserPlus className="h-6 w-6 text-emerald-400 sm:h-8 sm:w-8" />
               </div>
@@ -209,7 +212,7 @@ export default async function AdminCustomersPage({ searchParams }) {
               <Users className="h-12 w-12 text-gray-300" />
               <h3 className="mt-4 text-lg font-medium text-gray-900">No customers found</h3>
               <p className="mt-1 text-sm text-gray-500">
-                {search 
+                {search
                   ? 'Try a different search term.'
                   : 'Customers will appear here when they create accounts.'}
               </p>
@@ -248,7 +251,9 @@ export default async function AdminCustomersPage({ searchParams }) {
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-3">
                               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-sm font-medium text-emerald-700">
-                                {(customer.full_name || customer.email || 'U').charAt(0).toUpperCase()}
+                                {(customer.full_name || customer.email || 'U')
+                                  .charAt(0)
+                                  .toUpperCase()}
                               </div>
                               <div>
                                 <p className="font-medium text-gray-900">
@@ -263,7 +268,7 @@ export default async function AdminCustomersPage({ searchParams }) {
                           <td className="px-6 py-4">
                             <div className="space-y-1">
                               {customer.email && (
-                                <a 
+                                <a
                                   href={`mailto:${customer.email}`}
                                   className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-emerald-600"
                                 >
@@ -272,7 +277,7 @@ export default async function AdminCustomersPage({ searchParams }) {
                                 </a>
                               )}
                               {customer.phone && (
-                                <a 
+                                <a
                                   href={`tel:${customer.phone}`}
                                   className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-emerald-600"
                                 >
@@ -320,9 +325,7 @@ export default async function AdminCustomersPage({ searchParams }) {
                     <Link
                       href={`/admin/customers?page=${page - 1}${search ? `&search=${search}` : ''}`}
                       className={`inline-flex items-center gap-1 rounded-lg border px-3 py-1.5 text-sm font-medium ${
-                        page === 1
-                          ? 'pointer-events-none opacity-50'
-                          : 'hover:bg-gray-50'
+                        page === 1 ? 'pointer-events-none opacity-50' : 'hover:bg-gray-50'
                       }`}
                     >
                       <ChevronLeft className="h-4 w-4" />
@@ -331,9 +334,7 @@ export default async function AdminCustomersPage({ searchParams }) {
                     <Link
                       href={`/admin/customers?page=${page + 1}${search ? `&search=${search}` : ''}`}
                       className={`inline-flex items-center gap-1 rounded-lg border px-3 py-1.5 text-sm font-medium ${
-                        page >= totalPages
-                          ? 'pointer-events-none opacity-50'
-                          : 'hover:bg-gray-50'
+                        page >= totalPages ? 'pointer-events-none opacity-50' : 'hover:bg-gray-50'
                       }`}
                     >
                       Next

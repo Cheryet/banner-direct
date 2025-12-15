@@ -12,7 +12,7 @@ export function SavedDesignsSection({ uploads }) {
 
   const handleDelete = async (uploadId) => {
     if (!confirm('Are you sure you want to delete this design?')) return;
-    
+
     setDeletingId(uploadId);
     try {
       const response = await fetch(`/api/account/uploads/${uploadId}`, {
@@ -41,7 +41,9 @@ export function SavedDesignsSection({ uploads }) {
     };
 
     return (
-      <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${styles[status] || styles.pending}`}>
+      <span
+        className={`rounded-full px-2 py-0.5 text-xs font-medium ${styles[status] || styles.pending}`}
+      >
         {status.charAt(0).toUpperCase() + status.slice(1)}
       </span>
     );
@@ -113,11 +115,9 @@ export function SavedDesignsSection({ uploads }) {
                       <FileImage className="h-12 w-12 text-gray-300" />
                     </div>
                   )}
-                  
+
                   {/* Status Badge */}
-                  <div className="absolute left-2 top-2">
-                    {getStatusBadge(upload.status)}
-                  </div>
+                  <div className="absolute left-2 top-2">{getStatusBadge(upload.status)}</div>
 
                   {/* Hover Actions */}
                   <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">

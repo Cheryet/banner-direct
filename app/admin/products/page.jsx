@@ -2,8 +2,8 @@ import { createClient } from '@/lib/supabase/server';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { LinkButton } from '@/components/ui/link-button';
 import Link from 'next/link';
-import { 
-  Package, 
+import {
+  Package,
   Plus,
   Edit,
   Trash2,
@@ -14,7 +14,7 @@ import {
   MoreHorizontal,
   DollarSign,
   TrendingUp,
-  Archive
+  Archive,
 } from 'lucide-react';
 
 export const metadata = {
@@ -32,15 +32,12 @@ function formatCurrency(amount) {
 export default async function AdminProductsPage({ searchParams }) {
   const supabase = await createClient();
   const params = await searchParams;
-  
+
   const categoryFilter = params?.category || 'all';
   const statusFilter = params?.status || 'all';
 
   // Fetch products
-  let query = supabase
-    .from('products')
-    .select('*')
-    .order('created_at', { ascending: false });
+  let query = supabase.from('products').select('*').order('created_at', { ascending: false });
 
   if (categoryFilter !== 'all') {
     query = query.eq('category', categoryFilter);
@@ -60,15 +57,15 @@ export default async function AdminProductsPage({ searchParams }) {
     .select('category')
     .not('category', 'is', null);
 
-  const uniqueCategories = [...new Set(categories?.map(c => c.category).filter(Boolean) || [])];
+  const uniqueCategories = [...new Set(categories?.map((c) => c.category).filter(Boolean) || [])];
 
   // Calculate stats
   const stats = {
     total: products?.length || 0,
-    active: products?.filter(p => p.is_active).length || 0,
-    inactive: products?.filter(p => !p.is_active).length || 0,
-    avgPrice: products?.length 
-      ? products.reduce((sum, p) => sum + (parseFloat(p.base_price) || 0), 0) / products.length 
+    active: products?.filter((p) => p.is_active).length || 0,
+    inactive: products?.filter((p) => !p.is_active).length || 0,
+    avgPrice: products?.length
+      ? products.reduce((sum, p) => sum + (parseFloat(p.base_price) || 0), 0) / products.length
       : 0,
   };
 
@@ -77,9 +74,7 @@ export default async function AdminProductsPage({ searchParams }) {
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">Products</h1>
-          <p className="text-sm text-muted-foreground">
-            Manage your product catalog and pricing
-          </p>
+          <p className="text-sm text-muted-foreground">Manage your product catalog and pricing</p>
         </div>
         <LinkButton href="/admin/products/new" className="w-full sm:w-auto">
           <Plus className="mr-2 h-4 w-4" />
@@ -186,7 +181,9 @@ export default async function AdminProductsPage({ searchParams }) {
           >
             <option value="all">All Categories</option>
             {uniqueCategories.map((cat) => (
-              <option key={cat} value={cat}>{cat}</option>
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
             ))}
           </select>
         )}
@@ -198,9 +195,7 @@ export default async function AdminProductsPage({ searchParams }) {
           <CardContent className="flex flex-col items-center justify-center py-16 text-center">
             <Package className="h-12 w-12 text-gray-300" />
             <h3 className="mt-4 text-lg font-medium text-gray-900">No products found</h3>
-            <p className="mt-1 text-sm text-gray-500">
-              Get started by adding your first product.
-            </p>
+            <p className="mt-1 text-sm text-gray-500">Get started by adding your first product.</p>
             <LinkButton href="/admin/products/new" className="mt-4">
               <Plus className="mr-2 h-4 w-4" />
               Add Product
@@ -213,8 +208,8 @@ export default async function AdminProductsPage({ searchParams }) {
             <Card key={product.id} className="overflow-hidden">
               <div className="aspect-video bg-gray-100 relative">
                 {product.image_url ? (
-                  <img 
-                    src={product.image_url} 
+                  <img
+                    src={product.image_url}
                     alt={product.name}
                     className="h-full w-full object-cover"
                   />
@@ -237,14 +232,10 @@ export default async function AdminProductsPage({ searchParams }) {
                     <h3 className="font-semibold text-gray-900">{product.name}</h3>
                     <p className="text-sm text-gray-500">{product.category || 'Uncategorized'}</p>
                   </div>
-                  <p className="font-bold text-emerald-600">
-                    {formatCurrency(product.base_price)}
-                  </p>
+                  <p className="font-bold text-emerald-600">{formatCurrency(product.base_price)}</p>
                 </div>
                 {product.description && (
-                  <p className="mt-2 line-clamp-2 text-sm text-gray-600">
-                    {product.description}
-                  </p>
+                  <p className="mt-2 line-clamp-2 text-sm text-gray-600">{product.description}</p>
                 )}
                 <div className="mt-4 flex gap-2">
                   <Link

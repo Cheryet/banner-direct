@@ -6,7 +6,8 @@ import { MapPin, Leaf, Award, Users } from 'lucide-react';
 
 export const metadata = {
   title: 'About Us',
-  description: 'Learn about Banner Direct - Canadian-made custom banners with quality materials and fast turnaround.',
+  description:
+    'Learn about Banner Direct - Canadian-made custom banners with quality materials and fast turnaround.',
 };
 
 const values = [
@@ -31,8 +32,7 @@ const values = [
   {
     icon: Users,
     title: 'Customer Focused',
-    description:
-      'Real humans answer your calls and emails. We\'re here to help you succeed.',
+    description: "Real humans answer your calls and emails. We're here to help you succeed.",
   },
 ];
 
@@ -46,8 +46,8 @@ export default function AboutPage() {
         </Badge>
         <h1 className="mb-4">About Banner Direct</h1>
         <p className="text-lg text-muted-foreground">
-          We're a Canadian print company on a mission to make custom banners accessible, 
-          affordable, and hassle-free for businesses of all sizes.
+          We're a Canadian print company on a mission to make custom banners accessible, affordable,
+          and hassle-free for businesses of all sizes.
         </p>
       </div>
 
@@ -62,17 +62,16 @@ export default function AboutPage() {
           <h2 className="mb-4">Our Story</h2>
           <div className="space-y-4 text-muted-foreground">
             <p>
-              Banner Direct started in 2018 when our founders got tired of the complicated, 
+              Banner Direct started in 2018 when our founders got tired of the complicated,
               overpriced banner ordering process. They knew there had to be a better way.
             </p>
             <p>
-              Today, we've helped thousands of Canadian businesses—from local shops to 
-              national brands—create stunning banners for trade shows, events, storefronts, 
-              and more.
+              Today, we've helped thousands of Canadian businesses—from local shops to national
+              brands—create stunning banners for trade shows, events, storefronts, and more.
             </p>
             <p>
-              Our state-of-the-art facility in Ontario uses the latest printing technology 
-              to deliver vibrant, durable banners with fast turnaround times.
+              Our state-of-the-art facility in Ontario uses the latest printing technology to
+              deliver vibrant, durable banners with fast turnaround times.
             </p>
           </div>
         </div>
@@ -123,14 +122,16 @@ export default function AboutPage() {
         <div>
           <h2 className="mb-4">Visit Us</h2>
           <p className="text-muted-foreground">
-            Our production facility is located in the Greater Toronto Area. 
-            Local pickup is available for all orders.
+            Our production facility is located in the Greater Toronto Area. Local pickup is
+            available for all orders.
           </p>
           <div className="mt-6 space-y-2">
             <p className="font-medium">Banner Direct</p>
             <p className="text-muted-foreground">
-              123 Print Street<br />
-              Toronto, ON M5V 1A1<br />
+              123 Print Street
+              <br />
+              Toronto, ON M5V 1A1
+              <br />
               Canada
             </p>
           </div>

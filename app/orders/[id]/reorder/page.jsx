@@ -8,16 +8,16 @@ import { createClient } from '@/lib/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { LinkButton } from '@/components/ui/link-button';
-import { 
-  Package, 
-  ArrowLeft, 
-  ShoppingCart, 
+import {
+  Package,
+  ArrowLeft,
+  ShoppingCart,
   Loader2,
   CheckCircle,
   AlertCircle,
   Minus,
   Plus,
-  Trash2
+  Trash2,
 } from 'lucide-react';
 
 function formatCurrency(amount) {
@@ -41,7 +41,7 @@ export default function ReorderPage({ params }) {
   React.useEffect(() => {
     async function fetchOrder() {
       if (authLoading) return;
-      
+
       if (!user) {
         router.push('/login?redirectTo=/orders');
         return;
@@ -49,10 +49,11 @@ export default function ReorderPage({ params }) {
 
       const supabase = createClient();
       const { id } = await params;
-      
+
       const { data, error } = await supabase
         .from('orders')
-        .select(`
+        .select(
+          `
           *,
           order_items (
             id,
@@ -61,7 +62,8 @@ export default function ReorderPage({ params }) {
             product_name,
             product_options
           )
-        `)
+        `
+        )
         .eq('id', id)
         .eq('user_id', user.id)
         .single();
@@ -73,11 +75,13 @@ export default function ReorderPage({ params }) {
       }
 
       setOrder(data);
-      setItems(data.order_items?.map(item => ({
-        ...item,
-        selected: true,
-        newQuantity: item.quantity
-      })) || []);
+      setItems(
+        data.order_items?.map((item) => ({
+          ...item,
+          selected: true,
+          newQuantity: item.quantity,
+        })) || []
+      );
       setIsLoading(false);
     }
 
@@ -85,23 +89,25 @@ export default function ReorderPage({ params }) {
   }, [user, authLoading, params, router]);
 
   const toggleItem = (itemId) => {
-    setItems(items.map(item => 
-      item.id === itemId ? { ...item, selected: !item.selected } : item
-    ));
+    setItems(
+      items.map((item) => (item.id === itemId ? { ...item, selected: !item.selected } : item))
+    );
   };
 
   const updateQuantity = (itemId, delta) => {
-    setItems(items.map(item => {
-      if (item.id === itemId) {
-        const newQty = Math.max(1, item.newQuantity + delta);
-        return { ...item, newQuantity: newQty };
-      }
-      return item;
-    }));
+    setItems(
+      items.map((item) => {
+        if (item.id === itemId) {
+          const newQty = Math.max(1, item.newQuantity + delta);
+          return { ...item, newQuantity: newQty };
+        }
+        return item;
+      })
+    );
   };
 
-  const selectedItems = items.filter(item => item.selected);
-  const subtotal = selectedItems.reduce((sum, item) => sum + (item.unit_price * item.newQuantity), 0);
+  const selectedItems = items.filter((item) => item.selected);
+  const subtotal = selectedItems.reduce((sum, item) => sum + item.unit_price * item.newQuantity, 0);
 
   const handleAddToCart = async () => {
     if (selectedItems.length === 0) {
@@ -114,20 +120,21 @@ export default function ReorderPage({ params }) {
 
     try {
       const supabase = createClient();
-      
+
       // Add items to cart
       for (const item of selectedItems) {
-        const { error: cartError } = await supabase
-          .from('cart_items')
-          .upsert({
+        const { error: cartError } = await supabase.from('cart_items').upsert(
+          {
             user_id: user.id,
             product_name: item.product_name,
             product_options: item.product_options,
             quantity: item.newQuantity,
             unit_price: item.unit_price,
-          }, {
-            onConflict: 'user_id,product_name'
-          });
+          },
+          {
+            onConflict: 'user_id,product_name',
+          }
+        );
 
         if (cartError) {
           console.error('Cart error:', cartError);
@@ -135,7 +142,7 @@ export default function ReorderPage({ params }) {
       }
 
       setSuccess(true);
-      
+
       // Redirect to cart after a short delay
       setTimeout(() => {
         router.push('/cart');
@@ -183,9 +190,7 @@ export default function ReorderPage({ params }) {
               <CheckCircle className="h-8 w-8 text-emerald-600" />
             </div>
             <h2 className="mt-4 text-xl font-semibold text-gray-900">Added to Cart!</h2>
-            <p className="mt-2 text-gray-600">
-              Your items have been added to your cart.
-            </p>
+            <p className="mt-2 text-gray-600">Your items have been added to your cart.</p>
             <p className="mt-1 text-sm text-gray-500">Redirecting to cart...</p>
           </CardContent>
         </Card>
@@ -197,7 +202,7 @@ export default function ReorderPage({ params }) {
     <div className="container py-8 md:py-12">
       {/* Breadcrumb */}
       <nav className="mb-6">
-        <Link 
+        <Link
           href={`/orders/${order.id}`}
           className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-emerald-600 transition-colors"
         >
@@ -236,11 +241,11 @@ export default function ReorderPage({ params }) {
             <CardContent>
               <div className="space-y-4">
                 {items.map((item) => (
-                  <div 
+                  <div
                     key={item.id}
                     className={`rounded-lg border-2 p-4 transition-colors ${
-                      item.selected 
-                        ? 'border-emerald-500 bg-emerald-50/50' 
+                      item.selected
+                        ? 'border-emerald-500 bg-emerald-50/50'
                         : 'border-gray-200 bg-gray-50'
                     }`}
                   >
@@ -249,8 +254,8 @@ export default function ReorderPage({ params }) {
                       <button
                         onClick={() => toggleItem(item.id)}
                         className={`mt-1 flex h-5 w-5 items-center justify-center rounded border-2 transition-colors ${
-                          item.selected 
-                            ? 'border-emerald-500 bg-emerald-500 text-white' 
+                          item.selected
+                            ? 'border-emerald-500 bg-emerald-500 text-white'
                             : 'border-gray-300 bg-white'
                         }`}
                       >
@@ -268,9 +273,10 @@ export default function ReorderPage({ params }) {
                         {item.product_options && (
                           <p className="mt-1 text-sm text-gray-500">
                             {typeof item.product_options === 'object'
-                              ? Object.entries(item.product_options).map(([k, v]) => `${k}: ${v}`).join(', ')
-                              : item.product_options
-                            }
+                              ? Object.entries(item.product_options)
+                                  .map(([k, v]) => `${k}: ${v}`)
+                                  .join(', ')
+                              : item.product_options}
                           </p>
                         )}
                         <p className="mt-1 text-sm text-gray-600">
@@ -301,12 +307,12 @@ export default function ReorderPage({ params }) {
                       {/* Item Total */}
                       <div className="text-right">
                         <p className="font-semibold text-gray-900">
-                          {formatCurrency(item.unit_price * (item.selected ? item.newQuantity : item.quantity))}
+                          {formatCurrency(
+                            item.unit_price * (item.selected ? item.newQuantity : item.quantity)
+                          )}
                         </p>
                         {item.newQuantity !== item.quantity && item.selected && (
-                          <p className="text-xs text-gray-500">
-                            was {item.quantity}
-                          </p>
+                          <p className="text-xs text-gray-500">was {item.quantity}</p>
                         )}
                       </div>
                     </div>
@@ -325,9 +331,7 @@ export default function ReorderPage({ params }) {
             </CardHeader>
             <CardContent className="space-y-4">
               {selectedItems.length === 0 ? (
-                <p className="text-center text-sm text-gray-500">
-                  Select items to see the total
-                </p>
+                <p className="text-center text-sm text-gray-500">Select items to see the total</p>
               ) : (
                 <>
                   {selectedItems.map((item) => (
@@ -340,7 +344,7 @@ export default function ReorderPage({ params }) {
                       </span>
                     </div>
                   ))}
-                  
+
                   <div className="border-t pt-4">
                     <div className="flex justify-between font-semibold">
                       <span>Subtotal</span>
@@ -353,7 +357,7 @@ export default function ReorderPage({ params }) {
                 </>
               )}
 
-              <Button 
+              <Button
                 onClick={handleAddToCart}
                 disabled={selectedItems.length === 0 || isSubmitting}
                 className="w-full"
@@ -372,11 +376,7 @@ export default function ReorderPage({ params }) {
                 )}
               </Button>
 
-              <LinkButton 
-                href="/products" 
-                variant="outline" 
-                className="w-full"
-              >
+              <LinkButton href="/products" variant="outline" className="w-full">
                 Continue Shopping
               </LinkButton>
             </CardContent>

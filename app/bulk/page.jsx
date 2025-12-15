@@ -84,11 +84,11 @@ const sizeOptions = [
 ];
 
 const quantityRanges = [
-  { id: '10-24', label: '10–24', min: 10, max: 24, discount: 0.10 },
+  { id: '10-24', label: '10–24', min: 10, max: 24, discount: 0.1 },
   { id: '25-49', label: '25–49', min: 25, max: 49, discount: 0.15 },
-  { id: '50-99', label: '50–99', min: 50, max: 99, discount: 0.20 },
+  { id: '50-99', label: '50–99', min: 50, max: 99, discount: 0.2 },
   { id: '100-249', label: '100–249', min: 100, max: 249, discount: 0.25 },
-  { id: '250+', label: '250+', min: 250, max: 500, discount: 0.30 },
+  { id: '250+', label: '250+', min: 250, max: 500, discount: 0.3 },
 ];
 
 // =============================================================================
@@ -97,23 +97,28 @@ const quantityRanges = [
 const faqs = [
   {
     question: 'What are the minimum quantities for bulk pricing?',
-    answer: 'Bulk pricing starts at 10 units. For orders under 10, you can still order through our standard product pages with automatic volume discounts.',
+    answer:
+      'Bulk pricing starts at 10 units. For orders under 10, you can still order through our standard product pages with automatic volume discounts.',
   },
   {
     question: 'Can I reorder the same banners later?',
-    answer: 'Yes. We save your artwork and specifications for easy reordering. Just reference your previous order number or contact your dedicated rep.',
+    answer:
+      'Yes. We save your artwork and specifications for easy reordering. Just reference your previous order number or contact your dedicated rep.',
   },
   {
     question: 'Can banners ship to multiple locations?',
-    answer: 'Absolutely. We can split shipments to multiple addresses across Canada. Just include the details in your quote request.',
+    answer:
+      'Absolutely. We can split shipments to multiple addresses across Canada. Just include the details in your quote request.',
   },
   {
     question: 'How do you ensure color consistency across large orders?',
-    answer: 'All banners in a bulk order are printed in the same production run on calibrated commercial equipment. We use standardized color profiles and perform quality checks throughout.',
+    answer:
+      'All banners in a bulk order are printed in the same production run on calibrated commercial equipment. We use standardized color profiles and perform quality checks throughout.',
   },
   {
     question: 'Do you offer net payment terms?',
-    answer: 'Net 30 terms are available for qualified businesses after credit approval. Contact our enterprise team to discuss payment options.',
+    answer:
+      'Net 30 terms are available for qualified businesses after credit approval. Contact our enterprise team to discuss payment options.',
   },
 ];
 
@@ -211,13 +216,13 @@ export default function BulkPage() {
     }
 
     setIsSubmitting(true);
-    
+
     // TODO: Replace with actual API call to Supabase
     console.log('Bulk quote form submitted:', formData);
-    
+
     // Simulate API delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    
+
     setIsSubmitting(false);
     setIsSubmitted(true);
   };
@@ -247,7 +252,7 @@ export default function BulkPage() {
               <Button size="lg" onClick={scrollToForm}>
                 Request Bulk Quote
               </Button>
-              <a 
+              <a
                 href="tel:+18005551234"
                 className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-6 text-base font-medium text-gray-700 transition-colors hover:bg-gray-50 hover:border-gray-400"
               >
@@ -290,11 +295,9 @@ export default function BulkPage() {
           <div className="grid items-center gap-12 lg:grid-cols-2">
             {/* Content */}
             <div>
-              <h2 className="mb-6 text-2xl font-semibold md:text-3xl">
-                Why Order in Bulk With Us
-              </h2>
+              <h2 className="mb-6 text-2xl font-semibold md:text-3xl">Why Order in Bulk With Us</h2>
               <p className="mb-8 text-muted-foreground">
-                We're built for this. Our production facility handles orders from 10 to 10,000+ 
+                We're built for this. Our production facility handles orders from 10 to 10,000+
                 banners with the same attention to quality and timing.
               </p>
               <ul className="space-y-4">
@@ -314,7 +317,10 @@ export default function BulkPage() {
               <div className="aspect-[4/3] overflow-hidden rounded-xl bg-muted">
                 <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-muted to-muted/50">
                   <div className="text-center p-8">
-                    <Printer className="mx-auto mb-4 h-16 w-16 text-muted-foreground/40" aria-hidden="true" />
+                    <Printer
+                      className="mx-auto mb-4 h-16 w-16 text-muted-foreground/40"
+                      aria-hidden="true"
+                    />
                     <p className="text-muted-foreground">Production facility</p>
                   </div>
                 </div>
@@ -335,9 +341,7 @@ export default function BulkPage() {
                 <Calculator className="h-4 w-4" aria-hidden="true" />
                 Pricing Estimator
               </div>
-              <h2 className="text-2xl font-semibold md:text-3xl">
-                Get a Quick Estimate
-              </h2>
+              <h2 className="text-2xl font-semibold md:text-3xl">Get a Quick Estimate</h2>
               <p className="mt-2 text-muted-foreground">
                 Adjust the options below to see approximate pricing.
               </p>
@@ -451,9 +455,7 @@ export default function BulkPage() {
         <div className="container">
           <div className="mx-auto max-w-2xl">
             <div className="mb-8 text-center">
-              <h2 className="text-2xl font-semibold md:text-3xl">
-                Request a Bulk Quote
-              </h2>
+              <h2 className="text-2xl font-semibold md:text-3xl">Request a Bulk Quote</h2>
               <p className="mt-2 text-muted-foreground">
                 Tell us about your project and we'll get back to you with pricing.
               </p>
@@ -511,7 +513,9 @@ export default function BulkPage() {
                           onChange={handleInputChange}
                           placeholder="Acme Corp"
                           aria-invalid={!!formErrors.companyName}
-                          aria-describedby={formErrors.companyName ? 'companyName-error' : undefined}
+                          aria-describedby={
+                            formErrors.companyName ? 'companyName-error' : undefined
+                          }
                         />
                         {formErrors.companyName && (
                           <p id="companyName-error" className="mt-1 text-sm text-destructive">
@@ -530,7 +534,9 @@ export default function BulkPage() {
                           onChange={handleInputChange}
                           placeholder="Jane Smith"
                           aria-invalid={!!formErrors.contactName}
-                          aria-describedby={formErrors.contactName ? 'contactName-error' : undefined}
+                          aria-describedby={
+                            formErrors.contactName ? 'contactName-error' : undefined
+                          }
                         />
                         {formErrors.contactName && (
                           <p id="contactName-error" className="mt-1 text-sm text-destructive">
@@ -698,19 +704,18 @@ export default function BulkPage() {
 
                     {/* File upload note */}
                     <p className="text-sm text-muted-foreground">
-                      Have artwork or specs ready? You can attach files after we respond, or email them directly to{' '}
-                      <a href="mailto:bulk@bannerdirect.ca" className="text-primary hover:underline">
+                      Have artwork or specs ready? You can attach files after we respond, or email
+                      them directly to{' '}
+                      <a
+                        href="mailto:bulk@bannerdirect.ca"
+                        className="text-primary hover:underline"
+                      >
                         bulk@bannerdirect.ca
                       </a>
                     </p>
 
                     {/* Submit */}
-                    <Button
-                      type="submit"
-                      size="lg"
-                      className="w-full"
-                      disabled={isSubmitting}
-                    >
+                    <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
                       {isSubmitting ? 'Submitting...' : 'Request Bulk Quote'}
                     </Button>
                   </form>
@@ -787,9 +792,7 @@ export default function BulkPage() {
       <section className="bg-muted/30 py-12 md:py-16">
         <div className="container">
           <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-2xl font-semibold md:text-3xl">
-              Ready to get started?
-            </h2>
+            <h2 className="text-2xl font-semibold md:text-3xl">Ready to get started?</h2>
             <p className="mt-3 text-muted-foreground">
               From dozens to thousands — we've got the capacity.
             </p>

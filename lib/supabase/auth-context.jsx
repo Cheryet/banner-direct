@@ -17,33 +17,32 @@ export function AuthProvider({ children }) {
   const [isLoading, setIsLoading] = React.useState(true);
 
   // Fetch user profile from database with timeout
-  const fetchProfile = React.useCallback(async (userId) => {
-    if (!userId || !supabase) return null;
-    
-    try {
-      // Race between profile fetch and timeout
-      const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Profile fetch timeout')), 3000)
-      );
-      
-      const fetchPromise = supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
+  const fetchProfile = React.useCallback(
+    async (userId) => {
+      if (!userId || !supabase) return null;
 
-      const { data, error } = await Promise.race([fetchPromise, timeoutPromise]);
-      
-      if (error) {
-        console.error('[Auth] Profile error:', error.message);
+      try {
+        // Race between profile fetch and timeout
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Profile fetch timeout')), 3000)
+        );
+
+        const fetchPromise = supabase.from('profiles').select('*').eq('id', userId).single();
+
+        const { data, error } = await Promise.race([fetchPromise, timeoutPromise]);
+
+        if (error) {
+          console.error('[Auth] Profile error:', error.message);
+          return null;
+        }
+        return data;
+      } catch (err) {
+        console.error('[Auth] Profile fetch failed:', err.message);
         return null;
       }
-      return data;
-    } catch (err) {
-      console.error('[Auth] Profile fetch failed:', err.message);
-      return null;
-    }
-  }, [supabase]);
+    },
+    [supabase]
+  );
 
   // Initialize auth and listen for changes
   React.useEffect(() => {
@@ -55,28 +54,28 @@ export function AuthProvider({ children }) {
     let isMounted = true;
 
     // Listen for auth changes - this handles BOTH initial session AND subsequent changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, currentSession) => {
-        if (!isMounted) return;
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (event, currentSession) => {
+      if (!isMounted) return;
 
-        if (currentSession?.user) {
-          setSession(currentSession);
-          setUser(currentSession.user);
-          
-          // Fetch profile
-          const userProfile = await fetchProfile(currentSession.user.id);
-          if (isMounted) {
-            setProfile(userProfile);
-            setIsLoading(false);
-          }
-        } else {
-          setSession(null);
-          setUser(null);
-          setProfile(null);
+      if (currentSession?.user) {
+        setSession(currentSession);
+        setUser(currentSession.user);
+
+        // Fetch profile
+        const userProfile = await fetchProfile(currentSession.user.id);
+        if (isMounted) {
+          setProfile(userProfile);
           setIsLoading(false);
         }
+      } else {
+        setSession(null);
+        setUser(null);
+        setProfile(null);
+        setIsLoading(false);
       }
-    );
+    });
 
     // Fallback timeout - if onAuthStateChange doesn't fire within 5s, stop loading
     const timeoutId = setTimeout(() => {
@@ -130,7 +129,7 @@ export function AuthProvider({ children }) {
   const signUp = async (email, password, metadata = {}) => {
     // Check if current user is anonymous
     const currentUser = user;
-    
+
     if (currentUser?.is_anonymous) {
       // Upgrade anonymous user instead of creating new account
       const { data, error } = await supabase.auth.updateUser({
@@ -208,12 +207,12 @@ export function AuthProvider({ children }) {
     profile,
     isLoading,
     isInitialized: !isLoading, // Simplified - initialized when not loading
-    
+
     // Computed
     isAuthenticated: !!user,
     isAnonymous: user ? user.is_anonymous : true,
     isAdmin: profile?.role === 'admin',
-    
+
     // Actions
     signInWithEmail,
     signInWithMagicLink,
@@ -225,11 +224,7 @@ export function AuthProvider({ children }) {
     refreshProfile: () => fetchProfile(user?.id),
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 /**
@@ -238,7 +233,7 @@ export function AuthProvider({ children }) {
  */
 export function useAuth() {
   const context = React.useContext(AuthContext);
-  
+
   // Return default state if context is not available (SSR or outside provider)
   if (context === undefined) {
     return {
@@ -260,7 +255,7 @@ export function useAuth() {
       refreshProfile: () => {},
     };
   }
-  
+
   return context;
 }
 

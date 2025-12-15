@@ -8,26 +8,92 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
-  Clock, CheckCircle, Truck, Package, RefreshCw, Printer, ClipboardCheck,
-  Search, Loader2, ArrowLeft, ChevronLeft, ChevronRight, ExternalLink, AlertCircle
+  Clock,
+  CheckCircle,
+  Truck,
+  Package,
+  RefreshCw,
+  Printer,
+  ClipboardCheck,
+  Search,
+  Loader2,
+  ArrowLeft,
+  ChevronLeft,
+  ChevronRight,
+  ExternalLink,
+  AlertCircle,
 } from 'lucide-react';
 
 const PIPELINE_STAGES = [
   { id: 'pending', label: 'Pending', icon: Clock, color: 'yellow', description: 'Awaiting review' },
-  { id: 'confirmed', label: 'Confirmed', icon: CheckCircle, color: 'blue', description: 'Ready to process' },
-  { id: 'processing', label: 'Processing', icon: RefreshCw, color: 'blue', description: 'Preparing artwork' },
-  { id: 'printing', label: 'Printing', icon: Printer, color: 'purple', description: 'In production' },
-  { id: 'quality_check', label: 'QC', icon: ClipboardCheck, color: 'indigo', description: 'Final check' },
+  {
+    id: 'confirmed',
+    label: 'Confirmed',
+    icon: CheckCircle,
+    color: 'blue',
+    description: 'Ready to process',
+  },
+  {
+    id: 'processing',
+    label: 'Processing',
+    icon: RefreshCw,
+    color: 'blue',
+    description: 'Preparing artwork',
+  },
+  {
+    id: 'printing',
+    label: 'Printing',
+    icon: Printer,
+    color: 'purple',
+    description: 'In production',
+  },
+  {
+    id: 'quality_check',
+    label: 'QC',
+    icon: ClipboardCheck,
+    color: 'indigo',
+    description: 'Final check',
+  },
   { id: 'shipped', label: 'Shipped', icon: Truck, color: 'emerald', description: 'On the way' },
   { id: 'delivered', label: 'Delivered', icon: Package, color: 'emerald', description: 'Complete' },
 ];
 
 const COLORS = {
-  yellow: { bg: 'bg-yellow-50', header: 'bg-yellow-100', text: 'text-yellow-700', border: 'border-yellow-200', badge: 'bg-yellow-500' },
-  blue: { bg: 'bg-blue-50', header: 'bg-blue-100', text: 'text-blue-700', border: 'border-blue-200', badge: 'bg-blue-500' },
-  purple: { bg: 'bg-purple-50', header: 'bg-purple-100', text: 'text-purple-700', border: 'border-purple-200', badge: 'bg-purple-500' },
-  indigo: { bg: 'bg-indigo-50', header: 'bg-indigo-100', text: 'text-indigo-700', border: 'border-indigo-200', badge: 'bg-indigo-500' },
-  emerald: { bg: 'bg-emerald-50', header: 'bg-emerald-100', text: 'text-emerald-700', border: 'border-emerald-200', badge: 'bg-emerald-500' },
+  yellow: {
+    bg: 'bg-yellow-50',
+    header: 'bg-yellow-100',
+    text: 'text-yellow-700',
+    border: 'border-yellow-200',
+    badge: 'bg-yellow-500',
+  },
+  blue: {
+    bg: 'bg-blue-50',
+    header: 'bg-blue-100',
+    text: 'text-blue-700',
+    border: 'border-blue-200',
+    badge: 'bg-blue-500',
+  },
+  purple: {
+    bg: 'bg-purple-50',
+    header: 'bg-purple-100',
+    text: 'text-purple-700',
+    border: 'border-purple-200',
+    badge: 'bg-purple-500',
+  },
+  indigo: {
+    bg: 'bg-indigo-50',
+    header: 'bg-indigo-100',
+    text: 'text-indigo-700',
+    border: 'border-indigo-200',
+    badge: 'bg-indigo-500',
+  },
+  emerald: {
+    bg: 'bg-emerald-50',
+    header: 'bg-emerald-100',
+    text: 'text-emerald-700',
+    border: 'border-emerald-200',
+    badge: 'bg-emerald-500',
+  },
 };
 
 function formatTimeAgo(dateString) {
@@ -37,7 +103,7 @@ function formatTimeAgo(dateString) {
   const diffMins = Math.floor(diffMs / 60000);
   const diffHours = Math.floor(diffMs / 3600000);
   const diffDays = Math.floor(diffMs / 86400000);
-  
+
   if (diffMins < 60) return `${diffMins}m`;
   if (diffHours < 24) return `${diffHours}h`;
   if (diffDays < 7) return `${diffDays}d`;
@@ -50,7 +116,7 @@ function formatCurrency(amount) {
 
 function OrderCard({ order, onDragStart }) {
   const itemCount = order.order_items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
-  
+
   return (
     <div
       draggable
@@ -62,21 +128,29 @@ function OrderCard({ order, onDragStart }) {
     >
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0 flex-1">
-          <Link href={`/admin/orders/${order.id}`} className="font-semibold text-gray-900 hover:text-emerald-600 text-sm">
+          <Link
+            href={`/admin/orders/${order.id}`}
+            className="font-semibold text-gray-900 hover:text-emerald-600 text-sm"
+          >
             {order.order_number || `#${order.id.slice(0, 8)}`}
           </Link>
           <p className="truncate text-xs text-gray-500">{order.profiles?.full_name || 'Guest'}</p>
         </div>
         <span className="text-xs text-gray-400">{formatTimeAgo(order.created_at)}</span>
       </div>
-      
+
       <div className="mt-2 flex items-center justify-between">
-        <span className="text-xs text-gray-500">{itemCount} item{itemCount !== 1 ? 's' : ''}</span>
+        <span className="text-xs text-gray-500">
+          {itemCount} item{itemCount !== 1 ? 's' : ''}
+        </span>
         <span className="font-semibold text-sm text-gray-900">{formatCurrency(order.total)}</span>
       </div>
-      
+
       <div className="mt-2 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
-        <Link href={`/admin/orders/${order.id}`} className="flex-1 rounded bg-gray-100 px-2 py-1 text-center text-xs font-medium text-gray-700 hover:bg-gray-200">
+        <Link
+          href={`/admin/orders/${order.id}`}
+          className="flex-1 rounded bg-gray-100 px-2 py-1 text-center text-xs font-medium text-gray-700 hover:bg-gray-200"
+        >
           View
         </Link>
       </div>
@@ -88,7 +162,7 @@ function KanbanColumn({ stage, orders, onDrop, isUpdating }) {
   const [isDragOver, setIsDragOver] = React.useState(false);
   const colors = COLORS[stage.color];
   const Icon = stage.icon;
-  const columnOrders = orders.filter(o => o.status === stage.id);
+  const columnOrders = orders.filter((o) => o.status === stage.id);
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -113,26 +187,30 @@ function KanbanColumn({ stage, orders, onDrop, isUpdating }) {
       onDrop={handleDrop}
     >
       {/* Column Header */}
-      <div className={`flex flex-shrink-0 items-center justify-between rounded-t-lg px-3 py-2 ${colors.header}`}>
+      <div
+        className={`flex flex-shrink-0 items-center justify-between rounded-t-lg px-3 py-2 ${colors.header}`}
+      >
         <div className="flex items-center gap-2">
           <Icon className={`h-4 w-4 ${colors.text}`} />
           <span className={`text-sm font-semibold ${colors.text}`}>{stage.label}</span>
         </div>
-        <span className={`flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold text-white ${colors.badge}`}>
+        <span
+          className={`flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold text-white ${colors.badge}`}
+        >
           {columnOrders.length}
         </span>
       </div>
-      
+
       {/* Column Body - Scrollable vertically */}
       <div className="flex-1 space-y-2 overflow-y-auto p-2">
         {columnOrders.length === 0 ? (
-          <div className={`flex h-16 items-center justify-center rounded-lg border-2 border-dashed ${isDragOver ? colors.border : 'border-gray-200'}`}>
+          <div
+            className={`flex h-16 items-center justify-center rounded-lg border-2 border-dashed ${isDragOver ? colors.border : 'border-gray-200'}`}
+          >
             <p className="text-xs text-gray-400">Drop here</p>
           </div>
         ) : (
-          columnOrders.map(order => (
-            <OrderCard key={order.id} order={order} />
-          ))
+          columnOrders.map((order) => <OrderCard key={order.id} order={order} />)
         )}
       </div>
     </div>
@@ -154,13 +232,15 @@ export default function FulfillmentBoardPage() {
       const supabase = createClient();
       const { data, error } = await supabase
         .from('orders')
-        .select(`
+        .select(
+          `
           *,
           profiles:user_id (full_name, email),
           order_items (id, quantity, product_name)
-        `)
+        `
+        )
         .order('created_at', { ascending: false });
-      
+
       if (error) {
         setError('Failed to load orders');
       } else {
@@ -175,38 +255,39 @@ export default function FulfillmentBoardPage() {
   const filteredOrders = React.useMemo(() => {
     if (!search) return orders;
     const term = search.toLowerCase();
-    return orders.filter(o => 
-      o.order_number?.toLowerCase().includes(term) ||
-      o.profiles?.full_name?.toLowerCase().includes(term) ||
-      o.profiles?.email?.toLowerCase().includes(term)
+    return orders.filter(
+      (o) =>
+        o.order_number?.toLowerCase().includes(term) ||
+        o.profiles?.full_name?.toLowerCase().includes(term) ||
+        o.profiles?.email?.toLowerCase().includes(term)
     );
   }, [orders, search]);
 
   // Handle drag and drop
   const handleDrop = async (orderId, newStatus) => {
-    const order = orders.find(o => o.id === orderId);
+    const order = orders.find((o) => o.id === orderId);
     if (!order || order.status === newStatus) return;
-    
+
     setIsUpdating(true);
-    
+
     // Optimistic update
-    setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: newStatus } : o));
-    
+    setOrders((prev) => prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o)));
+
     try {
       const supabase = createClient();
       const { error } = await supabase
         .from('orders')
         .update({ status: newStatus, updated_at: new Date().toISOString() })
         .eq('id', orderId);
-      
+
       if (error) throw error;
     } catch (err) {
       // Revert on error
-      setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: order.status } : o));
+      setOrders((prev) => prev.map((o) => (o.id === orderId ? { ...o, status: order.status } : o)));
       setError('Failed to update order');
       setTimeout(() => setError(null), 3000);
     }
-    
+
     setIsUpdating(false);
   };
 
@@ -216,7 +297,7 @@ export default function FulfillmentBoardPage() {
 
   // Stats
   const stats = PIPELINE_STAGES.reduce((acc, stage) => {
-    acc[stage.id] = filteredOrders.filter(o => o.status === stage.id).length;
+    acc[stage.id] = filteredOrders.filter((o) => o.status === stage.id).length;
     return acc;
   }, {});
 
@@ -251,7 +332,10 @@ export default function FulfillmentBoardPage() {
               className="w-full pl-9 text-sm"
             />
           </div>
-          <Link href="/admin/orders" className="flex-shrink-0 rounded-lg border bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+          <Link
+            href="/admin/orders"
+            className="flex-shrink-0 rounded-lg border bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          >
             List View
           </Link>
         </div>
@@ -268,26 +352,36 @@ export default function FulfillmentBoardPage() {
       {/* Scroll Controls */}
       <div className="mb-2 flex items-center justify-between">
         <div className="flex items-center gap-2 text-xs text-gray-500">
-          {isUpdating && <><Loader2 className="h-3 w-3 animate-spin" /> Updating...</>}
+          {isUpdating && (
+            <>
+              <Loader2 className="h-3 w-3 animate-spin" /> Updating...
+            </>
+          )}
         </div>
         <div className="flex gap-1">
-          <button onClick={scrollLeft} className="rounded-lg border bg-white p-1.5 hover:bg-gray-50">
+          <button
+            onClick={scrollLeft}
+            className="rounded-lg border bg-white p-1.5 hover:bg-gray-50"
+          >
             <ChevronLeft className="h-4 w-4" />
           </button>
-          <button onClick={scrollRight} className="rounded-lg border bg-white p-1.5 hover:bg-gray-50">
+          <button
+            onClick={scrollRight}
+            className="rounded-lg border bg-white p-1.5 hover:bg-gray-50"
+          >
             <ChevronRight className="h-4 w-4" />
           </button>
         </div>
       </div>
 
       {/* Kanban Board - Only this scrolls horizontally */}
-      <div 
+      <div
         ref={scrollRef}
         className="overflow-x-auto rounded-lg border bg-gray-100 p-3"
         style={{ maxWidth: '100%' }}
       >
         <div className="inline-flex gap-3" style={{ minWidth: 'max-content' }}>
-          {PIPELINE_STAGES.map(stage => (
+          {PIPELINE_STAGES.map((stage) => (
             <KanbanColumn
               key={stage.id}
               stage={stage}
@@ -303,18 +397,20 @@ export default function FulfillmentBoardPage() {
       <div className="mt-3 flex items-center justify-between rounded-lg border bg-white p-3">
         <div className="flex gap-4 text-sm">
           <span className="text-gray-500">
-            <strong className="text-yellow-600">{stats.pending + stats.confirmed}</strong> need action
+            <strong className="text-yellow-600">{stats.pending + stats.confirmed}</strong> need
+            action
           </span>
           <span className="text-gray-500">
-            <strong className="text-blue-600">{stats.processing + stats.printing + stats.quality_check}</strong> in production
+            <strong className="text-blue-600">
+              {stats.processing + stats.printing + stats.quality_check}
+            </strong>{' '}
+            in production
           </span>
           <span className="text-gray-500">
             <strong className="text-emerald-600">{stats.shipped}</strong> shipped
           </span>
         </div>
-        <span className="text-sm text-gray-500">
-          {filteredOrders.length} total orders
-        </span>
+        <span className="text-sm text-gray-500">{filteredOrders.length} total orders</span>
       </div>
     </div>
   );

@@ -206,9 +206,7 @@ export default function CheckoutPage() {
                   you if there are any issues.
                 </p>
                 <div className="mt-4 rounded-lg border bg-muted/30 p-8 text-center">
-                  <p className="text-sm text-muted-foreground">
-                    Artwork preview will appear here
-                  </p>
+                  <p className="text-sm text-muted-foreground">Artwork preview will appear here</p>
                 </div>
               </CardContent>
             </Card>
@@ -218,9 +216,7 @@ export default function CheckoutPage() {
             <Card>
               <CardContent className="p-6">
                 <h2 className="mb-6 text-xl font-semibold">Payment</h2>
-                <p className="mb-4 text-muted-foreground">
-                  Secure payment powered by Stripe
-                </p>
+                <p className="mb-4 text-muted-foreground">Secure payment powered by Stripe</p>
                 <div className="rounded-lg border bg-muted/30 p-8 text-center">
                   <p className="text-sm text-muted-foreground">
                     Stripe payment form will be integrated here
@@ -248,9 +244,7 @@ export default function CheckoutPage() {
                   <Separator />
                   <div>
                     <h3 className="font-medium">Items</h3>
-                    <p className="text-sm text-muted-foreground">
-                      2× Vinyl Banner 3×6 ft
-                    </p>
+                    <p className="text-sm text-muted-foreground">2× Vinyl Banner 3×6 ft</p>
                   </div>
                 </div>
               </CardContent>
@@ -259,19 +253,13 @@ export default function CheckoutPage() {
 
           {/* Navigation Buttons */}
           <div className="mt-6 flex justify-between">
-            <Button
-              variant="outline"
-              onClick={handlePrevStep}
-              disabled={currentStep === 0}
-            >
+            <Button variant="outline" onClick={handlePrevStep} disabled={currentStep === 0}>
               Back
             </Button>
             {currentStep < checkoutSteps.length - 1 ? (
               <Button onClick={handleNextStep}>Continue</Button>
             ) : (
-              <Button size="lg">
-                Place Order
-              </Button>
+              <Button size="lg">Place Order</Button>
             )}
           </div>
         </div>
@@ -288,7 +276,9 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Shipping</span>
-                  <span>{orderSummary.shipping === 0 ? 'Free' : `$${orderSummary.shipping.toFixed(2)}`}</span>
+                  <span>
+                    {orderSummary.shipping === 0 ? 'Free' : `$${orderSummary.shipping.toFixed(2)}`}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Tax (HST)</span>

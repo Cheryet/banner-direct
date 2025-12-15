@@ -14,7 +14,7 @@ export function ProfileSection({ profile, user }) {
   const [isLoading, setIsLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
   const [error, setError] = React.useState(null);
-  
+
   const [formData, setFormData] = React.useState({
     full_name: profile?.full_name || '',
     phone: profile?.phone || '',
@@ -40,7 +40,7 @@ export function ProfileSection({ profile, user }) {
       setSuccess(true);
       setIsEditing(false);
       router.refresh();
-      
+
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
       setError(err.message);
@@ -91,11 +91,7 @@ export function ProfileSection({ profile, user }) {
           </div>
         )}
 
-        {error && (
-          <div className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-600">
-            {error}
-          </div>
-        )}
+        {error && <div className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-600">{error}</div>}
 
         {isEditing ? (
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -112,15 +108,8 @@ export function ProfileSection({ profile, user }) {
 
             <div>
               <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                value={user?.email || ''}
-                disabled
-                className="mt-1 bg-gray-50"
-              />
-              <p className="mt-1 text-xs text-gray-500">
-                Contact support to change your email
-              </p>
+              <Input id="email" value={user?.email || ''} disabled className="mt-1 bg-gray-50" />
+              <p className="mt-1 text-xs text-gray-500">Contact support to change your email</p>
             </div>
 
             <div>
@@ -137,18 +126,9 @@ export function ProfileSection({ profile, user }) {
 
             <div className="flex gap-2 pt-2">
               <Button type="submit" disabled={isLoading} className="flex-1">
-                {isLoading ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  'Save Changes'
-                )}
+                {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Save Changes'}
               </Button>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleCancel}
-                disabled={isLoading}
-              >
+              <Button type="button" variant="outline" onClick={handleCancel} disabled={isLoading}>
                 <X className="h-4 w-4" />
               </Button>
             </div>
@@ -159,9 +139,7 @@ export function ProfileSection({ profile, user }) {
               <User className="h-4 w-4 text-gray-400" />
               <div>
                 <p className="text-sm text-gray-500">Name</p>
-                <p className="font-medium">
-                  {profile?.full_name || 'Not set'}
-                </p>
+                <p className="font-medium">{profile?.full_name || 'Not set'}</p>
               </div>
             </div>
 
@@ -177,9 +155,7 @@ export function ProfileSection({ profile, user }) {
               <Phone className="h-4 w-4 text-gray-400" />
               <div>
                 <p className="text-sm text-gray-500">Phone</p>
-                <p className="font-medium">
-                  {profile?.phone || 'Not set'}
-                </p>
+                <p className="font-medium">{profile?.phone || 'Not set'}</p>
               </div>
             </div>
           </div>

@@ -11,7 +11,8 @@ import {
 
 export const metadata = {
   title: 'Products',
-  description: 'Browse our selection of custom banners. Vinyl, mesh, fabric, and retractable banners made in Canada.',
+  description:
+    'Browse our selection of custom banners. Vinyl, mesh, fabric, and retractable banners made in Canada.',
 };
 
 export default function ProductsPage() {
@@ -28,11 +29,21 @@ export default function ProductsPage() {
       {/* Filters */}
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-wrap gap-2">
-          <Button variant="default" size="sm">All</Button>
-          <Button variant="outline" size="sm">Vinyl Banners</Button>
-          <Button variant="outline" size="sm">Mesh Banners</Button>
-          <Button variant="outline" size="sm">Fabric Banners</Button>
-          <Button variant="outline" size="sm">Retractable</Button>
+          <Button variant="default" size="sm">
+            All
+          </Button>
+          <Button variant="outline" size="sm">
+            Vinyl Banners
+          </Button>
+          <Button variant="outline" size="sm">
+            Mesh Banners
+          </Button>
+          <Button variant="outline" size="sm">
+            Fabric Banners
+          </Button>
+          <Button variant="outline" size="sm">
+            Retractable
+          </Button>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-sm text-muted-foreground">Sort by:</span>

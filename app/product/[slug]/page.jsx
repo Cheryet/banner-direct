@@ -36,14 +36,20 @@ import {
 // =============================================================================
 const materialHelpers = {
   '13oz': { badge: 'Best Value', bestFor: 'Best for indoor events and short-term outdoor use' },
-  '18oz': { badge: 'Heavy Duty', bestFor: 'Best for long-term outdoor display and windy conditions' },
-  'mesh': { badge: 'Wind Resistant', bestFor: 'Best for fences, scaffolding, and very windy locations' },
-  'premium': { badge: 'Premium', bestFor: 'Best for trade shows and professional presentations' },
-  'economy': { badge: 'Budget', bestFor: 'Best for one-time events and tight budgets' },
+  '18oz': {
+    badge: 'Heavy Duty',
+    bestFor: 'Best for long-term outdoor display and windy conditions',
+  },
+  mesh: {
+    badge: 'Wind Resistant',
+    bestFor: 'Best for fences, scaffolding, and very windy locations',
+  },
+  premium: { badge: 'Premium', bestFor: 'Best for trade shows and professional presentations' },
+  economy: { badge: 'Budget', bestFor: 'Best for one-time events and tight budgets' },
   '9oz': { badge: 'Standard Mesh', bestFor: 'Best for outdoor banners on fences' },
   '12oz': { badge: 'Heavy Mesh', bestFor: 'Best for long-term outdoor mesh installations' },
-  'polyester': { badge: 'Fabric', bestFor: 'Best for indoor displays and reusable banners' },
-  'canvas': { badge: 'Premium', bestFor: 'Best for high-end indoor displays' },
+  polyester: { badge: 'Fabric', bestFor: 'Best for indoor displays and reusable banners' },
+  canvas: { badge: 'Premium', bestFor: 'Best for high-end indoor displays' },
 };
 
 // Gallery images (placeholders)
@@ -287,15 +293,21 @@ export default function ProductPage() {
                     <div className="space-y-4 text-sm">
                       <div>
                         <p className="font-medium">What file formats do you accept?</p>
-                        <p className="text-muted-foreground">PDF, AI, EPS, JPG, PNG, TIFF at 150+ DPI.</p>
+                        <p className="text-muted-foreground">
+                          PDF, AI, EPS, JPG, PNG, TIFF at 150+ DPI.
+                        </p>
                       </div>
                       <div>
                         <p className="font-medium">Can I get a proof before printing?</p>
-                        <p className="text-muted-foreground">Yes! Select "Request proof" during checkout (+$10, adds 1 day).</p>
+                        <p className="text-muted-foreground">
+                          Yes! Select "Request proof" during checkout (+$10, adds 1 day).
+                        </p>
                       </div>
                       <div>
                         <p className="font-medium">Do you ship outside Canada?</p>
-                        <p className="text-muted-foreground">Currently we only ship within Canada.</p>
+                        <p className="text-muted-foreground">
+                          Currently we only ship within Canada.
+                        </p>
                       </div>
                     </div>
                   </AccordionContent>
@@ -323,9 +335,7 @@ export default function ProductPage() {
 
                 {/* Section 2: Size Selection */}
                 <div className="mb-6">
-                  <Label className="mb-3 block text-base font-semibold">
-                    Size
-                  </Label>
+                  <Label className="mb-3 block text-base font-semibold">Size</Label>
                   <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                     {product.sizes.map((size) => (
                       <button
@@ -360,9 +370,7 @@ export default function ProductPage() {
 
                 {/* Section 3: Material Selection */}
                 <div className="mb-6">
-                  <Label className="mb-3 block text-base font-semibold">
-                    Material
-                  </Label>
+                  <Label className="mb-3 block text-base font-semibold">Material</Label>
                   <div className="space-y-2">
                     {product.materials.map((material) => {
                       const helper = materialHelpers[material.id] || {};
@@ -400,17 +408,15 @@ export default function ProductPage() {
                               )}
                             </div>
                             {helper.bestFor && (
-                              <p className="mt-1 text-sm text-muted-foreground">
-                                {helper.bestFor}
-                              </p>
+                              <p className="mt-1 text-sm text-muted-foreground">{helper.bestFor}</p>
                             )}
                           </div>
                           <span className="shrink-0 text-sm font-medium">
                             {material.price > 0
                               ? `+$${material.price}`
                               : material.price < 0
-                              ? `-$${Math.abs(material.price)}`
-                              : 'Included'}
+                                ? `-$${Math.abs(material.price)}`
+                                : 'Included'}
                           </span>
                         </button>
                       );
@@ -421,9 +427,7 @@ export default function ProductPage() {
                 {/* Section 4: Finishing Options */}
                 {product.finishings.length > 0 && (
                   <div className="mb-6">
-                    <Label className="mb-3 block text-base font-semibold">
-                      Finishing Options
-                    </Label>
+                    <Label className="mb-3 block text-base font-semibold">Finishing Options</Label>
                     <div className="grid gap-2 sm:grid-cols-2">
                       {product.finishings.map((finishing) => (
                         <button
@@ -452,7 +456,9 @@ export default function ProductPage() {
                           <div className="flex-1">
                             <span className="font-medium">{finishing.label}</span>
                             {finishing.description && (
-                              <p className="text-xs text-muted-foreground">{finishing.description}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {finishing.description}
+                              </p>
                             )}
                           </div>
                           <span className="shrink-0 text-sm text-muted-foreground">
@@ -466,9 +472,7 @@ export default function ProductPage() {
 
                 {/* Section 5: Quantity */}
                 <div className="mb-6">
-                  <Label className="mb-3 block text-base font-semibold">
-                    Quantity
-                  </Label>
+                  <Label className="mb-3 block text-base font-semibold">Quantity</Label>
                   <div className="flex items-center gap-4">
                     <div className="flex items-center rounded-lg border">
                       <button
@@ -506,9 +510,7 @@ export default function ProductPage() {
                         </p>
                       )}
                       {getTierHint() && (
-                        <p className="text-sm text-muted-foreground">
-                          {getTierHint()}
-                        </p>
+                        <p className="text-sm text-muted-foreground">{getTierHint()}</p>
                       )}
                     </div>
                   </div>
@@ -522,9 +524,7 @@ export default function ProductPage() {
 
                 {/* Section 6: Turnaround Time */}
                 <div className="mb-6">
-                  <Label className="mb-3 block text-base font-semibold">
-                    Turnaround Time
-                  </Label>
+                  <Label className="mb-3 block text-base font-semibold">Turnaround Time</Label>
                   <div className="space-y-2">
                     {product.leadTimes.map((leadTime) => {
                       const isRush = leadTime.id === 'rush' || leadTime.id === 'same-day';
@@ -557,7 +557,10 @@ export default function ProductPage() {
                               <div className="flex items-center gap-2">
                                 <span className="font-medium">{leadTime.label}</span>
                                 {isRush && (
-                                  <Badge variant="outline" className="text-xs text-orange-600 border-orange-300">
+                                  <Badge
+                                    variant="outline"
+                                    className="text-xs text-orange-600 border-orange-300"
+                                  >
                                     Rush
                                   </Badge>
                                 )}
@@ -567,7 +570,9 @@ export default function ProductPage() {
                               </p>
                             </div>
                           </div>
-                          <span className={`shrink-0 font-medium ${isRush ? 'text-orange-600' : ''}`}>
+                          <span
+                            className={`shrink-0 font-medium ${isRush ? 'text-orange-600' : ''}`}
+                          >
                             {leadTime.price > 0 ? `+$${leadTime.price}` : 'Included'}
                           </span>
                         </button>
@@ -584,11 +589,9 @@ export default function ProductPage() {
 
                 {/* Artwork Upload */}
                 <div className="mb-6">
-                  <Label className="mb-3 block text-base font-semibold">
-                    Upload Your Artwork
-                  </Label>
+                  <Label className="mb-3 block text-base font-semibold">Upload Your Artwork</Label>
                   <FileUpload onFilesChange={setFiles} maxFiles={3} />
-                  
+
                   {/* Proof Options */}
                   <div className="mt-4 space-y-2">
                     <button
@@ -615,7 +618,9 @@ export default function ProductPage() {
                       </div>
                       <div>
                         <span className="font-medium">Print as uploaded</span>
-                        <p className="text-sm text-muted-foreground">We'll check your file and print it</p>
+                        <p className="text-sm text-muted-foreground">
+                          We'll check your file and print it
+                        </p>
                       </div>
                     </button>
                     <button
@@ -642,7 +647,9 @@ export default function ProductPage() {
                       </div>
                       <div className="flex-1">
                         <span className="font-medium">Request proof before printing</span>
-                        <p className="text-sm text-muted-foreground">We'll email a proof for approval (+1 day)</p>
+                        <p className="text-sm text-muted-foreground">
+                          We'll email a proof for approval (+1 day)
+                        </p>
                       </div>
                       <span className="shrink-0 text-sm font-medium">+$10</span>
                     </button>
@@ -799,15 +806,21 @@ export default function ProductPage() {
                     <div className="space-y-4 text-sm">
                       <div>
                         <p className="font-medium">What file formats do you accept?</p>
-                        <p className="text-muted-foreground">PDF, AI, EPS, JPG, PNG, TIFF at 150+ DPI.</p>
+                        <p className="text-muted-foreground">
+                          PDF, AI, EPS, JPG, PNG, TIFF at 150+ DPI.
+                        </p>
                       </div>
                       <div>
                         <p className="font-medium">Can I get a proof before printing?</p>
-                        <p className="text-muted-foreground">Yes! Select "Request proof" during checkout (+$10, adds 1 day).</p>
+                        <p className="text-muted-foreground">
+                          Yes! Select "Request proof" during checkout (+$10, adds 1 day).
+                        </p>
                       </div>
                       <div>
                         <p className="font-medium">Do you ship outside Canada?</p>
-                        <p className="text-muted-foreground">Currently we only ship within Canada.</p>
+                        <p className="text-muted-foreground">
+                          Currently we only ship within Canada.
+                        </p>
                       </div>
                     </div>
                   </AccordionContent>
@@ -862,7 +875,9 @@ export default function ProductPage() {
 
           <button
             type="button"
-            onClick={() => setActiveImageIndex((prev) => (prev === 0 ? galleryImages.length - 1 : prev - 1))}
+            onClick={() =>
+              setActiveImageIndex((prev) => (prev === 0 ? galleryImages.length - 1 : prev - 1))
+            }
             className="absolute left-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white"
             aria-label="Previous image"
           >
@@ -873,7 +888,9 @@ export default function ProductPage() {
             <div className="flex aspect-[4/3] items-center justify-center p-12">
               <div className="text-center text-white">
                 <p className="text-xl font-medium">{galleryImages[activeImageIndex].label}</p>
-                <p className="text-muted-foreground">{galleryImages[activeImageIndex].description}</p>
+                <p className="text-muted-foreground">
+                  {galleryImages[activeImageIndex].description}
+                </p>
                 <p className="mt-4 text-sm text-muted-foreground">
                   {activeImageIndex + 1} / {galleryImages.length}
                 </p>
@@ -883,7 +900,9 @@ export default function ProductPage() {
 
           <button
             type="button"
-            onClick={() => setActiveImageIndex((prev) => (prev === galleryImages.length - 1 ? 0 : prev + 1))}
+            onClick={() =>
+              setActiveImageIndex((prev) => (prev === galleryImages.length - 1 ? 0 : prev + 1))
+            }
             className="absolute right-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white"
             style={{ right: '4rem' }}
             aria-label="Next image"

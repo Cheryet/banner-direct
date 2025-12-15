@@ -5,15 +5,7 @@ import Link from 'next/link';
 import { useAuth } from '@/lib/supabase/auth-context';
 import { Button } from '@/components/ui/button';
 import { LinkButton } from '@/components/ui/link-button';
-import { 
-  User, 
-  LogOut, 
-  Settings, 
-  Package, 
-  Shield,
-  ChevronDown,
-  Loader2
-} from 'lucide-react';
+import { User, LogOut, Settings, Package, Shield, ChevronDown, Loader2 } from 'lucide-react';
 
 /**
  * User Menu Component
@@ -67,7 +59,7 @@ export function UserMenu() {
   // Anonymous or no user - show login button
   if (!user || isAnonymous) {
     return (
-      <Link 
+      <Link
         href="/login"
         className="inline-flex h-9 items-center justify-center rounded-lg px-3 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100"
       >

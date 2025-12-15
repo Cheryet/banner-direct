@@ -14,7 +14,7 @@ import { Mail, Phone, MapPin, Clock } from 'lucide-react';
 
 export const metadata = {
   title: 'Contact Us',
-  description: 'Get in touch with Banner Direct. We\'re here to help with your custom banner needs.',
+  description: "Get in touch with Banner Direct. We're here to help with your custom banner needs.",
 };
 
 const contactInfo = [
@@ -128,12 +128,7 @@ export default function ContactPage() {
 
                 <div>
                   <Label htmlFor="message">Message</Label>
-                  <Textarea
-                    id="message"
-                    placeholder="How can we help you?"
-                    rows={5}
-                    required
-                  />
+                  <Textarea id="message" placeholder="How can we help you?" rows={5} required />
                 </div>
 
                 <Button type="submit" size="lg" className="w-full">

@@ -9,11 +9,12 @@ export const metadata = {
 export default async function AdminOrdersPage({ searchParams }) {
   const supabase = await createClient();
   const params = await searchParams;
-  
+
   // Fetch all orders with profiles for the client component
   const { data: orders } = await supabase
     .from('orders')
-    .select(`
+    .select(
+      `
       *,
       profiles:user_id (
         id,
@@ -26,7 +27,8 @@ export default async function AdminOrdersPage({ searchParams }) {
         quantity,
         product_name
       )
-    `)
+    `
+    )
     .order('created_at', { ascending: false });
 
   return <OrdersPageClient initialOrders={orders || []} />;

@@ -10,12 +10,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { 
-  ArrowLeft, 
-  User, 
-  Lock, 
-  Bell, 
-  Mail, 
+import {
+  ArrowLeft,
+  User,
+  Lock,
+  Bell,
+  Mail,
   Phone,
   MapPin,
   Shield,
@@ -25,14 +25,14 @@ import {
   AlertCircle,
   Eye,
   EyeOff,
-  Save
+  Save,
 } from 'lucide-react';
 
 export default function SettingsPage() {
   const router = useRouter();
   const { user, profile, isLoading: authLoading, updateProfile, signOut } = useAuth();
   const [activeSection, setActiveSection] = React.useState('profile');
-  
+
   // Profile form state
   const [profileForm, setProfileForm] = React.useState({
     full_name: '',
@@ -92,11 +92,12 @@ export default function SettingsPage() {
         phone: profile.phone || '',
         company: profile.company || '',
       });
-      
+
       if (profile.default_address) {
-        const addr = typeof profile.default_address === 'string' 
-          ? JSON.parse(profile.default_address) 
-          : profile.default_address;
+        const addr =
+          typeof profile.default_address === 'string'
+            ? JSON.parse(profile.default_address)
+            : profile.default_address;
         setAddressForm({
           line1: addr.line1 || '',
           line2: addr.line2 || '',
@@ -108,9 +109,10 @@ export default function SettingsPage() {
       }
 
       if (profile.notification_preferences) {
-        const prefs = typeof profile.notification_preferences === 'string'
-          ? JSON.parse(profile.notification_preferences)
-          : profile.notification_preferences;
+        const prefs =
+          typeof profile.notification_preferences === 'string'
+            ? JSON.parse(profile.notification_preferences)
+            : profile.notification_preferences;
         setNotifications({
           order_updates: prefs.order_updates ?? true,
           promotions: prefs.promotions ?? false,
@@ -186,9 +188,9 @@ export default function SettingsPage() {
       const { error } = await supabase.auth.updateUser({
         password: passwordForm.newPassword,
       });
-      
+
       if (error) throw error;
-      
+
       setPasswordSuccess(true);
       setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
       setTimeout(() => setPasswordSuccess(false), 3000);
@@ -218,7 +220,7 @@ export default function SettingsPage() {
 
   const handleDeleteAccount = async () => {
     if (deleteConfirm !== 'DELETE') return;
-    
+
     setDeleteLoading(true);
     try {
       // Sign out and redirect - actual deletion would need server-side handling
@@ -253,8 +255,8 @@ export default function SettingsPage() {
     <div className="container py-8 md:py-12">
       {/* Breadcrumb */}
       <nav className="mb-6">
-        <Link 
-          href="/account" 
+        <Link
+          href="/account"
           className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-emerald-600 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -265,9 +267,7 @@ export default function SettingsPage() {
       {/* Page Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Account Settings</h1>
-        <p className="mt-2 text-gray-600">
-          Manage your profile, security, and preferences.
-        </p>
+        <p className="mt-2 text-gray-600">Manage your profile, security, and preferences.</p>
       </div>
 
       <div className="grid gap-8 lg:grid-cols-4">
@@ -286,7 +286,9 @@ export default function SettingsPage() {
                       : 'text-gray-700 hover:bg-gray-100'
                   } ${section.id === 'danger' ? 'text-red-600 hover:bg-red-50' : ''}`}
                 >
-                  <Icon className={`h-5 w-5 ${section.id === 'danger' && activeSection !== section.id ? 'text-red-500' : ''}`} />
+                  <Icon
+                    className={`h-5 w-5 ${section.id === 'danger' && activeSection !== section.id ? 'text-red-500' : ''}`}
+                  />
                   {section.label}
                 </button>
               );
@@ -318,7 +320,7 @@ export default function SettingsPage() {
                       </div>
                     </div>
                   )}
-                  
+
                   {profileSuccess && (
                     <div className="rounded-lg bg-emerald-50 p-4 text-sm text-emerald-700">
                       <div className="flex items-center gap-2">
@@ -354,7 +356,9 @@ export default function SettingsPage() {
                           id="full_name"
                           type="text"
                           value={profileForm.full_name}
-                          onChange={(e) => setProfileForm({ ...profileForm, full_name: e.target.value })}
+                          onChange={(e) =>
+                            setProfileForm({ ...profileForm, full_name: e.target.value })
+                          }
                           placeholder="John Doe"
                           className="pl-10"
                         />
@@ -369,7 +373,9 @@ export default function SettingsPage() {
                           id="phone"
                           type="tel"
                           value={profileForm.phone}
-                          onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })}
+                          onChange={(e) =>
+                            setProfileForm({ ...profileForm, phone: e.target.value })
+                          }
                           placeholder="(555) 123-4567"
                           className="pl-10"
                         />
@@ -382,7 +388,9 @@ export default function SettingsPage() {
                         id="company"
                         type="text"
                         value={profileForm.company}
-                        onChange={(e) => setProfileForm({ ...profileForm, company: e.target.value })}
+                        onChange={(e) =>
+                          setProfileForm({ ...profileForm, company: e.target.value })
+                        }
                         placeholder="Acme Inc."
                         className="mt-1"
                       />
@@ -417,9 +425,7 @@ export default function SettingsPage() {
                   <MapPin className="h-5 w-5" />
                   Default Shipping Address
                 </CardTitle>
-                <CardDescription>
-                  This address will be pre-filled during checkout.
-                </CardDescription>
+                <CardDescription>This address will be pre-filled during checkout.</CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleAddressSubmit} className="space-y-6">
@@ -431,7 +437,7 @@ export default function SettingsPage() {
                       </div>
                     </div>
                   )}
-                  
+
                   {addressSuccess && (
                     <div className="rounded-lg bg-emerald-50 p-4 text-sm text-emerald-700">
                       <div className="flex items-center gap-2">
@@ -483,7 +489,9 @@ export default function SettingsPage() {
                       <select
                         id="province"
                         value={addressForm.province}
-                        onChange={(e) => setAddressForm({ ...addressForm, province: e.target.value })}
+                        onChange={(e) =>
+                          setAddressForm({ ...addressForm, province: e.target.value })
+                        }
                         className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                       >
                         <option value="">Select Province</option>
@@ -509,7 +517,12 @@ export default function SettingsPage() {
                         id="postal_code"
                         type="text"
                         value={addressForm.postal_code}
-                        onChange={(e) => setAddressForm({ ...addressForm, postal_code: e.target.value.toUpperCase() })}
+                        onChange={(e) =>
+                          setAddressForm({
+                            ...addressForm,
+                            postal_code: e.target.value.toUpperCase(),
+                          })
+                        }
                         placeholder="M5V 1A1"
                         className="mt-1"
                         maxLength={7}
@@ -556,9 +569,7 @@ export default function SettingsPage() {
                   <Lock className="h-5 w-5" />
                   Change Password
                 </CardTitle>
-                <CardDescription>
-                  Update your password to keep your account secure.
-                </CardDescription>
+                <CardDescription>Update your password to keep your account secure.</CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handlePasswordSubmit} className="space-y-6">
@@ -570,7 +581,7 @@ export default function SettingsPage() {
                       </div>
                     </div>
                   )}
-                  
+
                   {passwordSuccess && (
                     <div className="rounded-lg bg-emerald-50 p-4 text-sm text-emerald-700">
                       <div className="flex items-center gap-2">
@@ -589,7 +600,9 @@ export default function SettingsPage() {
                           id="newPassword"
                           type={showPasswords.new ? 'text' : 'password'}
                           value={passwordForm.newPassword}
-                          onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
+                          onChange={(e) =>
+                            setPasswordForm({ ...passwordForm, newPassword: e.target.value })
+                          }
                           placeholder="••••••••"
                           className="pl-10 pr-10"
                           minLength={8}
@@ -597,10 +610,16 @@ export default function SettingsPage() {
                         />
                         <button
                           type="button"
-                          onClick={() => setShowPasswords({ ...showPasswords, new: !showPasswords.new })}
+                          onClick={() =>
+                            setShowPasswords({ ...showPasswords, new: !showPasswords.new })
+                          }
                           className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                         >
-                          {showPasswords.new ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                          {showPasswords.new ? (
+                            <EyeOff className="h-4 w-4" />
+                          ) : (
+                            <Eye className="h-4 w-4" />
+                          )}
                         </button>
                       </div>
                       <p className="mt-1 text-xs text-gray-500">
@@ -616,7 +635,9 @@ export default function SettingsPage() {
                           id="confirmPassword"
                           type={showPasswords.confirm ? 'text' : 'password'}
                           value={passwordForm.confirmPassword}
-                          onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
+                          onChange={(e) =>
+                            setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })
+                          }
                           placeholder="••••••••"
                           className="pl-10 pr-10"
                           minLength={8}
@@ -624,10 +645,16 @@ export default function SettingsPage() {
                         />
                         <button
                           type="button"
-                          onClick={() => setShowPasswords({ ...showPasswords, confirm: !showPasswords.confirm })}
+                          onClick={() =>
+                            setShowPasswords({ ...showPasswords, confirm: !showPasswords.confirm })
+                          }
                           className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                         >
-                          {showPasswords.confirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                          {showPasswords.confirm ? (
+                            <EyeOff className="h-4 w-4" />
+                          ) : (
+                            <Eye className="h-4 w-4" />
+                          )}
                         </button>
                       </div>
                     </div>
@@ -661,9 +688,7 @@ export default function SettingsPage() {
                   <Bell className="h-5 w-5" />
                   Notification Preferences
                 </CardTitle>
-                <CardDescription>
-                  Choose what emails you'd like to receive from us.
-                </CardDescription>
+                <CardDescription>Choose what emails you'd like to receive from us.</CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleNotificationSubmit} className="space-y-6">
@@ -681,13 +706,16 @@ export default function SettingsPage() {
                       <input
                         type="checkbox"
                         checked={notifications.order_updates}
-                        onChange={(e) => setNotifications({ ...notifications, order_updates: e.target.checked })}
+                        onChange={(e) =>
+                          setNotifications({ ...notifications, order_updates: e.target.checked })
+                        }
                         className="mt-1 h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
                       />
                       <div>
                         <p className="font-medium text-gray-900">Order Updates</p>
                         <p className="text-sm text-gray-500">
-                          Receive emails about your order status, shipping updates, and delivery confirmations.
+                          Receive emails about your order status, shipping updates, and delivery
+                          confirmations.
                         </p>
                       </div>
                     </label>
@@ -696,13 +724,16 @@ export default function SettingsPage() {
                       <input
                         type="checkbox"
                         checked={notifications.promotions}
-                        onChange={(e) => setNotifications({ ...notifications, promotions: e.target.checked })}
+                        onChange={(e) =>
+                          setNotifications({ ...notifications, promotions: e.target.checked })
+                        }
                         className="mt-1 h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
                       />
                       <div>
                         <p className="font-medium text-gray-900">Promotions & Discounts</p>
                         <p className="text-sm text-gray-500">
-                          Get notified about special offers, seasonal sales, and exclusive discounts.
+                          Get notified about special offers, seasonal sales, and exclusive
+                          discounts.
                         </p>
                       </div>
                     </label>
@@ -711,7 +742,9 @@ export default function SettingsPage() {
                       <input
                         type="checkbox"
                         checked={notifications.newsletter}
-                        onChange={(e) => setNotifications({ ...notifications, newsletter: e.target.checked })}
+                        onChange={(e) =>
+                          setNotifications({ ...notifications, newsletter: e.target.checked })
+                        }
                         className="mt-1 h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
                       />
                       <div>
@@ -751,18 +784,16 @@ export default function SettingsPage() {
                   <Shield className="h-5 w-5" />
                   Danger Zone
                 </CardTitle>
-                <CardDescription>
-                  Irreversible actions that affect your account.
-                </CardDescription>
+                <CardDescription>Irreversible actions that affect your account.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="rounded-lg border border-red-200 bg-red-50 p-6">
                   <h3 className="font-semibold text-red-900">Delete Account</h3>
                   <p className="mt-2 text-sm text-red-700">
-                    Once you delete your account, there is no going back. This will permanently delete your account, 
-                    order history, saved designs, and all associated data.
+                    Once you delete your account, there is no going back. This will permanently
+                    delete your account, order history, saved designs, and all associated data.
                   </p>
-                  
+
                   <div className="mt-4">
                     <Label htmlFor="deleteConfirm" className="text-red-700">
                       Type <span className="font-mono font-bold">DELETE</span> to confirm
