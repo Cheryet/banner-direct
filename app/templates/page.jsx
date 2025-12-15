@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { templates } from '@/lib/mock-data';
 import { Button } from '@/components/ui/button';
+import { LinkButton } from '@/components/ui/link-button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -90,9 +91,9 @@ export default function TemplatesPage() {
             <CardContent className="p-4">
               <h3 className="font-semibold">{template.title}</h3>
               <p className="mt-1 text-sm text-muted-foreground">{template.description}</p>
-              <Button asChild className="mt-4 w-full">
-                <Link href={`/templates/${template.slug}`}>Customize Template</Link>
-              </Button>
+              <LinkButton href={`/templates/${template.slug}`} className="mt-4 w-full">
+                Customize Template
+              </LinkButton>
             </CardContent>
           </Card>
         ))}
@@ -105,12 +106,12 @@ export default function TemplatesPage() {
           Upload your own design or start from scratch with our easy configurator.
         </p>
         <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:justify-center">
-          <Button asChild>
-            <Link href="/product/pvc-banner-3x6">Upload Your Design</Link>
-          </Button>
-          <Button variant="outline" asChild>
-            <Link href="/help/file-specs">View File Specs</Link>
-          </Button>
+          <LinkButton href="/product/pvc-banner-3x6">
+            Upload Your Design
+          </LinkButton>
+          <LinkButton href="/help/file-specs" variant="outline">
+            View File Specs
+          </LinkButton>
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ import * as React from 'react';
 import Link from 'next/link';
 import { Trash2, Plus, Minus, ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { LinkButton } from '@/components/ui/link-button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent } from '@/components/ui/card';
@@ -51,9 +52,9 @@ export default function CartPage() {
         <p className="mt-2 text-muted-foreground">
           Looks like you haven't added any banners yet.
         </p>
-        <Button asChild className="mt-6">
-          <Link href="/products">Browse Products</Link>
-        </Button>
+        <LinkButton href="/products" className="mt-6">
+          Browse Products
+        </LinkButton>
       </div>
     );
   }
@@ -117,9 +118,12 @@ export default function CartPage() {
                         </Button>
                       </div>
                       <div className="flex gap-2">
-                        <Button variant="ghost" size="sm" asChild>
-                          <Link href={`/product/${item.id}`}>Edit</Link>
-                        </Button>
+                        <Link 
+                          href={`/product/${item.id}`}
+                          className="inline-flex h-9 items-center justify-center rounded-lg px-3 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100"
+                        >
+                          Edit
+                        </Link>
                         <Button
                           variant="ghost"
                           size="icon"
@@ -138,9 +142,9 @@ export default function CartPage() {
           </div>
 
           <div className="mt-6">
-            <Button variant="outline" asChild>
-              <Link href="/products">Continue Shopping</Link>
-            </Button>
+            <LinkButton href="/products" variant="outline">
+              Continue Shopping
+            </LinkButton>
           </div>
         </div>
 
@@ -191,9 +195,9 @@ export default function CartPage() {
                 </div>
               </div>
 
-              <Button size="lg" className="mt-6 w-full" asChild>
-                <Link href="/checkout">Proceed to Checkout</Link>
-              </Button>
+              <LinkButton href="/checkout" size="lg" className="mt-6 w-full">
+                Proceed to Checkout
+              </LinkButton>
 
               <p className="mt-4 text-center text-xs text-muted-foreground">
                 Local pickup available in select cities

@@ -2,7 +2,7 @@ import * as React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
+import { LinkButton } from '@/components/ui/link-button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { ImageIcon } from 'lucide-react';
@@ -64,9 +64,9 @@ const ProductCard = React.memo(function ProductCard({
         </p>
       </CardContent>
       <CardFooter className="p-4 pt-0">
-        <Button asChild className="w-full">
-          <Link href={`/product/${slug}`}>Customize</Link>
-        </Button>
+        <LinkButton href={`/product/${slug}`} className="w-full">
+          Customize
+        </LinkButton>
       </CardFooter>
     </Card>
   );

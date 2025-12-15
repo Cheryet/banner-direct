@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { LinkButton } from '@/components/ui/link-button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { MapPin, Leaf, Award, Users } from 'lucide-react';
@@ -160,12 +160,12 @@ export default function AboutPage() {
           Join thousands of Canadian businesses who trust Banner Direct.
         </p>
         <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:justify-center">
-          <Button asChild size="lg">
-            <Link href="/product/pvc-banner-3x6">Create Your Banner</Link>
-          </Button>
-          <Button asChild variant="outline" size="lg">
-            <Link href="/contact">Contact Us</Link>
-          </Button>
+          <LinkButton href="/product/pvc-banner-3x6" size="lg">
+            Create Your Banner
+          </LinkButton>
+          <LinkButton href="/contact" variant="outline" size="lg">
+            Contact Us
+          </LinkButton>
         </div>
       </div>
     </div>

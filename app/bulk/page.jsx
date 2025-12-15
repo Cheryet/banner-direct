@@ -247,9 +247,12 @@ export default function BulkPage() {
               <Button size="lg" onClick={scrollToForm}>
                 Request Bulk Quote
               </Button>
-              <Button variant="outline" size="lg" asChild>
-                <a href="tel:+18005551234">Talk to a Print Specialist</a>
-              </Button>
+              <a 
+                href="tel:+18005551234"
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-6 text-base font-medium text-gray-700 transition-colors hover:bg-gray-50 hover:border-gray-400"
+              >
+                Talk to a Print Specialist
+              </a>
             </div>
           </div>
         </div>

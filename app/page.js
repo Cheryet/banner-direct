@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { products } from '@/lib/mock-data';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ProductCard } from '@/components/product/product-card';
+import { LinkButton } from '@/components/ui/link-button';
 import {
   Printer,
   Truck,
@@ -97,14 +97,12 @@ export default function Home() {
 
               {/* CTAs - Premium button styling */}
               <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-                <Button asChild size="lg">
-                  <Link href="/product/pvc-banner-3x6">
-                    Start Creating →
-                  </Link>
-                </Button>
-                <Button asChild variant="outline" size="lg">
-                  <Link href="/bulk">Get Bulk Pricing</Link>
-                </Button>
+                <LinkButton href="/product/pvc-banner-3x6" size="lg">
+                  Start Creating →
+                </LinkButton>
+                <LinkButton href="/bulk" variant="outline" size="lg">
+                  Get Bulk Pricing
+                </LinkButton>
               </div>
 
               {/* Trust indicators - Clean horizontal layout */}
@@ -256,9 +254,9 @@ export default function Home() {
             ))}
           </div>
           <div className="mt-12 text-center">
-            <Button asChild variant="outline" size="default">
-              <Link href="/products">View All Products →</Link>
-            </Button>
+            <LinkButton href="/products" variant="outline" size="default">
+              View All Products →
+            </LinkButton>
           </div>
         </div>
       </section>
@@ -350,9 +348,9 @@ export default function Home() {
                 Volume pricing • Consistent production • Easy reorders
               </p>
             </div>
-            <Button asChild variant="outline" className="bg-white text-emerald-600 hover:bg-gray-50">
-              <Link href="/bulk">Get Bulk Pricing →</Link>
-            </Button>
+            <LinkButton href="/bulk" variant="outline" className="bg-white text-emerald-600 hover:bg-gray-50">
+              Get Bulk Pricing →
+            </LinkButton>
           </div>
         </div>
       </section>
@@ -371,11 +369,9 @@ export default function Home() {
               Create your custom banner in minutes. Printed in Canada, delivered to your door.
             </p>
             <div className="mt-10">
-              <Button asChild size="lg">
-                <Link href="/product/pvc-banner-3x6">
-                  Start Creating →
-                </Link>
-              </Button>
+              <LinkButton href="/product/pvc-banner-3x6" size="lg">
+                Start Creating →
+              </LinkButton>
             </div>
             <p className="mt-6 text-sm text-gray-500">
               No account required • Instant pricing • Free artwork review

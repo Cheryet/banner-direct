@@ -3,10 +3,12 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, ShoppingCart, MapPin } from 'lucide-react';
+import { Menu, X, ShoppingCart, MapPin, Phone, Truck, ChevronDown, Search, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+
+import { UserMenu, MobileUserMenu } from '@/components/auth/user-menu';
 
 // =============================================================================
 // NAVIGATION CONFIG
@@ -25,20 +27,31 @@ const navigation = [
 function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
+  const [mounted, setMounted] = React.useState(false);
   const pathname = usePathname();
   const drawerRef = React.useRef(null);
   const menuButtonRef = React.useRef(null);
 
   // ---------------------------------------------------------------------------
+  // Ensure client-side mounting before dynamic content
+  // ---------------------------------------------------------------------------
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // ---------------------------------------------------------------------------
   // Scroll shadow effect
   // ---------------------------------------------------------------------------
   React.useEffect(() => {
+    if (!mounted) return;
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 8);
     };
+    // Check initial scroll position
+    handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [mounted]);
 
   // ---------------------------------------------------------------------------
   // Focus trap and escape key for mobile drawer
@@ -113,112 +126,93 @@ function Header() {
     <>
       <header
         className={cn(
-          'sticky top-0 z-50 w-full border-b border-gray-200 bg-white/95 backdrop-blur transition-shadow supports-[backdrop-filter]:bg-white/80',
-          isScrolled && 'shadow-sm'
+          'sticky top-0 z-50 w-full border-b border-gray-100 bg-white/95 backdrop-blur-sm transition-all',
+          mounted && isScrolled && 'shadow-sm'
         )}
       >
-        <nav
-          className="container flex h-16 items-center justify-between"
-          aria-label="Main navigation"
-        >
-          {/* Logo */}
-          <div className="flex items-center">
-            <Link
-              href="/"
-              className="flex h-10 items-center rounded-md px-2 transition-colors hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-              aria-label="Home"
-            >
-              <span className="font-heading text-xl font-bold text-primary">
-                Banner<span className="text-foreground">Direct</span>
+        <div className="container">
+          <nav className="flex h-16 items-center gap-8" aria-label="Main navigation">
+            {/* Logo */}
+            <Link href="/" className="flex flex-shrink-0 items-center" aria-label="Home">
+              <span className="text-[22px] font-extrabold tracking-tight">
+                <span className="text-emerald-600">Banner</span>
+                <span className="text-gray-900">Direct</span>
               </span>
             </Link>
-          </div>
 
-          {/* Desktop navigation */}
-          <div className="hidden items-center gap-1 md:flex">
-            {navigation.map((item) => {
-              const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
-              return (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={cn(
-                    'relative rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
-                    isActive
-                      ? 'text-primary'
-                      : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                  )}
-                  aria-current={isActive ? 'page' : undefined}
-                >
-                  {item.name}
-                  {isActive && (
-                    <span
-                      className="absolute bottom-0 left-3 right-3 h-0.5 rounded-full bg-primary"
-                      aria-hidden="true"
-                    />
-                  )}
-                </Link>
-              );
-            })}
-          </div>
+            {/* Desktop navigation */}
+            <div className="hidden flex-1 items-center justify-center md:flex h-full">
+              <div className="flex h-full items-center">
+                {navigation.map((item) => {
+                  const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+                  return (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className={cn(
+                        'flex h-full items-center px-4 text-[14px] font-medium transition-colors',
+                        isActive
+                          ? 'text-gray-900'
+                          : 'text-gray-500 hover:text-gray-900'
+                      )}
+                      aria-current={isActive ? 'page' : undefined}
+                    >
+                      {item.name}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
 
-          {/* Desktop actions */}
-          <div className="hidden items-center gap-2 md:flex">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="relative"
-              aria-label="Shopping cart"
-              asChild
-            >
-              <Link href="/cart">
-                <ShoppingCart className="h-5 w-5" aria-hidden="true" />
-                <Badge
-                  variant="default"
-                  className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full p-0 text-xs"
-                >
+            {/* Desktop actions */}
+            <div className="hidden items-center gap-2 md:flex">
+              <UserMenu />
+              <div className="mx-1 h-5 w-px bg-gray-200" />
+              <Link
+                href="/cart"
+                className="relative flex h-10 w-10 items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900"
+                aria-label="Shopping cart"
+              >
+                <ShoppingCart className="h-5 w-5" />
+                <span className="absolute right-0.5 top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-600 text-[10px] font-semibold text-white">
                   0
-                </Badge>
+                </span>
               </Link>
-            </Button>
-            <Button asChild>
-              <Link href="/product/pvc-banner-3x6">Create Your Banner</Link>
-            </Button>
-          </div>
+              <Link 
+                href="/product/pvc-banner-3x6"
+                className="ml-2 flex h-10 items-center rounded-full bg-emerald-600 px-5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-emerald-700 hover:shadow"
+              >
+                Get Started
+              </Link>
+            </div>
 
-          {/* Mobile menu button */}
-          <div className="flex items-center gap-2 md:hidden">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="relative"
-              aria-label="Shopping cart"
-              asChild
-            >
-              <Link href="/cart">
-                <ShoppingCart className="h-5 w-5" aria-hidden="true" />
-                <Badge
-                  variant="default"
-                  className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full p-0 text-xs"
-                >
+            {/* Mobile actions */}
+            <div className="flex items-center gap-1 md:hidden">
+              <Link
+                href="/cart"
+                className="relative flex h-10 w-10 items-center justify-center rounded-full text-gray-500"
+                aria-label="Shopping cart"
+              >
+                <ShoppingCart className="h-5 w-5" />
+                <span className="absolute right-0.5 top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-600 text-[10px] font-semibold text-white">
                   0
-                </Badge>
+                </span>
               </Link>
-            </Button>
-            <Button
-              ref={menuButtonRef}
-              variant="ghost"
-              size="icon"
-              onClick={() => setMobileMenuOpen(true)}
-              aria-expanded={mobileMenuOpen}
-              aria-controls="mobile-menu"
-              aria-label="Open menu"
-              className="h-11 w-11"
-            >
-              <Menu className="h-6 w-6" aria-hidden="true" />
-            </Button>
-          </div>
-        </nav>
+              <Button
+                ref={menuButtonRef}
+                variant="ghost"
+                size="icon"
+                onClick={() => setMobileMenuOpen(true)}
+                aria-expanded={mobileMenuOpen}
+                aria-controls="mobile-menu"
+                aria-label="Open menu"
+                className="h-9 w-9"
+              >
+                <Menu className="h-5 w-5" />
+              </Button>
+            </div>
+          </nav>
+        </div>
       </header>
 
       {/* Mobile drawer overlay */}
@@ -237,20 +231,16 @@ function Header() {
         aria-modal="true"
         aria-label="Mobile navigation menu"
         className={cn(
-          'fixed inset-y-0 right-0 z-50 flex w-full max-w-xs flex-col bg-background shadow-xl transition-transform duration-300 ease-in-out md:hidden',
+          'fixed inset-y-0 right-0 z-50 flex w-full max-w-xs flex-col bg-white shadow-xl transition-transform duration-300 ease-in-out md:hidden',
           mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         )}
       >
         {/* Drawer header */}
         <div className="flex h-16 items-center justify-between border-b px-4">
-          <Link
-            href="/"
-            onClick={handleNavClick}
-            className="flex items-center rounded-md px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-            aria-label="Home"
-          >
-            <span className="font-heading text-xl font-bold text-primary">
-              Banner<span className="text-foreground">Direct</span>
+          <Link href="/" onClick={handleNavClick} aria-label="Home">
+            <span className="text-xl font-bold">
+              <span className="text-emerald-600">Banner</span>
+              <span className="text-gray-900">Direct</span>
             </span>
           </Link>
           <Button
@@ -261,14 +251,14 @@ function Header() {
               menuButtonRef.current?.focus();
             }}
             aria-label="Close menu"
-            className="h-11 w-11"
+            className="h-9 w-9"
           >
-            <X className="h-6 w-6" aria-hidden="true" />
+            <X className="h-5 w-5" />
           </Button>
         </div>
 
         {/* Drawer navigation */}
-        <nav className="flex-1 overflow-y-auto px-4 py-6">
+        <nav className="flex-1 overflow-y-auto p-4">
           <ul className="space-y-1" role="list">
             {navigation.map((item) => {
               const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
@@ -278,10 +268,10 @@ function Header() {
                     href={item.href}
                     onClick={handleNavClick}
                     className={cn(
-                      'flex min-h-[44px] items-center rounded-lg px-4 py-3 text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+                      'block rounded-md px-3 py-2.5 text-base font-medium transition-colors',
                       isActive
-                        ? 'bg-primary/10 text-primary'
-                        : 'text-foreground hover:bg-muted'
+                        ? 'bg-emerald-50 text-emerald-600'
+                        : 'text-gray-700 hover:bg-gray-50'
                     )}
                     aria-current={isActive ? 'page' : undefined}
                   >
@@ -293,19 +283,20 @@ function Header() {
           </ul>
         </nav>
 
-        {/* Drawer footer */}
-        <div className="border-t px-4 py-6">
-          <Button asChild size="lg" className="w-full">
-            <Link href="/product/pvc-banner-3x6" onClick={handleNavClick}>
-              Create Your Banner
-            </Link>
-          </Button>
+        {/* User section */}
+        <div className="border-t px-4 py-4">
+          <MobileUserMenu onNavigate={handleNavClick} />
+        </div>
 
-          {/* Trust microcopy */}
-          <div className="mt-4 flex items-center justify-center gap-2 text-xs text-muted-foreground">
-            <MapPin className="h-3 w-3" aria-hidden="true" />
-            <span>Made in Canada • Fast Shipping</span>
-          </div>
+        {/* CTA */}
+        <div className="border-t p-4">
+          <Link 
+            href="/product/pvc-banner-3x6"
+            onClick={handleNavClick}
+            className="block w-full rounded-md bg-emerald-600 px-4 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-emerald-700"
+          >
+            Get Started
+          </Link>
         </div>
       </div>
     </>

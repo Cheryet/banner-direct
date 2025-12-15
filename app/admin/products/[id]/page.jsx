@@ -1,0 +1,529 @@
+'use client';
+
+import * as React from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { createClient } from '@/lib/supabase/client';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { 
+  ArrowLeft, Package, Save, Loader2, Trash2, DollarSign, Image as ImageIcon,
+  FileText, AlertCircle, CheckCircle, Plus, X, GripVertical, Truck, Layers, Percent
+} from 'lucide-react';
+
+export default function AdminProductEditPage({ params }) {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [isSaving, setIsSaving] = React.useState(false);
+  const [isDeleting, setIsDeleting] = React.useState(false);
+  const [error, setError] = React.useState(null);
+  const [success, setSuccess] = React.useState(null);
+  const [isNew, setIsNew] = React.useState(false);
+  const [activeTab, setActiveTab] = React.useState('basic');
+  
+  const [product, setProduct] = React.useState({
+    name: '', slug: '', description: '', category: '', base_price: '', compare_price: '',
+    sku: '', image_url: '', gallery_images: [], is_active: true, is_featured: false,
+    meta_title: '', meta_description: '',
+    sizes: [], materials: [], finishings: [], lead_times: [],
+    shipping_weight: '', shipping_dimensions: { length: '', width: '', height: '' },
+    free_shipping_threshold: '', tier_pricing: [], addons: [],
+  });
+
+  React.useEffect(() => {
+    async function fetchProduct() {
+      const { id } = await params;
+      if (id === 'new') {
+        setIsNew(true);
+        setProduct(prev => ({
+          ...prev,
+          sizes: [{ id: 'default', label: 'Standard', price: 0 }],
+          materials: [{ id: 'standard', label: 'Standard Material', price: 0, description: '' }],
+          lead_times: [
+            { id: 'standard', label: 'Standard (5-7 days)', price: 0, days: 7 },
+            { id: 'rush', label: 'Rush (2-3 days)', price: 25, days: 3 },
+          ],
+          tier_pricing: [
+            { minQty: 1, maxQty: 4, discount: 0 },
+            { minQty: 5, maxQty: 9, discount: 10 },
+            { minQty: 10, maxQty: null, discount: 15 },
+          ],
+        }));
+        setIsLoading(false);
+        return;
+      }
+      const supabase = createClient();
+      const { data, error } = await supabase.from('products').select('*').eq('id', id).single();
+      if (error || !data) { setError('Product not found'); setIsLoading(false); return; }
+      setProduct({
+        name: data.name || '', slug: data.slug || '', description: data.description || '',
+        category: data.category || '', base_price: data.base_price?.toString() || '',
+        compare_price: data.compare_price?.toString() || '', sku: data.sku || '',
+        image_url: data.image_url || '', gallery_images: data.gallery_images || [],
+        is_active: data.is_active ?? true, is_featured: data.is_featured ?? false,
+        meta_title: data.meta_title || '', meta_description: data.meta_description || '',
+        sizes: data.sizes || [], materials: data.materials || [], finishings: data.finishings || [],
+        lead_times: data.lead_times || [], shipping_weight: data.shipping_weight?.toString() || '',
+        shipping_dimensions: data.shipping_dimensions || { length: '', width: '', height: '' },
+        free_shipping_threshold: data.free_shipping_threshold?.toString() || '',
+        tier_pricing: data.tier_pricing || [], addons: data.addons || [],
+      });
+      setIsLoading(false);
+    }
+    fetchProduct();
+  }, [params]);
+
+  const generateSlug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  const handleNameChange = (e) => {
+    const name = e.target.value;
+    setProduct({ ...product, name, slug: product.slug || generateSlug(name) });
+  };
+
+  const handleSave = async () => {
+    setIsSaving(true); setError(null); setSuccess(null);
+    if (!product.name || !product.base_price) { setError('Name and base price are required'); setIsSaving(false); return; }
+    try {
+      const supabase = createClient();
+      const { id } = await params;
+      const productData = {
+        name: product.name, slug: product.slug || generateSlug(product.name),
+        description: product.description || null, category: product.category || null,
+        base_price: parseFloat(product.base_price),
+        compare_price: product.compare_price ? parseFloat(product.compare_price) : null,
+        sku: product.sku || null, image_url: product.image_url || null,
+        gallery_images: product.gallery_images, is_active: product.is_active,
+        is_featured: product.is_featured, meta_title: product.meta_title || null,
+        meta_description: product.meta_description || null, sizes: product.sizes,
+        materials: product.materials, finishings: product.finishings,
+        lead_times: product.lead_times,
+        shipping_weight: product.shipping_weight ? parseFloat(product.shipping_weight) : null,
+        shipping_dimensions: product.shipping_dimensions,
+        free_shipping_threshold: product.free_shipping_threshold ? parseFloat(product.free_shipping_threshold) : null,
+        tier_pricing: product.tier_pricing, addons: product.addons,
+        updated_at: new Date().toISOString(),
+      };
+      if (isNew) {
+        const { data, error } = await supabase.from('products').insert(productData).select().single();
+        if (error) throw error;
+        setSuccess('Product created successfully');
+        setTimeout(() => router.push(`/admin/products/${data.id}`), 1500);
+      } else {
+        const { error } = await supabase.from('products').update(productData).eq('id', id);
+        if (error) throw error;
+        setSuccess('Product updated successfully');
+        setTimeout(() => setSuccess(null), 3000);
+      }
+    } catch (err) { setError(err.message || 'Failed to save product'); }
+    finally { setIsSaving(false); }
+  };
+
+  const handleDelete = async () => {
+    if (!confirm('Are you sure you want to delete this product?')) return;
+    setIsDeleting(true);
+    try {
+      const supabase = createClient();
+      const { id } = await params;
+      const { error } = await supabase.from('products').delete().eq('id', id);
+      if (error) throw error;
+      router.push('/admin/products');
+    } catch (err) { setError(err.message || 'Failed to delete'); setIsDeleting(false); }
+  };
+
+  const addArrayItem = (field, defaultItem) => {
+    setProduct(prev => ({ ...prev, [field]: [...prev[field], { ...defaultItem, id: `${field}-${Date.now()}` }] }));
+  };
+  const updateArrayItem = (field, index, updates) => {
+    setProduct(prev => ({ ...prev, [field]: prev[field].map((item, i) => i === index ? { ...item, ...updates } : item) }));
+  };
+  const removeArrayItem = (field, index) => {
+    setProduct(prev => ({ ...prev, [field]: prev[field].filter((_, i) => i !== index) }));
+  };
+
+  if (isLoading) return <div className="flex items-center justify-center py-16"><Loader2 className="h-8 w-8 animate-spin text-emerald-600" /></div>;
+
+  const tabs = [
+    { id: 'basic', label: 'Basic Info', icon: Package },
+    { id: 'variants', label: 'Variants & Options', icon: Layers },
+    { id: 'shipping', label: 'Shipping & Lead Times', icon: Truck },
+    { id: 'pricing', label: 'Pricing Tiers', icon: Percent },
+    { id: 'addons', label: 'Add-ons', icon: Plus },
+    { id: 'seo', label: 'SEO', icon: FileText },
+  ];
+
+  return (
+    <div className="min-w-0">
+      <div className="mb-6 space-y-4">
+        <Link href="/admin/products" className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-emerald-600">
+          <ArrowLeft className="h-4 w-4" />Back to Products
+        </Link>
+        <div>
+          <h1 className="text-xl font-bold text-gray-900">{isNew ? 'Add New Product' : 'Edit Product'}</h1>
+          <p className="text-sm text-muted-foreground">{isNew ? 'Create a new product' : 'Update product details'}</p>
+        </div>
+        <div className="flex gap-2">
+          {!isNew && (
+            <Button variant="outline" onClick={handleDelete} disabled={isDeleting} className="flex-1 text-red-600 hover:bg-red-50">
+              {isDeleting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Trash2 className="mr-2 h-4 w-4" />}Delete
+            </Button>
+          )}
+          <Button onClick={handleSave} disabled={isSaving} className="flex-1">
+            {isSaving ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Saving...</> : <><Save className="mr-2 h-4 w-4" />{isNew ? 'Create' : 'Save'}</>}
+          </Button>
+        </div>
+      </div>
+
+      {error && <div className="mb-6 flex items-center gap-2 rounded-lg bg-red-50 p-4 text-red-700"><AlertCircle className="h-5 w-5" />{error}</div>}
+      {success && <div className="mb-6 flex items-center gap-2 rounded-lg bg-emerald-50 p-4 text-emerald-700"><CheckCircle className="h-5 w-5" />{success}</div>}
+
+      <div className="mb-6 flex flex-wrap gap-2 border-b">
+        {tabs.map((tab) => {
+          const Icon = tab.icon;
+          return (
+            <button key={tab.id} onClick={() => setActiveTab(tab.id)}
+              className={`flex items-center gap-2 border-b-2 px-4 py-3 text-sm font-medium transition-colors ${activeTab === tab.id ? 'border-emerald-600 text-emerald-600' : 'border-transparent text-gray-600 hover:border-gray-300'}`}>
+              <Icon className="h-4 w-4" />{tab.label}
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-3">
+        <div className="space-y-6 lg:col-span-2">
+          {activeTab === 'basic' && (
+            <>
+              <Card>
+                <CardHeader><CardTitle>Basic Information</CardTitle></CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <Label htmlFor="name">Product Name *</Label>
+                    <Input id="name" value={product.name} onChange={handleNameChange} placeholder="e.g., PVC Banner" className="mt-1" />
+                  </div>
+                  <div>
+                    <Label htmlFor="slug">URL Slug</Label>
+                    <Input id="slug" value={product.slug} onChange={(e) => setProduct({ ...product, slug: e.target.value })} placeholder="pvc-banner" className="mt-1" />
+                  </div>
+                  <div>
+                    <Label htmlFor="description">Description</Label>
+                    <textarea id="description" value={product.description} onChange={(e) => setProduct({ ...product, description: e.target.value })}
+                      placeholder="Describe your product..." rows={4} className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" />
+                  </div>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div>
+                      <Label htmlFor="category">Category</Label>
+                      <Input id="category" value={product.category} onChange={(e) => setProduct({ ...product, category: e.target.value })} placeholder="e.g., pvc-banners" className="mt-1" />
+                    </div>
+                    <div>
+                      <Label htmlFor="sku">SKU</Label>
+                      <Input id="sku" value={product.sku} onChange={(e) => setProduct({ ...product, sku: e.target.value })} placeholder="e.g., BNR-PVC-001" className="mt-1" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader><CardTitle>Base Pricing</CardTitle></CardHeader>
+                <CardContent>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div>
+                      <Label htmlFor="base_price">Base Price (CAD) *</Label>
+                      <div className="relative mt-1">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                        <Input id="base_price" type="number" step="0.01" min="0" value={product.base_price} onChange={(e) => setProduct({ ...product, base_price: e.target.value })} placeholder="0.00" className="pl-7" />
+                      </div>
+                    </div>
+                    <div>
+                      <Label htmlFor="compare_price">Compare at Price</Label>
+                      <div className="relative mt-1">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                        <Input id="compare_price" type="number" step="0.01" min="0" value={product.compare_price} onChange={(e) => setProduct({ ...product, compare_price: e.target.value })} placeholder="0.00" className="pl-7" />
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </>
+          )}
+
+          {activeTab === 'variants' && (
+            <>
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div><CardTitle>Sizes</CardTitle><CardDescription>Define available size options</CardDescription></div>
+                    <Button variant="outline" size="sm" onClick={() => addArrayItem('sizes', { label: '', price: 0 })}><Plus className="mr-1 h-4 w-4" />Add Size</Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  {product.sizes.length === 0 ? <p className="text-center text-sm text-gray-500 py-4">No sizes defined</p> : (
+                    <div className="space-y-3">
+                      {product.sizes.map((size, index) => (
+                        <div key={size.id || index} className="flex items-center gap-3 rounded-lg border p-3">
+                          <GripVertical className="h-4 w-4 text-gray-400" />
+                          <Input value={size.label} onChange={(e) => updateArrayItem('sizes', index, { label: e.target.value })} placeholder="Size label (e.g., 3×6 ft)" className="flex-1" />
+                          <div className="relative w-32">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                            <Input type="number" step="0.01" value={size.price} onChange={(e) => updateArrayItem('sizes', index, { price: parseFloat(e.target.value) || 0 })} className="pl-7" />
+                          </div>
+                          <Button variant="ghost" size="sm" onClick={() => removeArrayItem('sizes', index)} className="text-red-600 hover:bg-red-50"><X className="h-4 w-4" /></Button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div><CardTitle>Materials</CardTitle><CardDescription>Define material options with price modifiers</CardDescription></div>
+                    <Button variant="outline" size="sm" onClick={() => addArrayItem('materials', { label: '', price: 0, description: '' })}><Plus className="mr-1 h-4 w-4" />Add Material</Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  {product.materials.length === 0 ? <p className="text-center text-sm text-gray-500 py-4">No materials defined</p> : (
+                    <div className="space-y-3">
+                      {product.materials.map((material, index) => (
+                        <div key={material.id || index} className="rounded-lg border p-4">
+                          <div className="flex items-start gap-3">
+                            <GripVertical className="mt-2 h-4 w-4 text-gray-400" />
+                            <div className="flex-1 space-y-3">
+                              <div className="flex gap-3">
+                                <Input value={material.label} onChange={(e) => updateArrayItem('materials', index, { label: e.target.value })} placeholder="Material name" className="flex-1" />
+                                <div className="relative w-32">
+                                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                                  <Input type="number" step="0.01" value={material.price} onChange={(e) => updateArrayItem('materials', index, { price: parseFloat(e.target.value) || 0 })} className="pl-7" />
+                                </div>
+                              </div>
+                              <Input value={material.description || ''} onChange={(e) => updateArrayItem('materials', index, { description: e.target.value })} placeholder="Description (e.g., Best for outdoor use)" />
+                            </div>
+                            <Button variant="ghost" size="sm" onClick={() => removeArrayItem('materials', index)} className="text-red-600 hover:bg-red-50"><X className="h-4 w-4" /></Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div><CardTitle>Finishing Options</CardTitle><CardDescription>Optional add-on finishings</CardDescription></div>
+                    <Button variant="outline" size="sm" onClick={() => addArrayItem('finishings', { label: '', price: 0, description: '' })}><Plus className="mr-1 h-4 w-4" />Add Finishing</Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  {product.finishings.length === 0 ? <p className="text-center text-sm text-gray-500 py-4">No finishings defined</p> : (
+                    <div className="space-y-3">
+                      {product.finishings.map((finishing, index) => (
+                        <div key={finishing.id || index} className="rounded-lg border p-4">
+                          <div className="flex items-start gap-3">
+                            <GripVertical className="mt-2 h-4 w-4 text-gray-400" />
+                            <div className="flex-1 space-y-3">
+                              <div className="flex gap-3">
+                                <Input value={finishing.label} onChange={(e) => updateArrayItem('finishings', index, { label: e.target.value })} placeholder="Finishing name" className="flex-1" />
+                                <div className="relative w-32">
+                                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                                  <Input type="number" step="0.01" value={finishing.price} onChange={(e) => updateArrayItem('finishings', index, { price: parseFloat(e.target.value) || 0 })} className="pl-7" />
+                                </div>
+                              </div>
+                              <Input value={finishing.description || ''} onChange={(e) => updateArrayItem('finishings', index, { description: e.target.value })} placeholder="Description" />
+                            </div>
+                            <Button variant="ghost" size="sm" onClick={() => removeArrayItem('finishings', index)} className="text-red-600 hover:bg-red-50"><X className="h-4 w-4" /></Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </>
+          )}
+
+          {activeTab === 'shipping' && (
+            <>
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div><CardTitle>Lead Times / Turnaround</CardTitle><CardDescription>Define production and shipping timelines</CardDescription></div>
+                    <Button variant="outline" size="sm" onClick={() => addArrayItem('lead_times', { label: '', price: 0, days: 5 })}><Plus className="mr-1 h-4 w-4" />Add Lead Time</Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  {product.lead_times.length === 0 ? <p className="text-center text-sm text-gray-500 py-4">No lead times defined</p> : (
+                    <div className="space-y-3">
+                      {product.lead_times.map((lt, index) => (
+                        <div key={lt.id || index} className="flex items-center gap-3 rounded-lg border p-3">
+                          <GripVertical className="h-4 w-4 text-gray-400" />
+                          <Input value={lt.label} onChange={(e) => updateArrayItem('lead_times', index, { label: e.target.value })} placeholder="Label (e.g., Standard 5-7 days)" className="flex-1" />
+                          <div className="w-20">
+                            <Input type="number" value={lt.days} onChange={(e) => updateArrayItem('lead_times', index, { days: parseInt(e.target.value) || 0 })} placeholder="Days" />
+                          </div>
+                          <div className="relative w-28">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                            <Input type="number" step="0.01" value={lt.price} onChange={(e) => updateArrayItem('lead_times', index, { price: parseFloat(e.target.value) || 0 })} placeholder="Fee" className="pl-7" />
+                          </div>
+                          <Button variant="ghost" size="sm" onClick={() => removeArrayItem('lead_times', index)} className="text-red-600 hover:bg-red-50"><X className="h-4 w-4" /></Button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader><CardTitle>Shipping Details</CardTitle></CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div>
+                      <Label htmlFor="shipping_weight">Weight (lbs)</Label>
+                      <Input id="shipping_weight" type="number" step="0.1" value={product.shipping_weight} onChange={(e) => setProduct({ ...product, shipping_weight: e.target.value })} placeholder="0.0" className="mt-1" />
+                    </div>
+                    <div>
+                      <Label htmlFor="free_shipping_threshold">Free Shipping Above ($)</Label>
+                      <div className="relative mt-1">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                        <Input id="free_shipping_threshold" type="number" step="0.01" value={product.free_shipping_threshold} onChange={(e) => setProduct({ ...product, free_shipping_threshold: e.target.value })} placeholder="150.00" className="pl-7" />
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <Label>Package Dimensions (inches)</Label>
+                    <div className="mt-1 grid grid-cols-3 gap-3">
+                      <Input type="number" step="0.1" value={product.shipping_dimensions.length} onChange={(e) => setProduct({ ...product, shipping_dimensions: { ...product.shipping_dimensions, length: e.target.value } })} placeholder="Length" />
+                      <Input type="number" step="0.1" value={product.shipping_dimensions.width} onChange={(e) => setProduct({ ...product, shipping_dimensions: { ...product.shipping_dimensions, width: e.target.value } })} placeholder="Width" />
+                      <Input type="number" step="0.1" value={product.shipping_dimensions.height} onChange={(e) => setProduct({ ...product, shipping_dimensions: { ...product.shipping_dimensions, height: e.target.value } })} placeholder="Height" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </>
+          )}
+
+          {activeTab === 'pricing' && (
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div><CardTitle>Volume Pricing Tiers</CardTitle><CardDescription>Set quantity-based discounts</CardDescription></div>
+                  <Button variant="outline" size="sm" onClick={() => addArrayItem('tier_pricing', { minQty: 1, maxQty: null, discount: 0 })}><Plus className="mr-1 h-4 w-4" />Add Tier</Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                {product.tier_pricing.length === 0 ? <p className="text-center text-sm text-gray-500 py-4">No pricing tiers defined</p> : (
+                  <div className="space-y-3">
+                    {product.tier_pricing.map((tier, index) => (
+                      <div key={index} className="flex items-center gap-3 rounded-lg border p-3">
+                        <div className="flex items-center gap-2">
+                          <Input type="number" value={tier.minQty} onChange={(e) => updateArrayItem('tier_pricing', index, { minQty: parseInt(e.target.value) || 1 })} placeholder="Min" className="w-20" />
+                          <span className="text-gray-500">to</span>
+                          <Input type="number" value={tier.maxQty || ''} onChange={(e) => updateArrayItem('tier_pricing', index, { maxQty: e.target.value ? parseInt(e.target.value) : null })} placeholder="∞" className="w-20" />
+                          <span className="text-gray-500">units</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Input type="number" value={tier.discount} onChange={(e) => updateArrayItem('tier_pricing', index, { discount: parseInt(e.target.value) || 0 })} placeholder="0" className="w-20" />
+                          <span className="text-gray-500">% off</span>
+                        </div>
+                        <Button variant="ghost" size="sm" onClick={() => removeArrayItem('tier_pricing', index)} className="text-red-600 hover:bg-red-50"><X className="h-4 w-4" /></Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
+          {activeTab === 'addons' && (
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div><CardTitle>Product Add-ons</CardTitle><CardDescription>Additional services customers can add</CardDescription></div>
+                  <Button variant="outline" size="sm" onClick={() => addArrayItem('addons', { label: '', price: 0, description: '' })}><Plus className="mr-1 h-4 w-4" />Add Add-on</Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                {product.addons.length === 0 ? (
+                  <div className="text-center py-8">
+                    <p className="text-sm text-gray-500">No add-ons defined</p>
+                    <p className="mt-1 text-xs text-gray-400">Examples: Design proof, Rush processing, Gift wrapping</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {product.addons.map((addon, index) => (
+                      <div key={addon.id || index} className="rounded-lg border p-4">
+                        <div className="flex items-start gap-3">
+                          <GripVertical className="mt-2 h-4 w-4 text-gray-400" />
+                          <div className="flex-1 space-y-3">
+                            <div className="flex gap-3">
+                              <Input value={addon.label} onChange={(e) => updateArrayItem('addons', index, { label: e.target.value })} placeholder="Add-on name" className="flex-1" />
+                              <div className="relative w-32">
+                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                                <Input type="number" step="0.01" value={addon.price} onChange={(e) => updateArrayItem('addons', index, { price: parseFloat(e.target.value) || 0 })} className="pl-7" />
+                              </div>
+                            </div>
+                            <Input value={addon.description || ''} onChange={(e) => updateArrayItem('addons', index, { description: e.target.value })} placeholder="Description" />
+                          </div>
+                          <Button variant="ghost" size="sm" onClick={() => removeArrayItem('addons', index)} className="text-red-600 hover:bg-red-50"><X className="h-4 w-4" /></Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
+          {activeTab === 'seo' && (
+            <Card>
+              <CardHeader><CardTitle>Search Engine Optimization</CardTitle></CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label htmlFor="meta_title">Meta Title</Label>
+                  <Input id="meta_title" value={product.meta_title} onChange={(e) => setProduct({ ...product, meta_title: e.target.value })} placeholder="SEO title" className="mt-1" />
+                  <p className="mt-1 text-xs text-gray-500">{product.meta_title.length}/60 characters</p>
+                </div>
+                <div>
+                  <Label htmlFor="meta_description">Meta Description</Label>
+                  <textarea id="meta_description" value={product.meta_description} onChange={(e) => setProduct({ ...product, meta_description: e.target.value })}
+                    placeholder="Brief description for search results..." rows={3} className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" />
+                  <p className="mt-1 text-xs text-gray-500">{product.meta_description.length}/160 characters</p>
+                </div>
+                <div className="rounded-lg border bg-gray-50 p-4">
+                  <p className="text-xs font-medium text-gray-500 mb-2">Search Preview</p>
+                  <div className="text-blue-600 text-lg hover:underline cursor-pointer">{product.meta_title || product.name || 'Product Title'}</div>
+                  <div className="text-emerald-700 text-sm">bannerdirect.ca/product/{product.slug || 'product-slug'}</div>
+                  <div className="text-gray-600 text-sm mt-1">{product.meta_description || product.description?.slice(0, 160) || 'Product description...'}</div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+
+        <div className="space-y-6">
+          <Card>
+            <CardHeader><CardTitle>Status</CardTitle></CardHeader>
+            <CardContent className="space-y-4">
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input type="checkbox" checked={product.is_active} onChange={(e) => setProduct({ ...product, is_active: e.target.checked })} className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" />
+                <div><p className="font-medium text-gray-900">Active</p><p className="text-sm text-gray-500">Visible on storefront</p></div>
+              </label>
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input type="checkbox" checked={product.is_featured} onChange={(e) => setProduct({ ...product, is_featured: e.target.checked })} className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500" />
+                <div><p className="font-medium text-gray-900">Featured</p><p className="text-sm text-gray-500">Show on homepage</p></div>
+              </label>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader><CardTitle>Product Image</CardTitle></CardHeader>
+            <CardContent>
+              <div className="aspect-video rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 mb-4 overflow-hidden">
+                {product.image_url ? <img src={product.image_url} alt="Product preview" className="h-full w-full object-cover" /> : <div className="flex h-full items-center justify-center"><ImageIcon className="h-12 w-12 text-gray-300" /></div>}
+              </div>
+              <div>
+                <Label htmlFor="image_url">Image URL</Label>
+                <Input id="image_url" value={product.image_url} onChange={(e) => setProduct({ ...product, image_url: e.target.value })} placeholder="https://..." className="mt-1" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}

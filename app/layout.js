@@ -1,7 +1,6 @@
 import './globals.css';
 import { Inter, Poppins } from 'next/font/google';
-import { Header } from '@/components/layout/header';
-import { Footer } from '@/components/layout/footer';
+import { Providers } from '@/components/providers/index';
 
 // =============================================================================
 // FONT OPTIMIZATION - Using next/font for automatic optimization
@@ -79,11 +78,11 @@ export const viewport = {
 // =============================================================================
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
-      <body className="flex min-h-screen flex-col font-sans antialiased">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
+    <html lang="en" className={`${inter.variable} ${poppins.variable}`} suppressHydrationWarning>
+      <body className="flex min-h-screen flex-col font-sans antialiased" suppressHydrationWarning>
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );

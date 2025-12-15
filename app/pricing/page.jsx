@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { LinkButton } from '@/components/ui/link-button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { pricingTiers } from '@/lib/mock-data';
@@ -122,12 +123,12 @@ export default function PricingPage() {
               High-quality banners printed in Canada — with pricing that scales as you do.
             </p>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <Button asChild size="lg">
-                <Link href="/product/pvc-banner-3x6">Price Your Banner</Link>
-              </Button>
-              <Button asChild variant="link" size="lg">
-                <Link href="/bulk">Request a Bulk Quote →</Link>
-              </Button>
+              <LinkButton href="/product/pvc-banner-3x6" size="lg">
+                Price Your Banner
+              </LinkButton>
+              <Link href="/bulk" className="inline-flex h-11 items-center justify-center px-6 text-base font-medium text-emerald-600 underline-offset-4 hover:underline">
+                Request a Bulk Quote →
+              </Link>
             </div>
           </div>
         </div>
@@ -267,9 +268,9 @@ export default function PricingPage() {
               Volume savings are applied automatically in the product builder. 
               For orders of 25+ banners, our bulk team can provide custom quotes.
             </p>
-            <Button asChild variant="outline" className="mt-6">
-              <Link href="/bulk">Learn About Bulk Pricing</Link>
-            </Button>
+            <LinkButton href="/bulk" variant="outline" className="mt-6">
+              Learn About Bulk Pricing
+            </LinkButton>
           </div>
         </div>
       </section>
@@ -369,9 +370,9 @@ export default function PricingPage() {
               <p className="mt-3 text-muted-foreground">
                 Volume pricing • Dedicated support • Consistent results
               </p>
-              <Button asChild size="lg" className="mt-6">
-                <Link href="/bulk">Bulk Orders & Enterprise Pricing</Link>
-              </Button>
+              <LinkButton href="/bulk" size="lg" className="mt-6">
+                Bulk Orders & Enterprise Pricing
+              </LinkButton>
             </CardContent>
           </Card>
         </div>
@@ -413,12 +414,12 @@ export default function PricingPage() {
               See your exact price in the product builder — no surprises.
             </p>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <Button asChild size="lg">
-                <Link href="/product/pvc-banner-3x6">Start Designing</Link>
-              </Button>
-              <Button asChild variant="outline" size="lg">
-                <Link href="/bulk">Request Bulk Quote</Link>
-              </Button>
+              <LinkButton href="/product/pvc-banner-3x6" size="lg">
+                Start Designing
+              </LinkButton>
+              <LinkButton href="/bulk" variant="outline" size="lg">
+                Request Bulk Quote
+              </LinkButton>
             </div>
           </div>
         </div>

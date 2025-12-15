@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
+import { LinkButton } from '@/components/ui/link-button';
 
 function Hero({
   title,
@@ -28,14 +28,14 @@ function Hero({
             )}
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
               {primaryCta && primaryCtaHref && (
-                <Button asChild variant="cta" size="xl">
-                  <Link href={primaryCtaHref}>{primaryCta}</Link>
-                </Button>
+                <LinkButton href={primaryCtaHref} size="xl">
+                  {primaryCta}
+                </LinkButton>
               )}
               {secondaryCta && secondaryCtaHref && (
-                <Button asChild variant="outline" size="xl">
-                  <Link href={secondaryCtaHref}>{secondaryCta}</Link>
-                </Button>
+                <LinkButton href={secondaryCtaHref} variant="outline" size="xl">
+                  {secondaryCta}
+                </LinkButton>
               )}
             </div>
           </div>

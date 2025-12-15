@@ -3,6 +3,7 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { LinkButton } from '@/components/ui/link-button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -310,12 +311,10 @@ export default function HelpPage() {
               ))}
             </Accordion>
             <div className="mt-6">
-              <Button asChild>
-                <Link href="/bulk">
-                  Request a Bulk Quote
-                  <ChevronRight className="ml-2 h-4 w-4" aria-hidden="true" />
-                </Link>
-              </Button>
+              <LinkButton href="/bulk">
+                Request a Bulk Quote
+                <ChevronRight className="ml-2 h-4 w-4" aria-hidden="true" />
+              </LinkButton>
             </div>
           </section>
         </div>
@@ -335,15 +334,19 @@ export default function HelpPage() {
                   We usually respond within one business day. Real humans, not bots.
                 </p>
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
-                  <Button asChild size="lg">
-                    <a href="mailto:support@bannerdirect.ca">
-                      <Mail className="mr-2 h-4 w-4" aria-hidden="true" />
-                      Email Support
-                    </a>
-                  </Button>
-                  <Button variant="outline" size="lg" asChild>
-                    <a href="tel:+18005551234">Call 1-800-555-1234</a>
-                  </Button>
+                  <a 
+                    href="mailto:support@bannerdirect.ca"
+                    className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-emerald-500 px-6 text-base font-medium text-white shadow-sm transition-all hover:bg-emerald-600 active:bg-emerald-700"
+                  >
+                    <Mail className="h-4 w-4" aria-hidden="true" />
+                    Email Support
+                  </a>
+                  <a 
+                    href="tel:+18005551234"
+                    className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-6 text-base font-medium text-gray-700 transition-colors hover:bg-gray-50 hover:border-gray-400"
+                  >
+                    Call 1-800-555-1234
+                  </a>
                 </div>
                 <p className="mt-4 text-sm text-muted-foreground">
                   <Clock className="mr-1 inline h-4 w-4" aria-hidden="true" />
@@ -388,12 +391,12 @@ export default function HelpPage() {
               We're happy to help. Or jump straight into your order.
             </p>
             <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <Button asChild size="lg">
-                <Link href="/product/pvc-banner-3x6">Start Your Order</Link>
-              </Button>
-              <Button asChild variant="outline" size="lg">
-                <Link href="/bulk">Request a Quote</Link>
-              </Button>
+              <LinkButton href="/product/pvc-banner-3x6" size="lg">
+                Start Your Order
+              </LinkButton>
+              <LinkButton href="/bulk" variant="outline" size="lg">
+                Request a Quote
+              </LinkButton>
             </div>
           </div>
         </div>
