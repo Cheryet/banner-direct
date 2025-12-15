@@ -138,13 +138,15 @@ export function AuthProvider({ children }) {
       });
 
       if (!error) {
-        // Update profile
+        // Update profile with new fields
         await supabase
           .from('profiles')
           .update({
             email,
             is_anonymous: false,
-            full_name: metadata.fullName,
+            first_name: metadata.firstName,
+            last_name: metadata.lastName,
+            phone: metadata.phone,
           })
           .eq('id', currentUser.id);
       }
@@ -152,12 +154,16 @@ export function AuthProvider({ children }) {
       return { data, error };
     }
 
-    // Create new account
+    // Create new account - metadata will be used by handle_new_user trigger
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        data: metadata,
+        data: {
+          first_name: metadata.firstName,
+          last_name: metadata.lastName,
+          phone: metadata.phone,
+        },
         emailRedirectTo: `${window.location.origin}/auth/callback`,
       },
     });

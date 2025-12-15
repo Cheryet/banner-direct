@@ -32,7 +32,7 @@ export default async function AdminLayout({ children }) {
   // Check if user is admin
   const { data: profile } = await supabase
     .from('profiles')
-    .select('role, full_name, email')
+    .select('role, first_name, last_name, email')
     .eq('id', user.id)
     .single();
 

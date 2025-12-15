@@ -47,7 +47,7 @@ export default async function AdminDashboard() {
   const [ordersResult, productsResult, customersResult] = await Promise.all([
     supabase
       .from('orders')
-      .select('id, total, status, created_at, order_number, profiles:user_id(full_name)', {
+      .select('id, total, status, created_at, order_number, profiles:user_id(first_name, last_name)', {
         count: 'exact',
       }),
     supabase.from('products').select('id', { count: 'exact' }),
@@ -351,7 +351,9 @@ export default async function AdminDashboard() {
                           {order.order_number || `#${order.id.slice(0, 8)}`}
                         </p>
                         <p className="text-sm text-gray-500">
-                          {order.profiles?.full_name || 'Guest'}
+                          {order.profiles?.first_name || order.profiles?.last_name
+                            ? `${order.profiles?.first_name || ''} ${order.profiles?.last_name || ''}`.trim()
+                            : 'Guest'}
                         </p>
                       </div>
                     </div>

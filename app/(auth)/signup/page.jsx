@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { Mail, Lock, User, ArrowRight, Loader2, CheckCircle, ShoppingCart } from 'lucide-react';
+import { Mail, Lock, User, ArrowRight, Loader2, CheckCircle, ShoppingCart, Phone } from 'lucide-react';
 
 function SignUpPageContent() {
   const searchParams = useSearchParams();
@@ -20,8 +20,10 @@ function SignUpPageContent() {
 
   const { signUp, isAnonymous, user } = useAuth();
 
-  const [fullName, setFullName] = React.useState('');
+  const [firstName, setFirstName] = React.useState('');
+  const [lastName, setLastName] = React.useState('');
   const [email, setEmail] = React.useState('');
+  const [phone, setPhone] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState(null);
@@ -38,7 +40,19 @@ function SignUpPageContent() {
       return;
     }
 
-    const { error } = await signUp(email, password, { fullName });
+    if (!firstName.trim() || !lastName.trim()) {
+      setError('Please enter your first and last name');
+      setIsLoading(false);
+      return;
+    }
+
+    if (!phone.trim()) {
+      setError('Please enter your phone number');
+      setIsLoading(false);
+      return;
+    }
+
+    const { error } = await signUp(email, password, { firstName: firstName.trim(), lastName: lastName.trim(), phone: phone.trim() });
 
     if (error) {
       setError(error.message);
@@ -115,19 +129,34 @@ function SignUpPageContent() {
           )}
 
           <form onSubmit={handleSignUp} className="space-y-4">
-            <div>
-              <Label htmlFor="fullName">Full Name</Label>
-              <div className="relative mt-1">
-                <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  id="fullName"
-                  type="text"
-                  placeholder="John Smith"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  className="pl-10"
-                  required
-                />
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label htmlFor="firstName">First Name</Label>
+                <div className="relative mt-1">
+                  <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    id="firstName"
+                    type="text"
+                    placeholder="John"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    className="pl-10"
+                    required
+                  />
+                </div>
+              </div>
+              <div>
+                <Label htmlFor="lastName">Last Name</Label>
+                <div className="relative mt-1">
+                  <Input
+                    id="lastName"
+                    type="text"
+                    placeholder="Smith"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    required
+                  />
+                </div>
               </div>
             </div>
 
@@ -141,6 +170,22 @@ function SignUpPageContent() {
                   placeholder="you@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  className="pl-10"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="phone">Phone Number</Label>
+              <div className="relative mt-1">
+                <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  id="phone"
+                  type="tel"
+                  placeholder="(555) 123-4567"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                   className="pl-10"
                   required
                 />

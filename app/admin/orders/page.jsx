@@ -18,7 +18,8 @@ export default async function AdminOrdersPage({ searchParams }) {
       *,
       profiles:user_id (
         id,
-        full_name,
+        first_name,
+        last_name,
         email,
         phone
       ),

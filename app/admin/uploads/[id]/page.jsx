@@ -76,7 +76,8 @@ export default function AdminUploadDetailPage({ params }) {
           *,
           profiles:user_id (
             id,
-            full_name,
+            first_name,
+            last_name,
             email,
             phone
           )
@@ -372,13 +373,15 @@ export default function AdminUploadDetailPage({ params }) {
               <CardContent className="space-y-3">
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-sm font-medium text-emerald-700">
-                    {(upload.profiles.full_name || upload.profiles.email || 'U')
+                    {(upload.profiles.first_name || upload.profiles.email || 'U')
                       .charAt(0)
                       .toUpperCase()}
                   </div>
                   <div>
                     <p className="font-medium text-gray-900">
-                      {upload.profiles.full_name || 'No name'}
+                      {upload.profiles.first_name || upload.profiles.last_name
+                        ? `${upload.profiles.first_name || ''} ${upload.profiles.last_name || ''}`.trim()
+                        : 'No name'}
                     </p>
                     {upload.profiles.email && (
                       <p className="text-sm text-gray-500">{upload.profiles.email}</p>

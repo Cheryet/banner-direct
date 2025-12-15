@@ -96,7 +96,8 @@ export default async function AdminUploadsPage({ searchParams }) {
       `
       *,
       profiles:user_id (
-        full_name,
+        first_name,
+        last_name,
         email
       )
     `,
@@ -265,7 +266,9 @@ export default async function AdminUploadsPage({ searchParams }) {
                       <div className="flex items-center gap-1.5">
                         <User className="h-3.5 w-3.5" />
                         <span className="truncate">
-                          {upload.profiles?.full_name || upload.profiles?.email || 'Unknown'}
+                          {upload.profiles?.first_name || upload.profiles?.last_name
+                            ? `${upload.profiles?.first_name || ''} ${upload.profiles?.last_name || ''}`.trim()
+                            : upload.profiles?.email || 'Unknown'}
                         </span>
                       </div>
                       <div className="flex items-center gap-1.5">

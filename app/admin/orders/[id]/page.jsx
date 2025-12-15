@@ -301,7 +301,8 @@ export default function AdminOrderDetailPage({ params }) {
           *,
           profiles:user_id (
             id,
-            full_name,
+            first_name,
+            last_name,
             email,
             phone
           ),
@@ -881,7 +882,9 @@ export default function AdminOrderDetailPage({ params }) {
             <CardContent className="space-y-3">
               <div>
                 <p className="font-medium text-gray-900">
-                  {order.profiles?.full_name || 'Guest Customer'}
+                  {order.profiles?.first_name || order.profiles?.last_name
+                    ? `${order.profiles?.first_name || ''} ${order.profiles?.last_name || ''}`.trim()
+                    : 'Guest Customer'}
                 </p>
               </div>
               {order.profiles?.email && (

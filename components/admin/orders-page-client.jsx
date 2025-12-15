@@ -195,7 +195,11 @@ function OrderCard({ order, selected, onSelect, onQuickAction }) {
 
       <div className="mt-3 flex items-center justify-between">
         <div>
-          <p className="font-medium text-gray-900">{order.profiles?.full_name || 'Guest'}</p>
+          <p className="font-medium text-gray-900">
+            {order.profiles?.first_name || order.profiles?.last_name
+              ? `${order.profiles?.first_name || ''} ${order.profiles?.last_name || ''}`.trim()
+              : 'Guest'}
+          </p>
           <p className="text-sm text-gray-500">
             {itemCount} item{itemCount !== 1 ? 's' : ''}
           </p>
@@ -294,7 +298,8 @@ export function OrdersPageClient({ initialOrders }) {
       const matchesSearch =
         !search ||
         order.order_number?.toLowerCase().includes(search.toLowerCase()) ||
-        order.profiles?.full_name?.toLowerCase().includes(search.toLowerCase()) ||
+        order.profiles?.first_name?.toLowerCase().includes(search.toLowerCase()) ||
+        order.profiles?.last_name?.toLowerCase().includes(search.toLowerCase()) ||
         order.profiles?.email?.toLowerCase().includes(search.toLowerCase());
       const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
       return matchesSearch && matchesStatus;
@@ -623,7 +628,9 @@ export function OrdersPageClient({ initialOrders }) {
                         </td>
                         <td className="px-4 py-3">
                           <p className="font-medium text-gray-900">
-                            {order.profiles?.full_name || 'Guest'}
+                            {order.profiles?.first_name || order.profiles?.last_name
+                              ? `${order.profiles?.first_name || ''} ${order.profiles?.last_name || ''}`.trim()
+                              : 'Guest'}
                           </p>
                           <p className="text-sm text-gray-500">{order.profiles?.email || '—'}</p>
                         </td>

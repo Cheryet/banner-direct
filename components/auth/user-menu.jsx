@@ -69,7 +69,9 @@ export function UserMenu() {
   }
 
   // Authenticated user - show dropdown
-  const displayName = profile?.full_name || user.email?.split('@')[0] || 'Account';
+  const displayName = profile?.first_name
+    ? `${profile.first_name}${profile.last_name ? ' ' + profile.last_name : ''}`
+    : user.email?.split('@')[0] || 'Account';
   const initials = displayName.charAt(0).toUpperCase();
 
   const handleSignOut = async () => {
@@ -193,7 +195,9 @@ export function MobileUserMenu({ onNavigate }) {
     );
   }
 
-  const displayName = profile?.full_name || user.email?.split('@')[0] || 'Account';
+  const displayName = profile?.first_name
+    ? `${profile.first_name}${profile.last_name ? ' ' + profile.last_name : ''}`
+    : user.email?.split('@')[0] || 'Account';
 
   const handleSignOut = async () => {
     onNavigate?.();

@@ -195,7 +195,7 @@ function Header() {
             </div>
 
             {/* Mobile actions */}
-            <div className="flex items-center gap-1 md:hidden">
+            <div className="ml-auto flex items-center gap-1 md:hidden">
               <Link
                 href="/cart"
                 className="relative flex h-10 w-10 items-center justify-center rounded-full text-gray-500"

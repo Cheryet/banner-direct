@@ -205,11 +205,13 @@ export function AdminSidebar({ profile }) {
           <div className="border-t p-4">
             <div className="flex items-center gap-3">
               <div className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-100 text-sm font-medium text-emerald-700">
-                {(profile?.full_name || profile?.email || 'A').charAt(0).toUpperCase()}
+                {(profile?.first_name || profile?.email || 'A').charAt(0).toUpperCase()}
               </div>
               <div className="flex-1 truncate">
                 <p className="truncate text-sm font-medium text-gray-900">
-                  {profile?.full_name || 'Admin'}
+                  {profile?.first_name || profile?.last_name
+                    ? `${profile?.first_name || ''} ${profile?.last_name || ''}`.trim()
+                    : 'Admin'}
                 </p>
                 <p className="truncate text-xs text-gray-500">{profile?.email}</p>
               </div>

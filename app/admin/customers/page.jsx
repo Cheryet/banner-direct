@@ -56,7 +56,7 @@ export default async function AdminCustomersPage({ searchParams }) {
     .range(offset, offset + perPage - 1);
 
   if (search) {
-    query = query.or(`full_name.ilike.%${search}%,email.ilike.%${search}%`);
+    query = query.or(`first_name.ilike.%${search}%,last_name.ilike.%${search}%,email.ilike.%${search}%`);
   }
 
   const { data: customers, count, error } = await query;
@@ -251,13 +251,15 @@ export default async function AdminCustomersPage({ searchParams }) {
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-3">
                               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-sm font-medium text-emerald-700">
-                                {(customer.full_name || customer.email || 'U')
+                                {(customer.first_name || customer.email || 'U')
                                   .charAt(0)
                                   .toUpperCase()}
                               </div>
                               <div>
                                 <p className="font-medium text-gray-900">
-                                  {customer.full_name || 'No name'}
+                                  {customer.first_name || customer.last_name
+                                    ? `${customer.first_name || ''} ${customer.last_name || ''}`.trim()
+                                    : 'No name'}
                                 </p>
                                 {customer.company && (
                                   <p className="text-sm text-gray-500">{customer.company}</p>

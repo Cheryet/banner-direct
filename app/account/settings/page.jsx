@@ -35,7 +35,8 @@ export default function SettingsPage() {
 
   // Profile form state
   const [profileForm, setProfileForm] = React.useState({
-    full_name: '',
+    first_name: '',
+    last_name: '',
     phone: '',
     company: '',
   });
@@ -88,7 +89,8 @@ export default function SettingsPage() {
   React.useEffect(() => {
     if (profile) {
       setProfileForm({
-        full_name: profile.full_name || '',
+        first_name: profile.first_name || '',
+        last_name: profile.last_name || '',
         phone: profile.phone || '',
         company: profile.company || '',
       });
@@ -348,19 +350,34 @@ export default function SettingsPage() {
                       </p>
                     </div>
 
-                    <div className="sm:col-span-2">
-                      <Label htmlFor="full_name">Full Name</Label>
+                    <div>
+                      <Label htmlFor="first_name">First Name</Label>
                       <div className="relative mt-1">
                         <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                         <Input
-                          id="full_name"
+                          id="first_name"
                           type="text"
-                          value={profileForm.full_name}
+                          value={profileForm.first_name}
                           onChange={(e) =>
-                            setProfileForm({ ...profileForm, full_name: e.target.value })
+                            setProfileForm({ ...profileForm, first_name: e.target.value })
                           }
-                          placeholder="John Doe"
+                          placeholder="John"
                           className="pl-10"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="last_name">Last Name</Label>
+                      <div className="relative mt-1">
+                        <Input
+                          id="last_name"
+                          type="text"
+                          value={profileForm.last_name}
+                          onChange={(e) =>
+                            setProfileForm({ ...profileForm, last_name: e.target.value })
+                          }
+                          placeholder="Doe"
                         />
                       </div>
                     </div>

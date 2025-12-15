@@ -11,12 +11,13 @@ export async function PATCH(request) {
     }
 
     const body = await request.json();
-    const { full_name, phone } = body;
+    const { first_name, last_name, phone } = body;
 
     const { data, error } = await supabase
       .from('profiles')
       .update({
-        full_name,
+        first_name,
+        last_name,
         phone,
         updated_at: new Date().toISOString(),
       })

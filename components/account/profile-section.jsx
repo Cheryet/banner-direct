@@ -16,7 +16,8 @@ export function ProfileSection({ profile, user }) {
   const [error, setError] = React.useState(null);
 
   const [formData, setFormData] = React.useState({
-    full_name: profile?.full_name || '',
+    first_name: profile?.first_name || '',
+    last_name: profile?.last_name || '',
     phone: profile?.phone || '',
   });
 
@@ -51,7 +52,8 @@ export function ProfileSection({ profile, user }) {
 
   const handleCancel = () => {
     setFormData({
-      full_name: profile?.full_name || '',
+      first_name: profile?.first_name || '',
+      last_name: profile?.last_name || '',
       phone: profile?.phone || '',
     });
     setIsEditing(false);
@@ -95,15 +97,27 @@ export function ProfileSection({ profile, user }) {
 
         {isEditing ? (
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <Label htmlFor="full_name">Full Name</Label>
-              <Input
-                id="full_name"
-                value={formData.full_name}
-                onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                placeholder="Enter your name"
-                className="mt-1"
-              />
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label htmlFor="first_name">First Name</Label>
+                <Input
+                  id="first_name"
+                  value={formData.first_name}
+                  onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
+                  placeholder="First name"
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <Label htmlFor="last_name">Last Name</Label>
+                <Input
+                  id="last_name"
+                  value={formData.last_name}
+                  onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
+                  placeholder="Last name"
+                  className="mt-1"
+                />
+              </div>
             </div>
 
             <div>
@@ -139,7 +153,11 @@ export function ProfileSection({ profile, user }) {
               <User className="h-4 w-4 text-gray-400" />
               <div>
                 <p className="text-sm text-gray-500">Name</p>
-                <p className="font-medium">{profile?.full_name || 'Not set'}</p>
+                <p className="font-medium">
+                  {profile?.first_name || profile?.last_name
+                    ? `${profile?.first_name || ''} ${profile?.last_name || ''}`.trim()
+                    : 'Not set'}
+                </p>
               </div>
             </div>
 

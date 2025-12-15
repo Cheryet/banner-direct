@@ -134,7 +134,11 @@ function OrderCard({ order, onDragStart }) {
           >
             {order.order_number || `#${order.id.slice(0, 8)}`}
           </Link>
-          <p className="truncate text-xs text-gray-500">{order.profiles?.full_name || 'Guest'}</p>
+          <p className="truncate text-xs text-gray-500">
+            {order.profiles?.first_name || order.profiles?.last_name
+              ? `${order.profiles?.first_name || ''} ${order.profiles?.last_name || ''}`.trim()
+              : 'Guest'}
+          </p>
         </div>
         <span className="text-xs text-gray-400">{formatTimeAgo(order.created_at)}</span>
       </div>
@@ -235,7 +239,7 @@ export default function FulfillmentBoardPage() {
         .select(
           `
           *,
-          profiles:user_id (full_name, email),
+          profiles:user_id (first_name, last_name, email),
           order_items (id, quantity, product_name)
         `
         )
@@ -258,7 +262,8 @@ export default function FulfillmentBoardPage() {
     return orders.filter(
       (o) =>
         o.order_number?.toLowerCase().includes(term) ||
-        o.profiles?.full_name?.toLowerCase().includes(term) ||
+        o.profiles?.first_name?.toLowerCase().includes(term) ||
+        o.profiles?.last_name?.toLowerCase().includes(term) ||
         o.profiles?.email?.toLowerCase().includes(term)
     );
   }, [orders, search]);

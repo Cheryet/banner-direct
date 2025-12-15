@@ -100,11 +100,13 @@ export default async function AdminCustomerDetailPage({ params }) {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex items-center gap-3 sm:gap-4">
             <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-emerald-100 text-xl font-bold text-emerald-700 sm:h-16 sm:w-16 sm:text-2xl">
-              {(customer.full_name || customer.email || 'U').charAt(0).toUpperCase()}
+              {(customer.first_name || customer.email || 'U').charAt(0).toUpperCase()}
             </div>
             <div>
               <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">
-                {customer.full_name || 'No name'}
+                {customer.first_name || customer.last_name
+                  ? `${customer.first_name || ''} ${customer.last_name || ''}`.trim()
+                  : 'No name'}
               </h1>
               <p className="text-sm text-muted-foreground">
                 Customer since {formatDate(customer.created_at)}
