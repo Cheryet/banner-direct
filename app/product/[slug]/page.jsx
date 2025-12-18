@@ -108,7 +108,7 @@ function calculatePrice(product, options) {
 // =============================================================================
 export default function ProductPage() {
   const params = useParams();
-  
+
   // ---------------------------------------------------------------------------
   // STATE
   // ---------------------------------------------------------------------------
@@ -422,7 +422,9 @@ export default function ProductPage() {
               <div className="lg:col-span-7">
                 {/* Section 1: Product Intro */}
                 <div className="mb-6">
-                  <h1 className="text-2xl font-bold md:text-3xl">{product.title || product.name}</h1>
+                  <h1 className="text-2xl font-bold md:text-3xl">
+                    {product.title || product.name}
+                  </h1>
                   <p className="mt-2 text-muted-foreground">
                     Durable vinyl banners printed in Canada for indoor and outdoor use.
                   </p>
@@ -559,7 +561,9 @@ export default function ProductPage() {
                             )}
                           </div>
                           <span className="shrink-0 text-sm text-muted-foreground">
-                            {finishing.price > 0 ? `+${formatCurrency(finishing.price)}` : 'Included'}
+                            {finishing.price > 0
+                              ? `+${formatCurrency(finishing.price)}`
+                              : 'Included'}
                           </span>
                         </button>
                       ))}

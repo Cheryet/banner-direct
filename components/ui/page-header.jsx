@@ -4,13 +4,7 @@ import { cn } from '@/lib/utils';
  * Reusable page header component
  * Server component - no interactivity needed
  */
-export function PageHeader({
-  title,
-  description,
-  children,
-  className,
-  backLink,
-}) {
+export function PageHeader({ title, description, children, className, backLink }) {
   return (
     <div className={cn('mb-6', className)}>
       {backLink && (
@@ -25,9 +19,7 @@ export function PageHeader({
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">{title}</h1>
-          {description && (
-            <p className="text-sm text-muted-foreground">{description}</p>
-          )}
+          {description && <p className="text-sm text-muted-foreground">{description}</p>}
         </div>
         {children && <div className="flex gap-2">{children}</div>}
       </div>

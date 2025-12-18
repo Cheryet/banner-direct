@@ -29,10 +29,7 @@ function SizesEditor({ sizes, onAdd, onUpdate, onRemove }) {
         ) : (
           <div className="space-y-3">
             {sizes.map((size, index) => (
-              <div
-                key={size.id || index}
-                className="flex items-center gap-3 rounded-lg border p-3"
-              >
+              <div key={size.id || index} className="flex items-center gap-3 rounded-lg border p-3">
                 <GripVertical className="h-4 w-4 text-gray-400" />
                 <Input
                   value={size.label}
@@ -103,12 +100,16 @@ function MaterialsEditor({ materials, onAdd, onUpdate, onRemove }) {
                         className="flex-1"
                       />
                       <div className="relative w-32">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                          $
+                        </span>
                         <Input
                           type="number"
                           step="0.01"
                           value={material.price}
-                          onChange={(e) => onUpdate(index, { price: parseFloat(e.target.value) || 0 })}
+                          onChange={(e) =>
+                            onUpdate(index, { price: parseFloat(e.target.value) || 0 })
+                          }
                           className="pl-7"
                         />
                       </div>
@@ -173,12 +174,16 @@ function FinishingsEditor({ finishings, onAdd, onUpdate, onRemove }) {
                         className="flex-1"
                       />
                       <div className="relative w-32">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                          $
+                        </span>
                         <Input
                           type="number"
                           step="0.01"
                           value={finishing.price}
-                          onChange={(e) => onUpdate(index, { price: parseFloat(e.target.value) || 0 })}
+                          onChange={(e) =>
+                            onUpdate(index, { price: parseFloat(e.target.value) || 0 })
+                          }
                           className="pl-7"
                         />
                       </div>

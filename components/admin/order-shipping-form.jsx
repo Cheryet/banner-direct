@@ -74,12 +74,7 @@ export function OrderShippingForm({
  * Tracking info display card
  * Server component - displays tracking information
  */
-export function OrderTrackingInfo({
-  trackingNumber,
-  trackingCarrier,
-  onCopy,
-  trackingUrl,
-}) {
+export function OrderTrackingInfo({ trackingNumber, trackingCarrier, onCopy, trackingUrl }) {
   return (
     <Card className="mb-6 border-emerald-200 bg-emerald-50/50">
       <CardContent className="flex items-center justify-between p-4">
@@ -87,22 +82,30 @@ export function OrderTrackingInfo({
           <Truck className="h-5 w-5 text-emerald-600" />
           <div>
             <p className="font-medium text-gray-900">Tracking: {trackingNumber}</p>
-            <p className="text-sm text-gray-500 capitalize">
-              {trackingCarrier.replace('_', ' ')}
-            </p>
+            <p className="text-sm text-gray-500 capitalize">{trackingCarrier.replace('_', ' ')}</p>
           </div>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={onCopy}>
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+              />
             </svg>
           </Button>
           {trackingUrl && (
             <a href={trackingUrl} target="_blank" rel="noopener noreferrer">
               <Button variant="outline" size="sm">
                 <svg className="mr-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  />
                 </svg>
                 Track
               </Button>

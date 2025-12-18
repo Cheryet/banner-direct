@@ -12,7 +12,9 @@ export async function generateMetadata({ params }) {
   }
 
   const title = product.meta_title || `${product.title || product.name} | Banner Direct`;
-  const description = product.meta_description || product.description || 
+  const description =
+    product.meta_description ||
+    product.description ||
     `Order custom ${product.title || product.name}. Made in Canada with fast shipping.`;
 
   return {

@@ -20,9 +20,7 @@ export function OrderItemCard({ item }) {
         )}
       </div>
       <div className="min-w-0 flex-1">
-        <h3 className="font-medium text-gray-900 text-sm sm:text-base">
-          {item.product_name}
-        </h3>
+        <h3 className="font-medium text-gray-900 text-sm sm:text-base">{item.product_name}</h3>
         {item.product_options && (
           <div className="mt-1 flex flex-wrap gap-1 sm:gap-2">
             {typeof item.product_options === 'object' ? (
@@ -32,9 +30,7 @@ export function OrderItemCard({ item }) {
                   className="inline-flex rounded-full bg-gray-100 px-2 py-0.5 text-xs"
                 >
                   <span className="font-medium text-gray-700">{key}:</span>
-                  <span className="ml-1 text-gray-600">
-                    {String(value).substring(0, 20)}
-                  </span>
+                  <span className="ml-1 text-gray-600">{String(value).substring(0, 20)}</span>
                 </span>
               ))
             ) : (
@@ -47,9 +43,7 @@ export function OrderItemCard({ item }) {
             <span>
               Qty: <strong>{item.quantity}</strong>
             </span>
-            <span className="hidden sm:inline">
-              {formatCurrency(item.unit_price)} each
-            </span>
+            <span className="hidden sm:inline">{formatCurrency(item.unit_price)} each</span>
           </div>
           <p className="font-semibold text-gray-900 sm:hidden">
             {formatCurrency(item.unit_price * item.quantity)}
@@ -92,9 +86,7 @@ export function OrderItemCard({ item }) {
  */
 export function OrderItemsList({ items }) {
   if (!items || items.length === 0) {
-    return (
-      <p className="py-4 text-center text-sm text-gray-500">No items in this order</p>
-    );
+    return <p className="py-4 text-center text-sm text-gray-500">No items in this order</p>;
   }
 
   return (

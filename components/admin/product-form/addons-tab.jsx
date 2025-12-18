@@ -45,19 +45,27 @@ export function ProductAddonsTab({ product, onAddItem, onUpdateItem, onRemoveIte
                         className="flex-1"
                       />
                       <div className="relative w-32">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                          $
+                        </span>
                         <Input
                           type="number"
                           step="0.01"
                           value={addon.price}
-                          onChange={(e) => onUpdateItem('addons', index, { price: parseFloat(e.target.value) || 0 })}
+                          onChange={(e) =>
+                            onUpdateItem('addons', index, {
+                              price: parseFloat(e.target.value) || 0,
+                            })
+                          }
                           className="pl-7"
                         />
                       </div>
                     </div>
                     <Input
                       value={addon.description || ''}
-                      onChange={(e) => onUpdateItem('addons', index, { description: e.target.value })}
+                      onChange={(e) =>
+                        onUpdateItem('addons', index, { description: e.target.value })
+                      }
                       placeholder="Description"
                     />
                   </div>

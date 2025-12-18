@@ -11,7 +11,7 @@ export default async function sitemap() {
   const { getProducts } = await import('@/lib/products');
   const { getCategories } = await import('@/lib/db/categories');
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://bannerdirect.ca';
-  
+
   // Static pages
   const staticPages = [
     {

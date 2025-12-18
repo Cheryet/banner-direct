@@ -27,7 +27,7 @@ import { formatCurrency, formatRelativeTime } from '@/lib/format';
 import { ORDER_PIPELINE, STATUS_COLORS } from '@/lib/constants/orders';
 
 // Board uses a subset of pipeline stages
-const PIPELINE_STAGES = ORDER_PIPELINE.filter(s => 
+const PIPELINE_STAGES = ORDER_PIPELINE.filter((s) =>
   ['pending', 'confirmed', 'processing', 'printing', 'quality_check', 'shipped'].includes(s.id)
 );
 
@@ -70,7 +70,6 @@ const COLORS = {
   },
 };
 
-
 function OrderCard({ order, onDragStart }) {
   const itemCount = order.order_items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
 
@@ -92,7 +91,7 @@ function OrderCard({ order, onDragStart }) {
             {order.order_number || `#${order.id.slice(0, 8)}`}
           </Link>
           <p className="truncate text-xs text-gray-500">
-            {order.customer_name || 
+            {order.customer_name ||
               (order.profiles?.first_name || order.profiles?.last_name
                 ? `${order.profiles?.first_name || ''} ${order.profiles?.last_name || ''}`.trim()
                 : 'Guest')}
@@ -194,11 +193,11 @@ export default function FulfillmentBoardPage() {
       try {
         const response = await fetch('/api/admin/orders?exclude=cancelled,refunded');
         const data = await response.json();
-        
+
         if (!response.ok) {
           throw new Error(data.error || 'Failed to load orders');
         }
-        
+
         setOrders(data.orders || []);
       } catch (err) {
         console.error('Fulfillment board fetch error:', err);

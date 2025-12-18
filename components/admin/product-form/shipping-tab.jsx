@@ -30,10 +30,7 @@ function LeadTimesEditor({ leadTimes, onAdd, onUpdate, onRemove }) {
         ) : (
           <div className="space-y-3">
             {leadTimes.map((lt, index) => (
-              <div
-                key={lt.id || index}
-                className="flex items-center gap-3 rounded-lg border p-3"
-              >
+              <div key={lt.id || index} className="flex items-center gap-3 rounded-lg border p-3">
                 <GripVertical className="h-4 w-4 text-gray-400" />
                 <Input
                   value={lt.label}
@@ -168,7 +165,13 @@ function ShippingDimensionsEditor({ product, onUpdate }) {
 /**
  * Product Shipping Tab - combines lead times and shipping details
  */
-export function ProductShippingTab({ product, onProductUpdate, onAddItem, onUpdateItem, onRemoveItem }) {
+export function ProductShippingTab({
+  product,
+  onProductUpdate,
+  onAddItem,
+  onUpdateItem,
+  onRemoveItem,
+}) {
   return (
     <>
       <LeadTimesEditor
@@ -177,10 +180,7 @@ export function ProductShippingTab({ product, onProductUpdate, onAddItem, onUpda
         onUpdate={(index, updates) => onUpdateItem('lead_times', index, updates)}
         onRemove={(index) => onRemoveItem('lead_times', index)}
       />
-      <ShippingDimensionsEditor
-        product={product}
-        onUpdate={onProductUpdate}
-      />
+      <ShippingDimensionsEditor product={product} onUpdate={onProductUpdate} />
     </>
   );
 }

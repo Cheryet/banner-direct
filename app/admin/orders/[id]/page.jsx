@@ -42,7 +42,6 @@ import { OrderPipeline, OrderQuickActions } from '@/components/admin/order-pipel
 import { OrderItemsList } from '@/components/admin/order-item-card';
 import { OrderShippingForm, OrderTrackingInfo } from '@/components/admin/order-shipping-form';
 
-
 export default function AdminOrderDetailPage({ params }) {
   const router = useRouter();
   const [order, setOrder] = React.useState(null);

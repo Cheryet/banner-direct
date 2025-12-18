@@ -117,12 +117,12 @@ const faqs = [
 export default async function PricingPage() {
   // Fetch products to generate dynamic pricing table
   const products = await getProducts({ limit: 10 });
-  
+
   // Generate pricing tiers from actual product data
   const pricingTiers = products
-    .filter(p => p.sizes && p.sizes.length > 0)
-    .flatMap(p => 
-      p.sizes.slice(0, 3).map(size => ({
+    .filter((p) => p.sizes && p.sizes.length > 0)
+    .flatMap((p) =>
+      p.sizes.slice(0, 3).map((size) => ({
         size: size.label,
         productName: p.name || p.title,
         slug: p.slug,
@@ -148,7 +148,10 @@ export default async function PricingPage() {
               High-quality banners printed in Canada — with pricing that scales as you do.
             </p>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <LinkButton href={products[0] ? `/product/${products[0].slug}` : '/products'} size="lg">
+              <LinkButton
+                href={products[0] ? `/product/${products[0].slug}` : '/products'}
+                size="lg"
+              >
                 Price Your Banner
               </LinkButton>
               <Link
@@ -462,7 +465,10 @@ export default async function PricingPage() {
               See your exact price in the product builder — no surprises.
             </p>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <LinkButton href={products[0] ? `/product/${products[0].slug}` : '/products'} size="lg">
+              <LinkButton
+                href={products[0] ? `/product/${products[0].slug}` : '/products'}
+                size="lg"
+              >
                 Start Designing
               </LinkButton>
               <LinkButton href="/bulk" variant="outline" size="lg">

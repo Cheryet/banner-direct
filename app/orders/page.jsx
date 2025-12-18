@@ -55,7 +55,6 @@ function getStatusBadge(status) {
   );
 }
 
-
 export default async function OrdersPage() {
   const supabase = await createClient();
   const { user, error } = await getUser();

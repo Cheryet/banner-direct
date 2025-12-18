@@ -89,7 +89,6 @@ function getStatusInfo(status) {
   return statusMap[status] || statusMap.pending;
 }
 
-
 export default async function OrderDetailPage({ params }) {
   const { id } = await params;
   const supabase = await createClient();

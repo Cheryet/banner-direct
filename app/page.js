@@ -23,16 +23,19 @@ import {
 
 export const metadata = {
   title: 'Custom Banners Printed in Canada | Banner Direct',
-  description: 'Order custom vinyl banners, mesh banners, and fabric banners. Printed in Canada with fast shipping. Starting at $49.99. Free artwork review included.',
+  description:
+    'Order custom vinyl banners, mesh banners, and fabric banners. Printed in Canada with fast shipping. Starting at $49.99. Free artwork review included.',
   openGraph: {
     title: 'Custom Banners Printed in Canada | Banner Direct',
-    description: 'Order custom vinyl banners, mesh banners, and fabric banners. Printed in Canada with fast shipping.',
+    description:
+      'Order custom vinyl banners, mesh banners, and fabric banners. Printed in Canada with fast shipping.',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Custom Banners Printed in Canada | Banner Direct',
-    description: 'Order custom vinyl banners, mesh banners, and fabric banners. Printed in Canada with fast shipping.',
+    description:
+      'Order custom vinyl banners, mesh banners, and fabric banners. Printed in Canada with fast shipping.',
   },
 };
 
@@ -53,21 +56,53 @@ const iconMap = {
 
 // Default fallback data (used if settings not available)
 const defaultUseCases = [
-  { icon: 'PartyPopper', title: 'Events & Fundraisers', description: 'Birthdays, weddings, charity runs, and community events.' },
-  { icon: 'Building2', title: 'Trade Shows', description: 'Professional displays that make your booth stand out.' },
-  { icon: 'Store', title: 'Small Businesses', description: 'Storefronts, sales, grand openings, and promotions.' },
-  { icon: 'Users', title: 'Corporate & Bulk Orders', description: 'Consistent branding across locations with volume pricing.' },
+  {
+    icon: 'PartyPopper',
+    title: 'Events & Fundraisers',
+    description: 'Birthdays, weddings, charity runs, and community events.',
+  },
+  {
+    icon: 'Building2',
+    title: 'Trade Shows',
+    description: 'Professional displays that make your booth stand out.',
+  },
+  {
+    icon: 'Store',
+    title: 'Small Businesses',
+    description: 'Storefronts, sales, grand openings, and promotions.',
+  },
+  {
+    icon: 'Users',
+    title: 'Corporate & Bulk Orders',
+    description: 'Consistent branding across locations with volume pricing.',
+  },
 ];
 
 const defaultHowItWorks = [
-  { number: 1, icon: 'Package', title: 'Choose your banner', description: 'Pick a size and material that fits your needs.' },
-  { number: 2, icon: 'Upload', title: 'Upload artwork or start from a template', description: 'We accept most file formats and check every upload.' },
-  { number: 3, icon: 'Truck', title: 'We print & ship fast across Canada', description: 'Standard, rush, or same-day options available.' },
+  {
+    number: 1,
+    icon: 'Package',
+    title: 'Choose your banner',
+    description: 'Pick a size and material that fits your needs.',
+  },
+  {
+    number: 2,
+    icon: 'Upload',
+    title: 'Upload artwork or start from a template',
+    description: 'We accept most file formats and check every upload.',
+  },
+  {
+    number: 3,
+    icon: 'Truck',
+    title: 'We print & ship fast across Canada',
+    description: 'Standard, rush, or same-day options available.',
+  },
 ];
 
 const defaultHero = {
   title: 'Your banner, your way',
-  subtitle: 'Custom banners printed on commercial equipment. Fast turnaround, durable materials, and shipped across Canada.',
+  subtitle:
+    'Custom banners printed on commercial equipment. Fast turnaround, durable materials, and shipped across Canada.',
   cta_primary: { text: 'Start Creating →', href: '/products' },
   cta_secondary: { text: 'Get Bulk Pricing', href: '/bulk' },
 };
@@ -119,8 +154,14 @@ export default async function Home() {
               </div>
 
               <h1 className="text-4xl font-bold tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
-                {heroContent.title?.split(',').map((part, i) => 
-                  i === 0 ? part + ',' : <span key={i} className="text-primary">{part}</span>
+                {heroContent.title?.split(',').map((part, i) =>
+                  i === 0 ? (
+                    part + ','
+                  ) : (
+                    <span key={i} className="text-primary">
+                      {part}
+                    </span>
+                  )
                 ) || 'Your banner, your way'}
               </h1>
               <p className="mt-6 text-lg leading-relaxed text-gray-600 md:text-xl">
@@ -132,7 +173,11 @@ export default async function Home() {
                 <LinkButton href={heroContent.cta_primary?.href || '/products'} size="lg">
                   {heroContent.cta_primary?.text || 'Start Creating →'}
                 </LinkButton>
-                <LinkButton href={heroContent.cta_secondary?.href || '/bulk'} variant="outline" size="lg">
+                <LinkButton
+                  href={heroContent.cta_secondary?.href || '/bulk'}
+                  variant="outline"
+                  size="lg"
+                >
                   {heroContent.cta_secondary?.text || 'Get Bulk Pricing'}
                 </LinkButton>
               </div>

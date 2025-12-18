@@ -7,12 +7,7 @@ import { cn } from '@/lib/utils';
  * Order status select dropdown with color-coded styling
  * Client component - handles onChange interaction
  */
-export function OrderStatusSelect({
-  value,
-  onChange,
-  disabled = false,
-  className,
-}) {
+export function OrderStatusSelect({ value, onChange, disabled = false, className }) {
   const colors = STATUS_COLORS[value] || STATUS_COLORS.pending;
 
   return (

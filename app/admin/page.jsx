@@ -335,9 +335,7 @@ export default async function AdminDashboard() {
                         <p className="font-medium text-gray-900">
                           {order.order_number || `#${order.id.slice(0, 8)}`}
                         </p>
-                        <p className="text-sm text-gray-500">
-                          {order.customer_name || 'Guest'}
-                        </p>
+                        <p className="text-sm text-gray-500">{order.customer_name || 'Guest'}</p>
                       </div>
                     </div>
                     <div className="text-right">

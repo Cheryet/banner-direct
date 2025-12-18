@@ -30,13 +30,7 @@ export function AlertMessage({ variant = 'info', children, className }) {
   const Icon = config.icon;
 
   return (
-    <div
-      className={cn(
-        'flex items-center gap-2 rounded-lg p-4',
-        config.container,
-        className
-      )}
-    >
+    <div className={cn('flex items-center gap-2 rounded-lg p-4', config.container, className)}>
       <Icon className="h-5 w-5 flex-shrink-0" />
       <div className="text-sm">{children}</div>
     </div>

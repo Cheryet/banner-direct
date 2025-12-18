@@ -18,9 +18,7 @@ export function OrderStatusBadge({ status, className }) {
         className
       )}
     >
-      {statusConfig?.icon && (
-        <statusConfig.icon className="h-3 w-3" />
-      )}
+      {statusConfig?.icon && <statusConfig.icon className="h-3 w-3" />}
       {statusConfig?.label || status}
     </span>
   );

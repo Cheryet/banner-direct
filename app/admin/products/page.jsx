@@ -2,13 +2,7 @@ import { createClient } from '@/lib/supabase/server';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { LinkButton } from '@/components/ui/link-button';
 import Link from 'next/link';
-import {
-  Package,
-  Plus,
-  Eye,
-  EyeOff,
-  DollarSign,
-} from 'lucide-react';
+import { Package, Plus, Eye, EyeOff, DollarSign } from 'lucide-react';
 import { formatCurrency } from '@/lib/format';
 import { ProductsGrid } from '@/components/admin/product-card';
 

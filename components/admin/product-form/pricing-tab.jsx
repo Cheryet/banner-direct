@@ -33,10 +33,7 @@ export function ProductPricingTab({ product, onAddItem, onUpdateItem, onRemoveIt
         ) : (
           <div className="space-y-3">
             {product.tier_pricing.map((tier, index) => (
-              <div
-                key={index}
-                className="flex items-center gap-3 rounded-lg border p-3"
-              >
+              <div key={index} className="flex items-center gap-3 rounded-lg border p-3">
                 <div className="flex items-center gap-2">
                   <Input
                     type="number"

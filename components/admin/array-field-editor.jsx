@@ -41,10 +41,7 @@ export function ArrayFieldEditor({
         ) : (
           <div className="space-y-3">
             {items.map((item, index) => (
-              <div
-                key={item.id || index}
-                className="flex items-center gap-3 rounded-lg border p-3"
-              >
+              <div key={item.id || index} className="flex items-center gap-3 rounded-lg border p-3">
                 <GripVertical className="h-4 w-4 flex-shrink-0 cursor-grab text-gray-400" />
                 <div className="flex-1">{renderItem(item, index, onUpdate)}</div>
                 <Button

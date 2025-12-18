@@ -10,24 +10,25 @@ import { FileImage, Sparkles } from 'lucide-react';
 export async function generateMetadata({ searchParams }) {
   const params = await searchParams;
   const categoryFilter = params?.category;
-  
+
   if (categoryFilter && categoryFilter !== 'all') {
     return {
       title: `${categoryFilter.charAt(0).toUpperCase() + categoryFilter.slice(1)} Templates | Banner Direct`,
       description: `Browse ${categoryFilter} banner templates. Customize text, colors, and logos for quick ordering.`,
     };
   }
-  
+
   return {
     title: 'Design Templates - Custom Banners | Banner Direct',
-    description: 'Browse pre-designed banner templates. Customize text, colors, and logos for quick ordering.',
+    description:
+      'Browse pre-designed banner templates. Customize text, colors, and logos for quick ordering.',
   };
 }
 
 export default async function TemplatesPage({ searchParams }) {
   const params = await searchParams;
   const categoryFilter = params?.category || 'all';
-  
+
   // Fetch templates and categories in parallel
   const [templates, templateCategories] = await Promise.all([
     getTemplates({
@@ -55,8 +56,8 @@ export default async function TemplatesPage({ searchParams }) {
         </Link>
         {templateCategories.map((category) => (
           <Link key={category} href={`/templates?category=${category}`}>
-            <Button 
-              variant={categoryFilter === category ? 'default' : 'outline'} 
+            <Button
+              variant={categoryFilter === category ? 'default' : 'outline'}
               size="sm"
               className="capitalize"
             >

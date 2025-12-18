@@ -74,7 +74,7 @@ function OrderCard({ order, selected, onSelect, onQuickAction }) {
       <div className="mt-3 flex items-center justify-between">
         <div>
           <p className="font-medium text-gray-900">
-            {order.customer_name || 
+            {order.customer_name ||
               (order.profiles?.first_name || order.profiles?.last_name
                 ? `${order.profiles?.first_name || ''} ${order.profiles?.last_name || ''}`.trim()
                 : 'Guest')}
@@ -241,14 +241,14 @@ export function OrdersPageClient({ initialOrders }) {
     setIsUpdating(true);
     try {
       // Update each order individually via API
-      const updatePromises = selectedOrders.map(orderId =>
+      const updatePromises = selectedOrders.map((orderId) =>
         fetch('/api/admin/orders', {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ orderId, status: newStatus }),
         })
       );
-      
+
       await Promise.all(updatePromises);
       setOrders((prev) =>
         prev.map((o) => (selectedOrders.includes(o.id) ? { ...o, status: newStatus } : o))
@@ -511,12 +511,14 @@ export function OrdersPageClient({ initialOrders }) {
                         </td>
                         <td className="px-4 py-3">
                           <p className="font-medium text-gray-900">
-                            {order.customer_name || 
+                            {order.customer_name ||
                               (order.profiles?.first_name || order.profiles?.last_name
                                 ? `${order.profiles?.first_name || ''} ${order.profiles?.last_name || ''}`.trim()
                                 : 'Guest')}
                           </p>
-                          <p className="text-sm text-gray-500">{order.customer_email || order.profiles?.email || '—'}</p>
+                          <p className="text-sm text-gray-500">
+                            {order.customer_email || order.profiles?.email || '—'}
+                          </p>
                         </td>
                         <td className="px-4 py-3 text-sm text-gray-500">
                           {itemCount} item{itemCount !== 1 ? 's' : ''}

@@ -42,7 +42,7 @@ function Header() {
   const pathname = usePathname();
   const drawerRef = React.useRef(null);
   const menuButtonRef = React.useRef(null);
-  
+
   // Fetch first product for CTA link
   const { products } = useProducts({ limit: 1 });
   const ctaHref = products[0] ? `/product/${products[0].slug}` : '/products';

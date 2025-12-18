@@ -9,7 +9,7 @@ export async function GET(request) {
   try {
     // Use admin client if available, otherwise fall back to regular client
     const supabase = await createAdminClient();
-    
+
     if (!supabase) {
       return NextResponse.json({ error: 'Database not configured' }, { status: 500 });
     }
@@ -20,10 +20,12 @@ export async function GET(request) {
 
     let query = supabase
       .from('orders')
-      .select(`
+      .select(
+        `
         *,
         order_items (id, quantity, product_name)
-      `)
+      `
+      )
       .order('created_at', { ascending: false });
 
     if (status) {
@@ -32,7 +34,7 @@ export async function GET(request) {
 
     if (excludeStatuses) {
       const statusList = excludeStatuses.split(',');
-      statusList.forEach(s => {
+      statusList.forEach((s) => {
         query = query.neq('status', s.trim());
       });
     }
@@ -58,7 +60,7 @@ export async function GET(request) {
 export async function PATCH(request) {
   try {
     const supabase = await createAdminClient();
-    
+
     if (!supabase) {
       return NextResponse.json({ error: 'Database not configured' }, { status: 500 });
     }

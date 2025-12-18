@@ -125,6 +125,8 @@ function FileUpload({
     [files, onFilesChange]
   );
 
+  // Cleanup effect - intentionally only runs on unmount to revoke object URLs
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   React.useEffect(() => {
     return () => {
       files.forEach((f) => {

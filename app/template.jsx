@@ -20,7 +20,9 @@ export default function Template({ children }) {
   return (
     <>
       <Header />
-      <main id="main-content" className="flex-1">{children}</main>
+      <main id="main-content" className="flex-1">
+        {children}
+      </main>
       <Footer />
     </>
   );

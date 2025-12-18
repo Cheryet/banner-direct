@@ -12,11 +12,7 @@ export function AdminProductCard({ product, onDelete }) {
     <Card className="overflow-hidden">
       <div className="aspect-video bg-gray-100 relative">
         {product.image_url ? (
-          <img
-            src={product.image_url}
-            alt={product.name}
-            className="h-full w-full object-cover"
-          />
+          <img src={product.image_url} alt={product.name} className="h-full w-full object-cover" />
         ) : (
           <div className="flex h-full items-center justify-center">
             <Package className="h-12 w-12 text-gray-300" />

@@ -8,7 +8,7 @@ import { NextResponse } from 'next/server';
 export async function GET(request, { params }) {
   try {
     const supabase = await createAdminClient();
-    
+
     if (!supabase) {
       return NextResponse.json({ error: 'Database not configured' }, { status: 500 });
     }
@@ -17,7 +17,8 @@ export async function GET(request, { params }) {
 
     const { data, error } = await supabase
       .from('orders')
-      .select(`
+      .select(
+        `
         *,
         order_items (
           id,
@@ -27,7 +28,8 @@ export async function GET(request, { params }) {
           product_options,
           artwork_url
         )
-      `)
+      `
+      )
       .eq('id', id)
       .single();
 
@@ -50,16 +52,16 @@ export async function GET(request, { params }) {
 export async function PATCH(request, { params }) {
   try {
     const supabase = await createAdminClient();
-    
+
     if (!supabase) {
       return NextResponse.json({ error: 'Database not configured' }, { status: 500 });
     }
 
     const { id } = await params;
     const body = await request.json();
-    
+
     const updateData = { updated_at: new Date().toISOString() };
-    
+
     // Only include fields that are provided
     if (body.status !== undefined) updateData.status = body.status;
     if (body.tracking_number !== undefined) updateData.tracking_number = body.tracking_number;
