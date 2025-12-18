@@ -31,6 +31,7 @@ import {
   ChevronRight,
   Info,
 } from 'lucide-react';
+import { formatCurrency } from '@/lib/format';
 
 // =============================================================================
 // HELPER DATA - Material descriptions with "Best for..." text
@@ -449,7 +450,7 @@ export default function ProductPage() {
                         <span className="block font-medium">{size.label}</span>
                         {size.price && (
                           <span className="block text-sm text-muted-foreground">
-                            ${size.price.toFixed(2)}
+                            {formatCurrency(size.price)}
                           </span>
                         )}
                         {size.id === 'custom' && (
@@ -509,9 +510,9 @@ export default function ProductPage() {
                           </div>
                           <span className="shrink-0 text-sm font-medium">
                             {material.price > 0
-                              ? `+$${material.price}`
+                              ? `+${formatCurrency(material.price)}`
                               : material.price < 0
-                                ? `-$${Math.abs(material.price)}`
+                                ? `-${formatCurrency(Math.abs(material.price))}`
                                 : 'Included'}
                           </span>
                         </button>
@@ -558,7 +559,7 @@ export default function ProductPage() {
                             )}
                           </div>
                           <span className="shrink-0 text-sm text-muted-foreground">
-                            {finishing.price > 0 ? `+$${finishing.price}` : 'Included'}
+                            {finishing.price > 0 ? `+${formatCurrency(finishing.price)}` : 'Included'}
                           </span>
                         </button>
                       ))}
@@ -669,7 +670,7 @@ export default function ProductPage() {
                           <span
                             className={`shrink-0 font-medium ${isRush ? 'text-orange-600' : ''}`}
                           >
-                            {leadTime.price > 0 ? `+$${leadTime.price}` : 'Included'}
+                            {leadTime.price > 0 ? `+${formatCurrency(leadTime.price)}` : 'Included'}
                           </span>
                         </button>
                       );
@@ -786,11 +787,11 @@ export default function ProductPage() {
                           <>
                             <div className="flex justify-between">
                               <span className="text-muted-foreground">Unit price</span>
-                              <span>${pricing.unitPrice.toFixed(2)}</span>
+                              <span>{formatCurrency(pricing.unitPrice)}</span>
                             </div>
                             <div className="flex justify-between">
                               <span className="text-muted-foreground">Subtotal</span>
-                              <span>${subtotal.toFixed(2)}</span>
+                              <span>{formatCurrency(subtotal)}</span>
                             </div>
                           </>
                         )}
@@ -800,7 +801,7 @@ export default function ProductPage() {
                             {addOns.map((addon) => (
                               <div key={addon.name} className="flex justify-between">
                                 <span className="text-muted-foreground">{addon.name}</span>
-                                <span>+${addon.price.toFixed(2)}</span>
+                                <span>+{formatCurrency(addon.price)}</span>
                               </div>
                             ))}
                           </>
@@ -809,7 +810,7 @@ export default function ProductPage() {
                         {rushFee > 0 && (
                           <div className="flex justify-between text-orange-600">
                             <span>Rush processing</span>
-                            <span>+${rushFee.toFixed(2)}</span>
+                            <span>+{formatCurrency(rushFee)}</span>
                           </div>
                         )}
 
@@ -817,7 +818,7 @@ export default function ProductPage() {
 
                         <div className="flex justify-between text-lg font-bold">
                           <span>Total</span>
-                          <span className="text-primary">${total.toFixed(2)}</span>
+                          <span className="text-primary">{formatCurrency(total)}</span>
                         </div>
                       </div>
 
@@ -934,7 +935,7 @@ export default function ProductPage() {
         <div className="container flex items-center justify-between gap-4">
           <div>
             <p className="text-sm text-muted-foreground">Total</p>
-            <p className="text-xl font-bold text-primary">${total.toFixed(2)}</p>
+            <p className="text-xl font-bold text-primary">{formatCurrency(total)}</p>
           </div>
           <Button
             size="lg"

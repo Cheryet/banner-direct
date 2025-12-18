@@ -8,6 +8,7 @@ import { LinkButton } from '@/components/ui/link-button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent } from '@/components/ui/card';
+import { formatCurrency } from '@/lib/format';
 
 // Mock cart data
 const initialCartItems = [
@@ -88,7 +89,7 @@ export default function CartPage() {
                         </p>
                       </div>
                       <p className="font-semibold">
-                        ${(item.unitPrice * item.quantity).toFixed(2)}
+                        {formatCurrency(item.unitPrice * item.quantity)}
                       </p>
                     </div>
                     <div className="mt-auto flex items-center justify-between pt-2">
@@ -153,11 +154,11 @@ export default function CartPage() {
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Subtotal</span>
-                  <span>${subtotal.toFixed(2)}</span>
+                  <span>{formatCurrency(subtotal)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Shipping</span>
-                  <span>{shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}</span>
+                  <span>{shipping === 0 ? 'Free' : formatCurrency(shipping)}</span>
                 </div>
                 {shipping > 0 && (
                   <p className="text-xs text-muted-foreground">Free shipping on orders over $200</p>
@@ -185,7 +186,7 @@ export default function CartPage() {
 
                 <div className="flex justify-between text-lg font-bold">
                   <span>Total</span>
-                  <span className="text-primary">${total.toFixed(2)}</span>
+                  <span className="text-primary">{formatCurrency(total)}</span>
                 </div>
               </div>
 

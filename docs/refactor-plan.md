@@ -29,11 +29,22 @@
 - [x] Update board page to use shared ORDER_PIPELINE constants
 - [x] Review client/server component boundaries (all appropriate)
 
+### Phase 5 - Completed (Client-Facing Pages)
+- [x] Update `app/product/[slug]/page.jsx` to use `formatCurrency`
+- [x] Update `app/checkout/page.jsx` to use `formatCurrency`
+- [x] Update `app/cart/page.jsx` to use `formatCurrency`
+- [x] `app/bulk/page.jsx` - no currency formatting needed
+- [x] `app/account/settings/page.jsx` - no formatting needed
+
 ### Summary
 **Total file size reductions:**
 - `app/admin/orders/[id]/page.jsx`: 957 → 602 lines (37%)
 - `app/admin/products/[id]/page.jsx`: 1224 → 691 lines (44%)
 - `app/admin/products/page.jsx`: 279 → 203 lines (27%)
+
+**Files now using shared `formatCurrency` from `lib/format.js`:**
+- Admin: orders, products, customers, analytics, uploads, board
+- Client: product detail, cart, checkout, orders, reorder
 
 ---
 

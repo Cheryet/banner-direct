@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { formatCurrency } from '@/lib/format';
 
 const checkoutSteps = [
   { id: 'shipping', label: 'Shipping' },
@@ -272,22 +273,22 @@ export default function CheckoutPage() {
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Subtotal</span>
-                  <span>${orderSummary.subtotal.toFixed(2)}</span>
+                  <span>{formatCurrency(orderSummary.subtotal)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Shipping</span>
                   <span>
-                    {orderSummary.shipping === 0 ? 'Free' : `$${orderSummary.shipping.toFixed(2)}`}
+                    {orderSummary.shipping === 0 ? 'Free' : formatCurrency(orderSummary.shipping)}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Tax (HST)</span>
-                  <span>${orderSummary.tax.toFixed(2)}</span>
+                  <span>{formatCurrency(orderSummary.tax)}</span>
                 </div>
                 <Separator />
                 <div className="flex justify-between text-lg font-bold">
                   <span>Total</span>
-                  <span className="text-primary">${orderSummary.total.toFixed(2)}</span>
+                  <span className="text-primary">{formatCurrency(orderSummary.total)}</span>
                 </div>
               </div>
             </CardContent>
