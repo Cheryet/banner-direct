@@ -1,20 +1,32 @@
 # UI Refactor Plan
 
-## Status: Phase 1 Complete ✓
+## Status: Phase 3 Complete ✓
 
-### Completed
+### Phase 1 - Completed
 - [x] Created shared format utilities (`lib/format.js`)
 - [x] Created order constants (`lib/constants/orders.js`)
 - [x] Created shared UI components (LoadingSpinner, AlertMessage, EmptyState, PageHeader, StatsCard)
 - [x] Created admin components (OrderStatusBadge, OrderStatusSelect)
 - [x] Updated 10+ files to use shared utilities
-- [x] Build passes with no errors
 
-### Next Steps (Phase 2)
-- [ ] Extract OrderPipeline component from order detail page
+### Phase 2 - Completed
+- [x] Extract OrderPipeline and OrderQuickActions components
+- [x] Extract OrderItemCard and OrderItemsList components
+- [x] Extract OrderShippingForm and OrderTrackingInfo components
+- [x] Create TabNav component for reusable tab navigation
+- [x] Order detail page: 957 → 602 lines (37% reduction)
+
+### Phase 3 - Completed
+- [x] Extract ProductVariantsTab (sizes, materials, finishings)
+- [x] Extract ProductShippingTab (lead times, shipping details)
+- [x] Extract ProductPricingTab (volume discounts)
+- [x] Extract ProductAddonsTab (product add-ons)
+- [x] Product edit page: 1224 → 691 lines (44% reduction)
+
+### Next Steps (Phase 4)
 - [ ] Extract ProductCard component variations
-- [ ] Split large page components (>500 lines) into smaller pieces
 - [ ] Review and optimize client/server component boundaries
+- [ ] Extract remaining large page sections as needed
 
 ---
 
