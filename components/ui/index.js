@@ -47,3 +47,4 @@ export { AlertMessage } from './alert-message';
 export { EmptyState } from './empty-state';
 export { PageHeader } from './page-header';
 export { StatsCard } from './stats-card';
+export { TabNav } from './tab-nav';

@@ -38,6 +38,9 @@ import {
 } from 'lucide-react';
 import { ORDER_PIPELINE, STATUS_COLORS } from '@/lib/constants/orders';
 import { formatCurrency, formatDateTime, formatRelativeTime } from '@/lib/format';
+import { OrderPipeline, OrderQuickActions } from '@/components/admin/order-pipeline';
+import { OrderItemsList } from '@/components/admin/order-item-card';
+import { OrderShippingForm, OrderTrackingInfo } from '@/components/admin/order-shipping-form';
 
 function formatDate(dateString) {
   return formatDateTime(dateString);
@@ -47,109 +50,6 @@ function formatShortDate(dateString) {
   return formatRelativeTime(dateString);
 }
 
-// Pipeline Progress Component
-function OrderPipeline({ currentStatus, onStatusChange }) {
-  const currentIndex = ORDER_PIPELINE.findIndex((s) => s.id === currentStatus);
-
-  return (
-    <div className="relative">
-      <div className="flex items-center justify-between" style={{ minWidth: '500px' }}>
-        {ORDER_PIPELINE.map((stage, index) => {
-          const Icon = stage.icon;
-          const isComplete = index < currentIndex;
-          const isCurrent = index === currentIndex;
-          const colors = STATUS_COLORS[stage.id];
-
-          return (
-            <div key={stage.id} className="flex flex-1 items-center">
-              <button
-                onClick={() => onStatusChange(stage.id)}
-                className={`relative z-10 flex flex-col items-center ${isCurrent || isComplete ? 'cursor-pointer' : 'cursor-pointer opacity-60 hover:opacity-100'}`}
-              >
-                <div
-                  className={`flex h-8 w-8 items-center justify-center rounded-full border-2 transition-all sm:h-10 sm:w-10 ${
-                    isComplete
-                      ? `${colors.accent} border-transparent text-white`
-                      : isCurrent
-                        ? `${colors.bg} ${colors.border} ${colors.text}`
-                        : 'border-gray-300 bg-white text-gray-400'
-                  }`}
-                >
-                  {isComplete ? (
-                    <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5" />
-                  ) : (
-                    <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
-                  )}
-                </div>
-                <span
-                  className={`mt-1 text-xs font-medium sm:mt-2 ${isCurrent ? colors.text : isComplete ? 'text-gray-700' : 'text-gray-400'}`}
-                >
-                  {stage.label}
-                </span>
-              </button>
-              {index < ORDER_PIPELINE.length - 1 && (
-                <div
-                  className={`h-0.5 flex-1 mx-1 sm:mx-2 ${index < currentIndex ? 'bg-emerald-500' : 'bg-gray-200'}`}
-                />
-              )}
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-// Quick Action Buttons
-function QuickActions({ status, onAction, isLoading }) {
-  const currentIndex = ORDER_PIPELINE.findIndex((s) => s.id === status);
-  const nextStage =
-    currentIndex < ORDER_PIPELINE.length - 1 ? ORDER_PIPELINE[currentIndex + 1] : null;
-  const prevStage = currentIndex > 0 ? ORDER_PIPELINE[currentIndex - 1] : null;
-
-  return (
-    <div className="flex flex-wrap gap-2">
-      {prevStage && (
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => onAction(prevStage.id)}
-          disabled={isLoading}
-        >
-          <ArrowLeft className="h-4 w-4 sm:mr-1" />
-          <span className="hidden sm:inline">Back to {prevStage.label}</span>
-        </Button>
-      )}
-      {nextStage && (
-        <Button
-          size="sm"
-          onClick={() => onAction(nextStage.id)}
-          disabled={isLoading}
-          className="bg-emerald-600 hover:bg-emerald-700"
-        >
-          {isLoading ? (
-            <Loader2 className="h-4 w-4 animate-spin sm:mr-1" />
-          ) : (
-            <ArrowRight className="h-4 w-4 sm:mr-1" />
-          )}
-          <span className="hidden sm:inline">Move to</span> {nextStage.label}
-        </Button>
-      )}
-      {status !== 'cancelled' && status !== 'delivered' && (
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => onAction('cancelled')}
-          disabled={isLoading}
-          className="text-red-600 hover:bg-red-50"
-        >
-          <XCircle className="h-4 w-4 sm:mr-1" />
-          <span className="hidden sm:inline">Cancel</span>
-        </Button>
-      )}
-    </div>
-  );
-}
 
 export default function AdminOrderDetailPage({ params }) {
   const router = useRouter();
@@ -446,7 +346,7 @@ export default function AdminOrderDetailPage({ params }) {
         <CardContent className="overflow-x-auto p-4 sm:p-6">
           <OrderPipeline currentStatus={status} onStatusChange={handleStatusChange} />
           <div className="mt-4 flex flex-col gap-3 border-t pt-4 sm:mt-6 sm:flex-row sm:items-center sm:justify-between">
-            <QuickActions status={status} onAction={handleStatusChange} isLoading={isSaving} />
+            <OrderQuickActions status={status} onAction={handleStatusChange} isLoading={isSaving} />
             {order.profiles?.email && (
               <a
                 href={`mailto:${order.profiles.email}?subject=Order ${order.order_number || order.id}`}
@@ -462,81 +362,25 @@ export default function AdminOrderDetailPage({ params }) {
 
       {/* Shipping Modal */}
       {showShippingForm && (
-        <Card className="mb-6 border-emerald-300 bg-emerald-50">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-emerald-700">
-              <Truck className="h-5 w-5" />
-              Add Shipping Information
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <Label>Carrier</Label>
-                <select
-                  value={trackingCarrier}
-                  onChange={(e) => setTrackingCarrier(e.target.value)}
-                  className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm"
-                >
-                  <option value="canada_post">Canada Post</option>
-                  <option value="ups">UPS</option>
-                  <option value="fedex">FedEx</option>
-                  <option value="purolator">Purolator</option>
-                </select>
-              </div>
-              <div>
-                <Label>Tracking Number *</Label>
-                <Input
-                  value={trackingNumber}
-                  onChange={(e) => setTrackingNumber(e.target.value)}
-                  placeholder="Enter tracking number"
-                  className="mt-1"
-                />
-              </div>
-            </div>
-            <div className="mt-4 flex gap-2">
-              <Button onClick={handleSaveShipping} disabled={isSaving}>
-                {isSaving ? (
-                  <Loader2 className="mr-1 h-4 w-4 animate-spin" />
-                ) : (
-                  <Truck className="mr-1 h-4 w-4" />
-                )}
-                Mark as Shipped
-              </Button>
-              <Button variant="outline" onClick={() => setShowShippingForm(false)}>
-                Cancel
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+        <OrderShippingForm
+          trackingNumber={trackingNumber}
+          trackingCarrier={trackingCarrier}
+          onTrackingNumberChange={setTrackingNumber}
+          onTrackingCarrierChange={setTrackingCarrier}
+          onSubmit={handleSaveShipping}
+          onCancel={() => setShowShippingForm(false)}
+          isLoading={isSaving}
+        />
       )}
 
       {/* Tracking Info (if shipped) */}
       {trackingNumber && status !== 'pending' && (
-        <Card className="mb-6 border-emerald-200 bg-emerald-50/50">
-          <CardContent className="flex items-center justify-between p-4">
-            <div className="flex items-center gap-3">
-              <Truck className="h-5 w-5 text-emerald-600" />
-              <div>
-                <p className="font-medium text-gray-900">Tracking: {trackingNumber}</p>
-                <p className="text-sm text-gray-500 capitalize">
-                  {trackingCarrier.replace('_', ' ')}
-                </p>
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={() => copyToClipboard(trackingNumber)}>
-                <Copy className="h-4 w-4" />
-              </Button>
-              <a href={getTrackingUrl()} target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" size="sm">
-                  <ExternalLink className="mr-1 h-4 w-4" />
-                  Track
-                </Button>
-              </a>
-            </div>
-          </CardContent>
-        </Card>
+        <OrderTrackingInfo
+          trackingNumber={trackingNumber}
+          trackingCarrier={trackingCarrier}
+          onCopy={() => copyToClipboard(trackingNumber)}
+          trackingUrl={getTrackingUrl()}
+        />
       )}
 
       <div className="grid gap-6 lg:grid-cols-3">
@@ -551,83 +395,7 @@ export default function AdminOrderDetailPage({ params }) {
               </CardTitle>
             </CardHeader>
             <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
-              {order.order_items && order.order_items.length > 0 ? (
-                <div className="space-y-3 sm:space-y-4">
-                  {order.order_items.map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex flex-col gap-3 rounded-lg border p-3 sm:flex-row sm:items-start sm:gap-4 sm:p-4"
-                    >
-                      <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-lg bg-gray-100 overflow-hidden sm:h-20 sm:w-20">
-                        {item.artwork_url ? (
-                          <img
-                            src={item.artwork_url}
-                            alt={item.product_name}
-                            className="h-full w-full object-cover"
-                          />
-                        ) : (
-                          <Package className="h-6 w-6 text-gray-400 sm:h-8 sm:w-8" />
-                        )}
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <h3 className="font-medium text-gray-900 text-sm sm:text-base">
-                          {item.product_name}
-                        </h3>
-                        {item.product_options && (
-                          <div className="mt-1 flex flex-wrap gap-1 sm:gap-2">
-                            {typeof item.product_options === 'object' ? (
-                              Object.entries(item.product_options).map(([key, value]) => (
-                                <span
-                                  key={key}
-                                  className="inline-flex rounded-full bg-gray-100 px-2 py-0.5 text-xs"
-                                >
-                                  <span className="font-medium text-gray-700">{key}:</span>
-                                  <span className="ml-1 text-gray-600">
-                                    {String(value).substring(0, 20)}
-                                  </span>
-                                </span>
-                              ))
-                            ) : (
-                              <span className="text-sm text-gray-500">{item.product_options}</span>
-                            )}
-                          </div>
-                        )}
-                        <div className="mt-2 flex items-center justify-between text-sm text-gray-600">
-                          <div className="flex items-center gap-3">
-                            <span>
-                              Qty: <strong>{item.quantity}</strong>
-                            </span>
-                            <span className="hidden sm:inline">
-                              {formatCurrency(item.unit_price)} each
-                            </span>
-                          </div>
-                          <p className="font-semibold text-gray-900 sm:hidden">
-                            {formatCurrency(item.unit_price * item.quantity)}
-                          </p>
-                        </div>
-                        {item.artwork_url && (
-                          <a
-                            href={item.artwork_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="mt-2 inline-flex items-center gap-1 text-xs text-emerald-600 hover:text-emerald-700"
-                          >
-                            <Eye className="h-3 w-3" />
-                            View Artwork
-                          </a>
-                        )}
-                      </div>
-                      <div className="hidden text-right sm:block">
-                        <p className="text-lg font-semibold text-gray-900">
-                          {formatCurrency(item.unit_price * item.quantity)}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="py-8 text-center text-gray-500">No items found</p>
-              )}
+              <OrderItemsList items={order.order_items} />
             </CardContent>
           </Card>
 
