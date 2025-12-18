@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 import Link from 'next/link';
+import { logClientError } from '@/lib/logger';
 
 /**
  * Global Error Boundary
@@ -12,8 +13,8 @@ import Link from 'next/link';
  */
 export default function GlobalError({ error, reset }) {
   useEffect(() => {
-    // Log error to console in development
-    console.error('Application error:', error);
+    // Log error for monitoring
+    logClientError(error, { boundary: 'global' });
   }, [error]);
 
   return (
