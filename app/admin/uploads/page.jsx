@@ -29,10 +29,6 @@ export const metadata = {
   description: 'Manage customer file uploads',
 };
 
-function formatDate(dateString) {
-  return formatDateTime(dateString);
-}
-
 function getFileIcon(mimeType) {
   if (mimeType?.startsWith('image/')) return ImageIcon;
   if (mimeType?.includes('pdf')) return FileText;
@@ -245,7 +241,7 @@ export default async function AdminUploadsPage({ searchParams }) {
                       </div>
                       <div className="flex items-center gap-1.5">
                         <Calendar className="h-3.5 w-3.5" />
-                        <span>{formatDate(upload.created_at)}</span>
+                        <span>{formatDateTime(upload.created_at)}</span>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <HardDrive className="h-3.5 w-3.5" />

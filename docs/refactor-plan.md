@@ -36,6 +36,29 @@
 - [x] `app/bulk/page.jsx` - no currency formatting needed
 - [x] `app/account/settings/page.jsx` - no formatting needed
 
+### Enterprise Hardening Pass - Completed
+
+#### PHASE 1: Repo & Architecture Hygiene ✓
+- [x] Removed redundant wrapper functions (formatDate, formatTimeAgo, formatShortDate)
+- [x] Consolidated all format utilities in `lib/format.js`
+- [x] Added `formatFileSize` to shared utilities
+
+#### PHASE 4: SEO & Metadata ✓
+- [x] Added metadata to homepage with Open Graph and Twitter cards
+- [x] Created layout files for client routes (bulk, cart, checkout, help, auth)
+- [x] Products and templates pages already had `generateMetadata`
+
+#### PHASE 5: Security & Production Safety ✓
+- [x] Verified admin routes gated server-side in `app/admin/layout.jsx`
+- [x] Environment variables properly scoped (NEXT_PUBLIC_* only for client)
+- [x] Service role key server-only
+
+#### PHASE 6: Error Handling & UX Stability ✓
+- [x] Added global error boundary (`app/error.jsx`)
+- [x] Added admin error boundary (`app/admin/error.jsx`)
+- [x] Added 404 page (`app/not-found.jsx`)
+- [x] Added loading states (`app/loading.jsx`, `app/admin/loading.jsx`)
+
 ### Summary
 **Total file size reductions:**
 - `app/admin/orders/[id]/page.jsx`: 957 → 602 lines (37%)

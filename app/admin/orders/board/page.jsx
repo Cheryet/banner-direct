@@ -70,9 +70,6 @@ const COLORS = {
   },
 };
 
-function formatTimeAgo(dateString) {
-  return formatRelativeTime(dateString);
-}
 
 function OrderCard({ order, onDragStart }) {
   const itemCount = order.order_items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
@@ -101,7 +98,7 @@ function OrderCard({ order, onDragStart }) {
                 : 'Guest')}
           </p>
         </div>
-        <span className="text-xs text-gray-400">{formatTimeAgo(order.created_at)}</span>
+        <span className="text-xs text-gray-400">{formatRelativeTime(order.created_at)}</span>
       </div>
 
       <div className="mt-2 flex items-center justify-between">

@@ -5,6 +5,7 @@ import { getCategories } from '@/lib/db/categories';
 import { Card, CardContent } from '@/components/ui/card';
 import { ProductCard } from '@/components/product/product-card';
 import { LinkButton } from '@/components/ui/link-button';
+
 import {
   Printer,
   Truck,
@@ -19,6 +20,21 @@ import {
   Check,
   Shield,
 } from 'lucide-react';
+
+export const metadata = {
+  title: 'Custom Banners Printed in Canada | Banner Direct',
+  description: 'Order custom vinyl banners, mesh banners, and fabric banners. Printed in Canada with fast shipping. Starting at $49.99. Free artwork review included.',
+  openGraph: {
+    title: 'Custom Banners Printed in Canada | Banner Direct',
+    description: 'Order custom vinyl banners, mesh banners, and fabric banners. Printed in Canada with fast shipping.',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Custom Banners Printed in Canada | Banner Direct',
+    description: 'Order custom vinyl banners, mesh banners, and fabric banners. Printed in Canada with fast shipping.',
+  },
+};
 
 // Icon mapping for dynamic content
 const iconMap = {

@@ -42,14 +42,6 @@ import { OrderPipeline, OrderQuickActions } from '@/components/admin/order-pipel
 import { OrderItemsList } from '@/components/admin/order-item-card';
 import { OrderShippingForm, OrderTrackingInfo } from '@/components/admin/order-shipping-form';
 
-function formatDate(dateString) {
-  return formatDateTime(dateString);
-}
-
-function formatShortDate(dateString) {
-  return formatRelativeTime(dateString);
-}
-
 
 export default function AdminOrderDetailPage({ params }) {
   const router = useRouter();
@@ -307,7 +299,7 @@ export default function AdminOrderDetailPage({ params }) {
               </span>
             </div>
             <p className="mt-1 text-sm text-gray-500">
-              Placed {formatShortDate(order.created_at)} • {formatCurrency(order.total)}
+              Placed {formatRelativeTime(order.created_at)} • {formatCurrency(order.total)}
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -441,7 +433,7 @@ export default function AdminOrderDetailPage({ params }) {
                       <div className="flex-1">
                         <p className="text-sm text-gray-900">{activity.message}</p>
                         <p className="text-xs text-gray-500">
-                          {activity.user} • {formatShortDate(activity.timestamp)}
+                          {activity.user} • {formatRelativeTime(activity.timestamp)}
                         </p>
                       </div>
                     </div>

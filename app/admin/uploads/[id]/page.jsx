@@ -25,29 +25,7 @@ import {
   Mail,
   ExternalLink,
 } from 'lucide-react';
-
-function formatDate(dateString) {
-  return new Date(dateString).toLocaleDateString('en-CA', {
-    weekday: 'long',
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-}
-
-function formatFileSize(bytes) {
-  if (!bytes) return '—';
-  const units = ['B', 'KB', 'MB', 'GB'];
-  let size = bytes;
-  let unitIndex = 0;
-  while (size >= 1024 && unitIndex < units.length - 1) {
-    size /= 1024;
-    unitIndex++;
-  }
-  return `${size.toFixed(1)} ${units[unitIndex]}`;
-}
+import { formatDateTime, formatFileSize } from '@/lib/format';
 
 function getFileIcon(mimeType) {
   if (mimeType?.startsWith('image/')) return ImageIcon;
@@ -305,7 +283,7 @@ export default function AdminUploadDetailPage({ params }) {
                   )}
                   {upload.reviewed_at && (
                     <p className="mt-1 text-sm opacity-75">
-                      Reviewed on {formatDate(upload.reviewed_at)}
+                      Reviewed on {formatDateTime(upload.reviewed_at)}
                     </p>
                   )}
                 </div>
@@ -339,7 +317,7 @@ export default function AdminUploadDetailPage({ params }) {
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-500">Uploaded</p>
-                <p className="text-gray-900">{formatDate(upload.created_at)}</p>
+                <p className="text-gray-900">{formatDateTime(upload.created_at)}</p>
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-500">Status</p>
