@@ -49,21 +49,23 @@ export default async function TemplatesPage({ searchParams }) {
 
       {/* Category Filters */}
       <div className="mb-8 flex flex-wrap gap-2">
-        <Link href="/templates">
-          <Button variant={categoryFilter === 'all' ? 'default' : 'outline'} size="sm">
-            All Templates
-          </Button>
-        </Link>
+        <LinkButton
+          href="/templates"
+          variant={categoryFilter === 'all' ? 'default' : 'outline'}
+          size="sm"
+        >
+          All Templates
+        </LinkButton>
         {templateCategories.map((category) => (
-          <Link key={category} href={`/templates?category=${category}`}>
-            <Button
-              variant={categoryFilter === category ? 'default' : 'outline'}
-              size="sm"
-              className="capitalize"
-            >
-              {category}
-            </Button>
-          </Link>
+          <LinkButton
+            key={category}
+            href={`/templates?category=${category}`}
+            variant={categoryFilter === category ? 'default' : 'outline'}
+            size="sm"
+            className="capitalize"
+          >
+            {category}
+          </LinkButton>
         ))}
       </div>
 

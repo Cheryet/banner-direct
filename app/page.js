@@ -5,6 +5,7 @@ import { getCategories } from '@/lib/db/categories';
 import { Card, CardContent } from '@/components/ui/card';
 import { ProductCard } from '@/components/product/product-card';
 import { LinkButton } from '@/components/ui/link-button';
+import { HeroSection } from '@/components/layout/hero-section';
 
 import {
   Printer,
@@ -130,97 +131,71 @@ export default async function Home() {
   const useCases = settings.use_cases || defaultUseCases;
   const howItWorks = settings.how_it_works || defaultHowItWorks;
   const trustBadges = settings.trust_badges || defaultTrustBadges;
+  // Parse title for accent styling (split on comma)
+  const titleParts = heroContent.title?.split(',') || ['Your banner', ' your way'];
+  const mainTitle = titleParts[0] + (titleParts.length > 1 ? ',' : '');
+  const accentTitle = titleParts.length > 1 ? titleParts.slice(1).join(',') : null;
+
+  // Build trust badges component
+  const trustBadgesComponent = (
+    <div className="flex flex-wrap items-center gap-6 text-sm text-gray-500">
+      {trustBadges.map((badge, index) => (
+        <span key={index} className="flex items-center gap-2">
+          <Check className="h-5 w-5 text-emerald-500" aria-hidden="true" />
+          {badge.text}
+        </span>
+      ))}
+    </div>
+  );
+
+  // Build hero image placeholder with pricing badge
+  const heroImagePlaceholder = (
+    <>
+      <div className="flex h-full w-full items-center justify-center">
+        <div className="text-center p-8">
+          <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-2xl bg-white shadow-lg">
+            <Package className="h-12 w-12 text-emerald-500" aria-hidden="true" />
+          </div>
+          <p className="text-lg font-semibold text-gray-700">Hero Image</p>
+          <p className="mt-1 text-sm text-gray-500">
+            Trade show, event, or storefront banner
+          </p>
+        </div>
+      </div>
+      {/* Floating price badge */}
+      <div className="absolute bottom-4 left-4 z-20 rounded-lg bg-white/95 px-4 py-2 shadow-lg backdrop-blur">
+        <p className="text-xs font-medium text-gray-500">Starting from</p>
+        <p className="text-xl font-bold text-gray-900">
+          ${displayProducts[0]?.base_price?.toFixed(2) || '49.99'}
+        </p>
+      </div>
+    </>
+  );
+
   return (
     <>
       {/* ============================================
           HERO SECTION - Premium E-Commerce Style
-          Clean white with emerald accents
+          Subtle linen texture with emerald accents
           ============================================ */}
-      <section className="relative overflow-hidden bg-white">
-        {/* Subtle gradient overlay */}
-        <div
-          className="absolute inset-0 bg-gradient-to-br from-emerald-50/50 via-transparent to-transparent"
-          aria-hidden="true"
-        />
-
-        <div className="container relative">
-          <div className="grid min-h-[80vh] items-center gap-12 py-16 lg:grid-cols-2 lg:py-20">
-            {/* Left Column - Content */}
-            <div className="max-w-xl">
-              {/* Trust badge - Premium style */}
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-700">
-                <MapPin className="h-4 w-4" aria-hidden="true" />
-                Proudly Made in Canada
-              </div>
-
-              <h1 className="text-4xl font-bold tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
-                {heroContent.title?.split(',').map((part, i) =>
-                  i === 0 ? (
-                    part + ','
-                  ) : (
-                    <span key={i} className="text-primary">
-                      {part}
-                    </span>
-                  )
-                ) || 'Your banner, your way'}
-              </h1>
-              <p className="mt-6 text-lg leading-relaxed text-gray-600 md:text-xl">
-                {heroContent.subtitle}
-              </p>
-
-              {/* CTAs - Premium button styling */}
-              <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-                <LinkButton href={heroContent.cta_primary?.href || '/products'} size="lg">
-                  {heroContent.cta_primary?.text || 'Start Creating →'}
-                </LinkButton>
-                <LinkButton
-                  href={heroContent.cta_secondary?.href || '/bulk'}
-                  variant="outline"
-                  size="lg"
-                >
-                  {heroContent.cta_secondary?.text || 'Get Bulk Pricing'}
-                </LinkButton>
-              </div>
-
-              {/* Trust indicators - Clean horizontal layout */}
-              <div className="mt-12 flex flex-wrap items-center gap-6 text-sm text-gray-500">
-                {trustBadges.map((badge, index) => (
-                  <span key={index} className="flex items-center gap-2">
-                    <Check className="h-5 w-5 text-emerald-500" aria-hidden="true" />
-                    {badge.text}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Right Column - Visual */}
-            <div className="relative lg:pl-8">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-gradient-to-br from-gray-100 to-gray-50 shadow-2xl lg:aspect-[5/4]">
-                {/* Placeholder for real banner photo */}
-                <div className="flex h-full w-full items-center justify-center">
-                  <div className="text-center p-8">
-                    <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-2xl bg-white shadow-lg">
-                      <Package className="h-12 w-12 text-emerald-500" aria-hidden="true" />
-                    </div>
-                    <p className="text-lg font-semibold text-gray-700">Hero Image</p>
-                    <p className="mt-1 text-sm text-gray-500">
-                      Trade show, event, or storefront banner
-                    </p>
-                  </div>
-                </div>
-
-                {/* Floating badge */}
-                <div className="absolute bottom-4 left-4 rounded-lg bg-white/95 px-4 py-2 shadow-lg backdrop-blur">
-                  <p className="text-xs font-medium text-gray-500">Starting from</p>
-                  <p className="text-xl font-bold text-gray-900">
-                    ${displayProducts[0]?.base_price?.toFixed(2) || '49.99'}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSection
+        title={mainTitle}
+        titleAccent={accentTitle}
+        subtitle={heroContent.subtitle}
+        eyebrow="Proudly Made in Canada"
+        eyebrowIcon={<MapPin className="h-4 w-4" />}
+        primaryCta={{
+          text: heroContent.cta_primary?.text || 'Start Creating →',
+          href: heroContent.cta_primary?.href || '/products',
+        }}
+        secondaryCta={{
+          text: heroContent.cta_secondary?.text || 'Get Bulk Pricing',
+          href: heroContent.cta_secondary?.href || '/bulk',
+        }}
+        imagePlaceholder={heroImagePlaceholder}
+        texture="linen"
+        trustBadges={trustBadgesComponent}
+      />
 
       {/* ============================================
           USE-CASE SECTION - Premium Card Grid

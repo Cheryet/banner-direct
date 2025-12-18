@@ -844,7 +844,7 @@ export default function ProductPage() {
                         disabled={!isValid}
                         onClick={handleAddToCart}
                       >
-                        {isValid ? 'Add to Cart' : 'Upload Artwork to Continue'}
+                        {isValid ? 'Add to Cart' : 'Upload Artwork'}
                       </Button>
 
                       {/* Trust Badges */}

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { LinkButton } from '@/components/ui/link-button';
 import { Label } from '@/components/ui/label';
 import {
   ArrowLeft,
@@ -150,15 +151,15 @@ export default function AdminUploadDetailPage({ params }) {
           </div>
           <div className="flex gap-2">
             {upload.url && (
-              <a
+              <LinkButton
                 href={upload.url}
+                variant="outline"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 sm:w-auto"
               >
                 <Download className="h-4 w-4" />
                 Download
-              </a>
+              </LinkButton>
             )}
           </div>
         </div>

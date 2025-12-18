@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { LinkButton } from '@/components/ui/link-button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { HeroSection } from '@/components/layout/hero-section';
 import { getProducts } from '@/lib/products';
 import { getShippingZones } from '@/lib/db/shipping';
 import {
@@ -136,34 +137,24 @@ export default async function PricingPage() {
   return (
     <>
       {/* ====================================================================
-          HERO SECTION
+          HERO SECTION - Premium with dots texture
           ==================================================================== */}
-      <section className="bg-gradient-to-b from-muted/30 to-background py-16 md:py-24">
-        <div className="container">
-          <div className="mx-auto max-w-3xl text-center">
-            <h1 className="text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl">
-              Clear, Competitive Banner Pricing
-            </h1>
-            <p className="mt-6 text-lg text-muted-foreground md:text-xl">
-              High-quality banners printed in Canada — with pricing that scales as you do.
-            </p>
-            <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <LinkButton
-                href={products[0] ? `/product/${products[0].slug}` : '/products'}
-                size="lg"
-              >
-                Price Your Banner
-              </LinkButton>
-              <Link
-                href="/bulk"
-                className="inline-flex h-11 items-center justify-center px-6 text-base font-medium text-emerald-600 underline-offset-4 hover:underline"
-              >
-                Request a Bulk Quote →
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSection
+        title="Clear, Competitive Banner Pricing"
+        subtitle="High-quality banners printed in Canada — with pricing that scales as you do."
+        eyebrow="Transparent Pricing"
+        eyebrowIcon={<DollarSign className="h-4 w-4" />}
+        primaryCta={{
+          text: 'Price Your Banner',
+          href: products[0] ? `/product/${products[0].slug}` : '/products',
+        }}
+        secondaryCta={{
+          text: 'Request Bulk Quote',
+          href: '/bulk',
+        }}
+        texture="dots"
+        variant="centered"
+      />
 
       {/* ====================================================================
           HOW PRICING WORKS - Educational strip

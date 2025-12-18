@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { LinkButton } from '@/components/ui/link-button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import { HeroSection } from '@/components/layout/hero-section';
 import { MapPin, Leaf, Award, Users } from 'lucide-react';
 
 export const metadata = {
@@ -38,18 +39,18 @@ const values = [
 
 export default function AboutPage() {
   return (
-    <div className="container py-8 md:py-12">
-      {/* Hero */}
-      <div className="mx-auto max-w-3xl text-center">
-        <Badge variant="canada" className="mb-4">
-          Proudly Canadian
-        </Badge>
-        <h1 className="mb-4">About Banner Direct</h1>
-        <p className="text-lg text-muted-foreground">
-          We're a Canadian print company on a mission to make custom banners accessible, affordable,
-          and hassle-free for businesses of all sizes.
-        </p>
-      </div>
+    <>
+      {/* Hero Section - Centered variant with paper texture */}
+      <HeroSection
+        title="About Banner Direct"
+        subtitle="We're a Canadian print company on a mission to make custom banners accessible, affordable, and hassle-free for businesses of all sizes."
+        eyebrow="Proudly Canadian"
+        eyebrowIcon={<MapPin className="h-4 w-4" />}
+        texture="paper"
+        variant="centered"
+      />
+
+      <div className="container py-8 md:py-12">
 
       {/* Story */}
       <div className="mt-16 grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
@@ -169,6 +170,7 @@ export default function AboutPage() {
           </LinkButton>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

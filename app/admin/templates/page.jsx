@@ -173,20 +173,23 @@ export default async function AdminTemplatesPage({ searchParams }) {
                 <h3 className="font-semibold text-gray-900">{template.title}</h3>
                 <p className="text-sm text-gray-500">{template.category || 'Uncategorized'}</p>
                 <div className="mt-4 flex gap-2">
-                  <Link
+                  <LinkButton
                     href={`/admin/templates/${template.id}`}
-                    className="flex-1 rounded-lg border px-3 py-2 text-center text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
                   >
-                    <Edit className="mr-1 inline h-4 w-4" />
+                    <Edit className="h-4 w-4" />
                     Edit
-                  </Link>
-                  <Link
+                  </LinkButton>
+                  <LinkButton
                     href={`/templates/${template.slug || template.id}`}
+                    variant="outline"
+                    size="sm"
                     target="_blank"
-                    className="rounded-lg border px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
                   >
                     <Eye className="h-4 w-4" />
-                  </Link>
+                  </LinkButton>
                 </div>
               </CardContent>
             </Card>

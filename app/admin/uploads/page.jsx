@@ -249,22 +249,25 @@ export default async function AdminUploadsPage({ searchParams }) {
                       </div>
                     </div>
                     <div className="mt-4 flex gap-2">
-                      <Link
+                      <LinkButton
                         href={`/admin/uploads/${upload.id}`}
-                        className="flex-1 rounded-lg border px-3 py-2 text-center text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
+                        variant="outline"
+                        size="sm"
+                        className="flex-1"
                       >
-                        <Eye className="mr-1 inline h-4 w-4" />
+                        <Eye className="h-4 w-4" />
                         Review
-                      </Link>
+                      </LinkButton>
                       {upload.url && (
-                        <a
+                        <LinkButton
                           href={upload.url}
+                          variant="outline"
+                          size="sm"
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="rounded-lg border px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
                         >
                           <Download className="h-4 w-4" />
-                        </a>
+                        </LinkButton>
                       )}
                     </div>
                   </CardContent>

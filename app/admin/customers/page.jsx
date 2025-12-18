@@ -1,4 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { LinkButton } from '@/components/ui/link-button';
 import Link from 'next/link';
 import {
@@ -154,19 +155,13 @@ export default async function AdminCustomersPage({ searchParams }) {
               />
             </div>
             <div className="flex gap-2">
-              <button
-                type="submit"
-                className="flex-1 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700 sm:flex-none"
-              >
+              <Button type="submit" size="sm">
                 Search
-              </button>
+              </Button>
               {search && (
-                <Link
-                  href="/admin/customers"
-                  className="rounded-lg border px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                >
+                <LinkButton href="/admin/customers" variant="outline" size="sm">
                   Clear
-                </Link>
+                </LinkButton>
               )}
             </div>
           </form>

@@ -59,20 +59,25 @@ export default async function ProductsPage({ searchParams }) {
 
       {/* Category Filters */}
       <div className="mb-8 flex flex-wrap gap-2">
-        <Link href="/products">
-          <Button variant={categoryFilter === 'all' ? 'default' : 'outline'} size="sm">
-            All Products
-          </Button>
-        </Link>
+        <LinkButton
+          href="/products"
+          variant={categoryFilter === 'all' ? 'default' : 'outline'}
+          size="sm"
+        >
+          All Products
+        </LinkButton>
         {categories.map((category) => (
-          <Link key={category.id} href={`/products?category=${category.slug}`}>
-            <Button variant={categoryFilter === category.slug ? 'default' : 'outline'} size="sm">
-              {category.name}
-              {category.product_count > 0 && (
-                <span className="ml-1.5 text-xs opacity-70">({category.product_count})</span>
-              )}
-            </Button>
-          </Link>
+          <LinkButton
+            key={category.id}
+            href={`/products?category=${category.slug}`}
+            variant={categoryFilter === category.slug ? 'default' : 'outline'}
+            size="sm"
+          >
+            {category.name}
+            {category.product_count > 0 && (
+              <span className="ml-1.5 text-xs opacity-70">({category.product_count})</span>
+            )}
+          </LinkButton>
         ))}
       </div>
 

@@ -8,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { HeroSection } from '@/components/layout/hero-section';
 import {
   Select,
   SelectContent,
@@ -237,31 +238,25 @@ export default function BulkPage() {
   return (
     <>
       {/* ====================================================================
-          HERO SECTION - Enterprise variant
+          HERO SECTION - Enterprise variant with paper texture
           ==================================================================== */}
-      <section className="bg-gradient-to-b from-muted/40 to-background py-16 md:py-24">
-        <div className="container">
-          <div className="mx-auto max-w-3xl text-center">
-            <h1 className="text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl">
-              Bulk Banner Printing, Made Easy
-            </h1>
-            <p className="mt-6 text-lg text-muted-foreground md:text-xl">
-              Volume pricing. Consistent quality. Printed in Canada and shipped fast.
-            </p>
-            <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <Button size="lg" onClick={scrollToForm}>
-                Request Bulk Quote
-              </Button>
-              <a
-                href="tel:+18005551234"
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-6 text-base font-medium text-gray-700 transition-colors hover:bg-gray-50 hover:border-gray-400"
-              >
-                Talk to a Print Specialist
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSection
+        title="Bulk Banner Printing,"
+        titleAccent=" Made Easy"
+        subtitle="Volume pricing. Consistent quality. Printed in Canada and shipped fast."
+        eyebrow="Enterprise & Volume Orders"
+        eyebrowIcon={<Building2 className="h-4 w-4" />}
+        primaryCta={{
+          text: 'Request Bulk Quote',
+          href: '#quote-form',
+        }}
+        secondaryCta={{
+          text: 'Talk to a Specialist',
+          href: 'tel:+18005551234',
+        }}
+        texture="paper"
+        variant="centered"
+      />
 
       {/* ====================================================================
           WHO THIS IS FOR - Self-qualifying

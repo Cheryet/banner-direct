@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { LinkButton } from '@/components/ui/link-button';
 import { Input } from '@/components/ui/input';
 import {
   Clock,
@@ -293,12 +294,9 @@ export default function FulfillmentBoardPage() {
               className="w-full pl-9 text-sm"
             />
           </div>
-          <Link
-            href="/admin/orders"
-            className="flex-shrink-0 rounded-lg border bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-          >
+          <LinkButton href="/admin/orders" variant="outline" size="sm">
             List View
-          </Link>
+          </LinkButton>
         </div>
       </div>
 

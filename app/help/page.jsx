@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { LinkButton } from '@/components/ui/link-button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { HeroSection } from '@/components/layout/hero-section';
 import {
   Accordion,
   AccordionContent,
@@ -181,23 +182,16 @@ export default function HelpPage() {
   return (
     <>
       {/* ====================================================================
-          HERO SECTION
+          HERO SECTION - Help center with noise texture
           ==================================================================== */}
-      <section className="bg-gradient-to-b from-muted/30 to-background py-16 md:py-24">
-        <div className="container">
-          <div className="mx-auto max-w-3xl text-center">
-            <h1 className="text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl">
-              We're Here to Help
-            </h1>
-            <p className="mt-6 text-lg text-muted-foreground md:text-xl">
-              Clear answers, fast support, and transparent printing — every step of the way.
-            </p>
-            <p className="mt-4 text-sm text-muted-foreground">
-              Most questions are answered below. If not, reach out anytime.
-            </p>
-          </div>
-        </div>
-      </section>
+      <HeroSection
+        title="We're Here to Help"
+        subtitle="Clear answers, fast support, and transparent printing — every step of the way."
+        eyebrow="Support Center"
+        eyebrowIcon={<Mail className="h-4 w-4" />}
+        texture="noise"
+        variant="centered"
+      />
 
       {/* ====================================================================
           QUICK HELP NAV - Sticky on desktop
@@ -332,19 +326,13 @@ export default function HelpPage() {
                   We usually respond within one business day. Real humans, not bots.
                 </p>
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
-                  <a
-                    href="mailto:support@bannerdirect.ca"
-                    className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-emerald-500 px-6 text-base font-medium text-white shadow-sm transition-all hover:bg-emerald-600 active:bg-emerald-700"
-                  >
+                  <LinkButton href="mailto:support@bannerdirect.ca" size="lg">
                     <Mail className="h-4 w-4" aria-hidden="true" />
                     Email Support
-                  </a>
-                  <a
-                    href="tel:+18005551234"
-                    className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-6 text-base font-medium text-gray-700 transition-colors hover:bg-gray-50 hover:border-gray-400"
-                  >
+                  </LinkButton>
+                  <LinkButton href="tel:+18005551234" variant="outline" size="lg">
                     Call 1-800-555-1234
-                  </a>
+                  </LinkButton>
                 </div>
                 <p className="mt-4 text-sm text-muted-foreground">
                   <Clock className="mr-1 inline h-4 w-4" aria-hidden="true" />

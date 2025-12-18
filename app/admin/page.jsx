@@ -1,4 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { LinkButton } from '@/components/ui/link-button';
 import Link from 'next/link';
 import {
   ShoppingCart,
@@ -167,13 +168,10 @@ export default async function AdminDashboard() {
           <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">Dashboard</h1>
           <p className="text-sm text-muted-foreground">Welcome back! Here's what's happening.</p>
         </div>
-        <Link
-          href="/admin/orders"
-          className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700 sm:w-auto"
-        >
+        <LinkButton href="/admin/orders">
           <ShoppingCart className="h-4 w-4" />
           View Orders
-        </Link>
+        </LinkButton>
       </div>
 
       {/* Urgent Alert */}
