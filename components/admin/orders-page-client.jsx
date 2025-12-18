@@ -196,9 +196,10 @@ function OrderCard({ order, selected, onSelect, onQuickAction }) {
       <div className="mt-3 flex items-center justify-between">
         <div>
           <p className="font-medium text-gray-900">
-            {order.profiles?.first_name || order.profiles?.last_name
-              ? `${order.profiles?.first_name || ''} ${order.profiles?.last_name || ''}`.trim()
-              : 'Guest'}
+            {order.customer_name || 
+              (order.profiles?.first_name || order.profiles?.last_name
+                ? `${order.profiles?.first_name || ''} ${order.profiles?.last_name || ''}`.trim()
+                : 'Guest')}
           </p>
           <p className="text-sm text-gray-500">
             {itemCount} item{itemCount !== 1 ? 's' : ''}
@@ -339,14 +340,17 @@ export function OrdersPageClient({ initialOrders }) {
   const updateOrderStatus = async (orderId, newStatus) => {
     setIsUpdating(true);
     try {
-      const supabase = createClient();
-      const { error } = await supabase
-        .from('orders')
-        .update({ status: newStatus, updated_at: new Date().toISOString() })
-        .eq('id', orderId);
+      const response = await fetch('/api/admin/orders', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId, status: newStatus }),
+      });
 
-      if (!error) {
+      if (response.ok) {
         setOrders((prev) => prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o)));
+      } else {
+        const data = await response.json();
+        console.error('Failed to update order:', data.error);
       }
     } catch (err) {
       console.error('Failed to update order:', err);
@@ -358,18 +362,20 @@ export function OrdersPageClient({ initialOrders }) {
     if (selectedOrders.length === 0) return;
     setIsUpdating(true);
     try {
-      const supabase = createClient();
-      const { error } = await supabase
-        .from('orders')
-        .update({ status: newStatus, updated_at: new Date().toISOString() })
-        .in('id', selectedOrders);
-
-      if (!error) {
-        setOrders((prev) =>
-          prev.map((o) => (selectedOrders.includes(o.id) ? { ...o, status: newStatus } : o))
-        );
-        setSelectedOrders([]);
-      }
+      // Update each order individually via API
+      const updatePromises = selectedOrders.map(orderId =>
+        fetch('/api/admin/orders', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderId, status: newStatus }),
+        })
+      );
+      
+      await Promise.all(updatePromises);
+      setOrders((prev) =>
+        prev.map((o) => (selectedOrders.includes(o.id) ? { ...o, status: newStatus } : o))
+      );
+      setSelectedOrders([]);
     } catch (err) {
       console.error('Failed to bulk update:', err);
     }
@@ -604,7 +610,6 @@ export function OrdersPageClient({ initialOrders }) {
                   {filteredOrders.map((order) => {
                     const itemCount =
                       order.order_items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
-                    const nextStatus = getNextStatus(order.status);
                     return (
                       <tr
                         key={order.id}
@@ -628,11 +633,12 @@ export function OrdersPageClient({ initialOrders }) {
                         </td>
                         <td className="px-4 py-3">
                           <p className="font-medium text-gray-900">
-                            {order.profiles?.first_name || order.profiles?.last_name
-                              ? `${order.profiles?.first_name || ''} ${order.profiles?.last_name || ''}`.trim()
-                              : 'Guest'}
+                            {order.customer_name || 
+                              (order.profiles?.first_name || order.profiles?.last_name
+                                ? `${order.profiles?.first_name || ''} ${order.profiles?.last_name || ''}`.trim()
+                                : 'Guest')}
                           </p>
-                          <p className="text-sm text-gray-500">{order.profiles?.email || '—'}</p>
+                          <p className="text-sm text-gray-500">{order.customer_email || order.profiles?.email || '—'}</p>
                         </td>
                         <td className="px-4 py-3 text-sm text-gray-500">
                           {itemCount} item{itemCount !== 1 ? 's' : ''}
@@ -641,29 +647,30 @@ export function OrdersPageClient({ initialOrders }) {
                           {formatDate(order.created_at)}
                         </td>
                         <td className="px-4 py-3">
-                          <StatusBadge status={order.status} />
+                          <select
+                            value={order.status}
+                            onChange={(e) => updateOrderStatus(order.id, e.target.value)}
+                            disabled={isUpdating}
+                            className={`rounded-full px-3 py-1.5 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 cursor-pointer ${STATUS_COLORS[order.status]?.bg || 'bg-gray-100'} ${STATUS_COLORS[order.status]?.text || 'text-gray-700'} ${STATUS_COLORS[order.status]?.border || 'border-gray-300'} border`}
+                          >
+                            {ORDER_STATUSES.map((status) => (
+                              <option key={status.id} value={status.id}>
+                                {status.label}
+                              </option>
+                            ))}
+                          </select>
                         </td>
                         <td className="px-4 py-3 text-right font-medium">
                           {formatCurrency(order.total)}
                         </td>
                         <td className="px-4 py-3 text-right">
-                          <div className="flex items-center justify-end gap-2">
-                            {nextStatus && (
-                              <button
-                                onClick={() => updateOrderStatus(order.id, nextStatus)}
-                                disabled={isUpdating}
-                                className="rounded-lg bg-emerald-600 px-2 py-1 text-xs font-medium text-white hover:bg-emerald-700 disabled:opacity-50"
-                              >
-                                <ArrowRight className="h-3 w-3" />
-                              </button>
-                            )}
-                            <Link
-                              href={`/admin/orders/${order.id}`}
-                              className="rounded-lg border px-2 py-1 text-xs font-medium text-gray-700 hover:bg-gray-50"
-                            >
-                              <Eye className="h-3 w-3" />
-                            </Link>
-                          </div>
+                          <Link
+                            href={`/admin/orders/${order.id}`}
+                            className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 hover:border-gray-400"
+                          >
+                            <Eye className="h-3.5 w-3.5" />
+                            <span>View</span>
+                          </Link>
                         </td>
                       </tr>
                     );

@@ -43,11 +43,17 @@ const ProductCard = React.memo(function ProductCard({
           )}
           {badges.length > 0 && (
             <div className="absolute left-3 top-3 flex flex-wrap gap-1">
-              {badges.map((badge) => (
-                <Badge key={badge} variant={badge === 'Made in Canada' ? 'canada' : 'secondary'}>
-                  {badge}
-                </Badge>
-              ))}
+              {badges.map((badge, index) => {
+                // Handle both object format {color, label} and string format
+                const label = typeof badge === 'object' ? badge.label : badge;
+                const color = typeof badge === 'object' ? badge.color : null;
+                const variant = label === 'Made in Canada' ? 'canada' : color || 'secondary';
+                return (
+                  <Badge key={label || index} variant={variant}>
+                    {label}
+                  </Badge>
+                );
+              })}
             </div>
           )}
         </div>

@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server';
+import { getOrders } from '@/lib/db/orders';
 import { OrdersPageClient } from '@/components/admin/orders-page-client';
 
 export const metadata = {
@@ -7,30 +7,15 @@ export const metadata = {
 };
 
 export default async function AdminOrdersPage({ searchParams }) {
-  const supabase = await createClient();
   const params = await searchParams;
+  const statusFilter = params?.status || null;
 
-  // Fetch all orders with profiles for the client component
-  const { data: orders } = await supabase
-    .from('orders')
-    .select(
-      `
-      *,
-      profiles:user_id (
-        id,
-        first_name,
-        last_name,
-        email,
-        phone
-      ),
-      order_items (
-        id,
-        quantity,
-        product_name
-      )
-    `
-    )
-    .order('created_at', { ascending: false });
+  // Fetch orders using modular utility
+  const { orders } = await getOrders({
+    status: statusFilter,
+    sortBy: 'created_at',
+    sortOrder: 'desc',
+  });
 
   return <OrdersPageClient initialOrders={orders || []} />;
 }

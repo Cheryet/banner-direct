@@ -1,4 +1,3 @@
-import { createClient } from '@/lib/supabase/server';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { LinkButton } from '@/components/ui/link-button';
 import Link from 'next/link';
@@ -16,6 +15,9 @@ import {
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
+import { getCustomers, getCustomerStats } from '@/lib/db/customers';
+import { getOrderStats } from '@/lib/db/orders';
+import { createClient } from '@/lib/supabase/server';
 
 export const metadata = {
   title: 'Customers - Admin',
@@ -38,7 +40,6 @@ function formatCurrency(amount) {
 }
 
 export default async function AdminCustomersPage({ searchParams }) {
-  const supabase = await createClient();
   const params = await searchParams;
 
   const page = parseInt(params?.page || '1');
@@ -46,24 +47,25 @@ export default async function AdminCustomersPage({ searchParams }) {
   const offset = (page - 1) * perPage;
   const search = params?.search || '';
 
-  // Fetch customers (non-anonymous profiles, exclude admins)
-  let query = supabase
-    .from('profiles')
-    .select('*', { count: 'exact' })
-    .eq('is_anonymous', false)
-    .neq('role', 'admin')
-    .order('created_at', { ascending: false })
-    .range(offset, offset + perPage - 1);
+  // Fetch customers and stats using modular utilities
+  const [customersResult, customerStats, orderStats] = await Promise.all([
+    getCustomers({
+      limit: perPage,
+      offset,
+      search: search || null,
+      sortBy: 'created_at',
+      sortOrder: 'desc',
+    }),
+    getCustomerStats(),
+    getOrderStats(),
+  ]);
 
-  if (search) {
-    query = query.or(`first_name.ilike.%${search}%,last_name.ilike.%${search}%,email.ilike.%${search}%`);
-  }
-
-  const { data: customers, count, error } = await query;
+  const { customers, count } = customersResult;
 
   // Fetch order stats for each customer
+  const supabase = await createClient();
   const customerIds = customers?.map((c) => c.id) || [];
-  let orderStats = {};
+  let customerOrderStats = {};
 
   if (customerIds.length > 0) {
     const { data: orders } = await supabase
@@ -73,38 +75,19 @@ export default async function AdminCustomersPage({ searchParams }) {
 
     if (orders) {
       orders.forEach((order) => {
-        if (!orderStats[order.user_id]) {
-          orderStats[order.user_id] = { count: 0, total: 0 };
+        if (!customerOrderStats[order.user_id]) {
+          customerOrderStats[order.user_id] = { count: 0, total: 0 };
         }
-        orderStats[order.user_id].count++;
-        orderStats[order.user_id].total += parseFloat(order.total) || 0;
+        customerOrderStats[order.user_id].count++;
+        customerOrderStats[order.user_id].total += parseFloat(order.total) || 0;
       });
     }
   }
 
-  // Get overall stats (exclude admins)
-  const { count: totalCustomers } = await supabase
-    .from('profiles')
-    .select('id', { count: 'exact', head: true })
-    .eq('is_anonymous', false)
-    .neq('role', 'admin');
-
-  const { data: allOrders } = await supabase.from('orders').select('total');
-
-  const totalRevenue = allOrders?.reduce((sum, o) => sum + (parseFloat(o.total) || 0), 0) || 0;
-  const avgOrderValue = allOrders?.length ? totalRevenue / allOrders.length : 0;
-
-  // New customers this month (exclude admins)
-  const startOfMonth = new Date();
-  startOfMonth.setDate(1);
-  startOfMonth.setHours(0, 0, 0, 0);
-
-  const { count: newThisMonth } = await supabase
-    .from('profiles')
-    .select('id', { count: 'exact', head: true })
-    .eq('is_anonymous', false)
-    .neq('role', 'admin')
-    .gte('created_at', startOfMonth.toISOString());
+  const totalCustomers = customerStats?.total || 0;
+  const newThisMonth = customerStats?.newThisMonth || 0;
+  const totalRevenue = orderStats?.totalRevenue || 0;
+  const avgOrderValue = orderStats?.total > 0 ? totalRevenue / orderStats.total : 0;
 
   const totalPages = Math.ceil((count || 0) / perPage);
 
@@ -245,7 +228,7 @@ export default async function AdminCustomersPage({ searchParams }) {
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
                     {customers.map((customer) => {
-                      const stats = orderStats[customer.id] || { count: 0, total: 0 };
+                      const stats = customerOrderStats[customer.id] || { count: 0, total: 0 };
                       return (
                         <tr key={customer.id} className="hover:bg-gray-50">
                           <td className="px-6 py-4">

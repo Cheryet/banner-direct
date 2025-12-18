@@ -1,33 +1,41 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { templates } from '@/lib/mock-data';
+import { getTemplates, getTemplateCategories } from '@/lib/db/templates';
 import { Button } from '@/components/ui/button';
 import { LinkButton } from '@/components/ui/link-button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { FileImage, Sparkles } from 'lucide-react';
 
-export const metadata = {
-  title: 'Templates',
-  description:
-    'Browse pre-designed banner templates. Customize text, colors, and logos for quick ordering.',
-};
+export async function generateMetadata({ searchParams }) {
+  const params = await searchParams;
+  const categoryFilter = params?.category;
+  
+  if (categoryFilter && categoryFilter !== 'all') {
+    return {
+      title: `${categoryFilter.charAt(0).toUpperCase() + categoryFilter.slice(1)} Templates | Banner Direct`,
+      description: `Browse ${categoryFilter} banner templates. Customize text, colors, and logos for quick ordering.`,
+    };
+  }
+  
+  return {
+    title: 'Design Templates - Custom Banners | Banner Direct',
+    description: 'Browse pre-designed banner templates. Customize text, colors, and logos for quick ordering.',
+  };
+}
 
-const categories = [
-  { id: 'all', label: 'All Templates' },
-  { id: 'business', label: 'Business' },
-  { id: 'retail', label: 'Retail' },
-  { id: 'events', label: 'Events' },
-  { id: 'sports', label: 'Sports' },
-];
+export default async function TemplatesPage({ searchParams }) {
+  const params = await searchParams;
+  const categoryFilter = params?.category || 'all';
+  
+  // Fetch templates and categories in parallel
+  const [templates, templateCategories] = await Promise.all([
+    getTemplates({
+      category: categoryFilter !== 'all' ? categoryFilter : null,
+    }),
+    getTemplateCategories(),
+  ]);
 
-export default function TemplatesPage() {
   return (
     <div className="container py-8 md:py-12">
       {/* Header */}
@@ -38,67 +46,91 @@ export default function TemplatesPage() {
         </p>
       </div>
 
-      {/* Filters */}
-      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-wrap gap-2">
-          {categories.map((category) => (
-            <Button
-              key={category.id}
-              variant={category.id === 'all' ? 'default' : 'outline'}
+      {/* Category Filters */}
+      <div className="mb-8 flex flex-wrap gap-2">
+        <Link href="/templates">
+          <Button variant={categoryFilter === 'all' ? 'default' : 'outline'} size="sm">
+            All Templates
+          </Button>
+        </Link>
+        {templateCategories.map((category) => (
+          <Link key={category} href={`/templates?category=${category}`}>
+            <Button 
+              variant={categoryFilter === category ? 'default' : 'outline'} 
               size="sm"
+              className="capitalize"
             >
-              {category.label}
+              {category}
             </Button>
-          ))}
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-muted-foreground">Sort by:</span>
-          <Select defaultValue="popular">
-            <SelectTrigger className="w-[160px]">
-              <SelectValue placeholder="Sort by" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="popular">Most Popular</SelectItem>
-              <SelectItem value="newest">Newest</SelectItem>
-              <SelectItem value="name">Name A-Z</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+          </Link>
+        ))}
       </div>
 
       {/* Templates Grid */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {templates.map((template) => (
-          <Card key={template.id} className="group overflow-hidden">
-            <div className="relative aspect-[3/2] overflow-hidden bg-muted">
-              {template.image ? (
-                <Image
-                  src={template.image}
-                  alt={template.title}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  loading="lazy"
-                />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/20 to-primary/5">
-                  <span className="text-2xl font-bold text-primary/50">{template.title}</span>
+      {templates.length > 0 ? (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {templates.map((template) => (
+            <Card key={template.id} className="group overflow-hidden">
+              <div className="relative aspect-[3/2] overflow-hidden bg-muted">
+                {template.thumbnail_url ? (
+                  <Image
+                    src={template.thumbnail_url}
+                    alt={template.name}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/20 to-primary/5">
+                    <span className="text-2xl font-bold text-primary/50">{template.name}</span>
+                  </div>
+                )}
+                <div className="absolute right-3 top-3 flex gap-2">
+                  {template.is_featured && (
+                    <Badge variant="default" className="gap-1">
+                      <Sparkles className="h-3 w-3" />
+                      Featured
+                    </Badge>
+                  )}
+                  {template.category && (
+                    <Badge variant="secondary" className="capitalize">
+                      {template.category}
+                    </Badge>
+                  )}
                 </div>
-              )}
-              <Badge className="absolute right-3 top-3" variant="secondary">
-                {template.category}
-              </Badge>
-            </div>
-            <CardContent className="p-4">
-              <h3 className="font-semibold">{template.title}</h3>
-              <p className="mt-1 text-sm text-muted-foreground">{template.description}</p>
-              <LinkButton href={`/templates/${template.slug}`} className="mt-4 w-full">
-                Customize Template
-              </LinkButton>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+                {template.use_count > 0 && (
+                  <div className="absolute bottom-3 left-3 rounded-full bg-black/60 px-2 py-1 text-xs text-white">
+                    {template.use_count.toLocaleString()} uses
+                  </div>
+                )}
+              </div>
+              <CardContent className="p-4">
+                <h3 className="font-semibold">{template.name}</h3>
+                <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
+                  {template.description}
+                </p>
+                <LinkButton href={`/templates/${template.slug}`} className="mt-4 w-full">
+                  Customize Template
+                </LinkButton>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      ) : (
+        <div className="py-16 text-center">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
+            <FileImage className="h-8 w-8 text-muted-foreground" />
+          </div>
+          <h3 className="mb-2 text-lg font-semibold">No templates found</h3>
+          <p className="mb-6 text-muted-foreground">
+            {categoryFilter !== 'all'
+              ? `No templates available in the ${categoryFilter} category yet.`
+              : 'No templates available at the moment.'}
+          </p>
+          <LinkButton href="/templates">View All Templates</LinkButton>
+        </div>
+      )}
 
       {/* Custom Design CTA */}
       <div className="mt-16 rounded-lg border-2 border-dashed border-muted-foreground/25 p-8 text-center">
@@ -107,7 +139,7 @@ export default function TemplatesPage() {
           Upload your own design or start from scratch with our easy configurator.
         </p>
         <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:justify-center">
-          <LinkButton href="/product/pvc-banner-3x6">Upload Your Design</LinkButton>
+          <LinkButton href="/products">Upload Your Design</LinkButton>
           <LinkButton href="/help/file-specs" variant="outline">
             View File Specs
           </LinkButton>

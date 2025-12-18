@@ -131,63 +131,82 @@ export default async function AdminProductsPage({ searchParams }) {
       </div>
 
       {/* Filters */}
-      <div className="mb-6 flex flex-wrap items-center gap-4">
-        <div className="flex gap-2">
-          <Link
-            href="/admin/products"
-            className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-              statusFilter === 'all' && categoryFilter === 'all'
-                ? 'bg-emerald-600 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-          >
-            All
-          </Link>
-          <Link
-            href="/admin/products?status=active"
-            className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-              statusFilter === 'active'
-                ? 'bg-emerald-600 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-          >
-            Active
-          </Link>
-          <Link
-            href="/admin/products?status=inactive"
-            className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-              statusFilter === 'inactive'
-                ? 'bg-emerald-600 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-          >
-            Inactive
-          </Link>
-        </div>
+      <Card className="mb-6">
+        <CardContent className="p-4">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            {/* Status Filter */}
+            <div className="flex items-center gap-3">
+              <span className="text-sm font-medium text-gray-500">Status:</span>
+              <div className="inline-flex rounded-lg border border-gray-200 bg-gray-50 p-1">
+                <Link
+                  href="/admin/products"
+                  className={`inline-flex items-center rounded-md px-3 py-1.5 text-sm font-medium transition-all ${
+                    statusFilter === 'all' && categoryFilter === 'all'
+                      ? 'bg-white text-gray-900 shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  All
+                </Link>
+                <Link
+                  href="/admin/products?status=active"
+                  className={`inline-flex items-center rounded-md px-3 py-1.5 text-sm font-medium transition-all ${
+                    statusFilter === 'active'
+                      ? 'bg-white text-emerald-600 shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  <span className="mr-1.5 h-2 w-2 rounded-full bg-emerald-500"></span>
+                  Active
+                </Link>
+                <Link
+                  href="/admin/products?status=inactive"
+                  className={`inline-flex items-center rounded-md px-3 py-1.5 text-sm font-medium transition-all ${
+                    statusFilter === 'inactive'
+                      ? 'bg-white text-gray-700 shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  <span className="mr-1.5 h-2 w-2 rounded-full bg-gray-400"></span>
+                  Inactive
+                </Link>
+              </div>
+            </div>
 
-        {uniqueCategories.length > 0 && (
-          <select
-            defaultValue={categoryFilter}
-            onChange={(e) => {
-              const url = new URL(window.location.href);
-              if (e.target.value === 'all') {
-                url.searchParams.delete('category');
-              } else {
-                url.searchParams.set('category', e.target.value);
-              }
-              window.location.href = url.toString();
-            }}
-            className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm"
-          >
-            <option value="all">All Categories</option>
-            {uniqueCategories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
-        )}
-      </div>
+            {/* Category Filter */}
+            {uniqueCategories.length > 0 && (
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-medium text-gray-500">Category:</span>
+                <div className="inline-flex rounded-lg border border-gray-200 bg-gray-50 p-1">
+                  <Link
+                    href="/admin/products"
+                    className={`inline-flex items-center rounded-md px-3 py-1.5 text-sm font-medium transition-all ${
+                      categoryFilter === 'all'
+                        ? 'bg-white text-gray-900 shadow-sm'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    All
+                  </Link>
+                  {uniqueCategories.map((cat) => (
+                    <Link
+                      key={cat}
+                      href={`/admin/products?category=${cat}`}
+                      className={`inline-flex items-center rounded-md px-3 py-1.5 text-sm font-medium transition-all ${
+                        categoryFilter === cat
+                          ? 'bg-white text-gray-900 shadow-sm'
+                          : 'text-gray-600 hover:text-gray-900'
+                      }`}
+                    >
+                      {cat}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Products Grid */}
       {!products || products.length === 0 ? (
@@ -240,17 +259,24 @@ export default async function AdminProductsPage({ searchParams }) {
                 <div className="mt-4 flex gap-2">
                   <Link
                     href={`/admin/products/${product.id}`}
-                    className="flex-1 rounded-lg border px-3 py-2 text-center text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
+                    className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-emerald-700"
                   >
-                    <Edit className="mr-1 inline h-4 w-4" />
+                    <Edit className="h-4 w-4" />
                     Edit
                   </Link>
+                  <button
+                    className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-red-300 bg-white px-3 py-2 text-sm font-medium text-red-600 shadow-sm transition-colors hover:bg-red-50 hover:border-red-400"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    Delete
+                  </button>
                   <Link
                     href={`/product/${product.slug || product.id}`}
                     target="_blank"
-                    className="rounded-lg border px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
+                    className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 hover:border-gray-400"
                   >
                     <Eye className="h-4 w-4" />
+                    View
                   </Link>
                 </div>
               </CardContent>

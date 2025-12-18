@@ -17,6 +17,7 @@ import {
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useProducts } from '@/hooks/use-product';
 
 import { UserMenu, MobileUserMenu } from '@/components/auth/user-menu';
 
@@ -41,6 +42,10 @@ function Header() {
   const pathname = usePathname();
   const drawerRef = React.useRef(null);
   const menuButtonRef = React.useRef(null);
+  
+  // Fetch first product for CTA link
+  const { products } = useProducts({ limit: 1 });
+  const ctaHref = products[0] ? `/product/${products[0].slug}` : '/products';
 
   // ---------------------------------------------------------------------------
   // Ensure client-side mounting before dynamic content
@@ -187,7 +192,7 @@ function Header() {
                 </span>
               </Link>
               <Link
-                href="/product/pvc-banner-3x6"
+                href={ctaHref}
                 className="ml-2 flex h-10 items-center rounded-full bg-emerald-600 px-5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-emerald-700 hover:shadow"
               >
                 Get Started
@@ -294,7 +299,7 @@ function Header() {
         {/* CTA */}
         <div className="border-t p-4">
           <Link
-            href="/product/pvc-banner-3x6"
+            href={ctaHref}
             onClick={handleNavClick}
             className="block w-full rounded-md bg-emerald-600 px-4 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-emerald-700"
           >

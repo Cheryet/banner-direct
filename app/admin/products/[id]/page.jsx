@@ -39,6 +39,7 @@ export default function AdminProductEditPage({ params }) {
 
   const [product, setProduct] = React.useState({
     name: '',
+    title: '',
     slug: '',
     description: '',
     category: '',
@@ -60,6 +61,8 @@ export default function AdminProductEditPage({ params }) {
     free_shipping_threshold: '',
     tier_pricing: [],
     addons: [],
+    badges: [],
+    specs: '',
   });
 
   React.useEffect(() => {
@@ -93,6 +96,7 @@ export default function AdminProductEditPage({ params }) {
       }
       setProduct({
         name: data.name || '',
+        title: data.title || '',
         slug: data.slug || '',
         description: data.description || '',
         category: data.category || '',
@@ -114,6 +118,8 @@ export default function AdminProductEditPage({ params }) {
         free_shipping_threshold: data.free_shipping_threshold?.toString() || '',
         tier_pricing: data.tier_pricing || [],
         addons: data.addons || [],
+        badges: data.badges || [],
+        specs: data.specs || '',
       });
       setIsLoading(false);
     }
@@ -144,6 +150,7 @@ export default function AdminProductEditPage({ params }) {
       const { id } = await params;
       const productData = {
         name: product.name,
+        title: product.title?.trim() || product.name,
         slug: product.slug || generateSlug(product.name),
         description: product.description || null,
         category: product.category || null,
@@ -167,6 +174,8 @@ export default function AdminProductEditPage({ params }) {
           : null,
         tier_pricing: product.tier_pricing,
         addons: product.addons,
+        badges: product.badges,
+        specs: product.specs || null,
         updated_at: new Date().toISOString(),
       };
       if (isNew) {
@@ -337,6 +346,19 @@ export default function AdminProductEditPage({ params }) {
                     />
                   </div>
                   <div>
+                    <Label htmlFor="title">Display Title</Label>
+                    <Input
+                      id="title"
+                      value={product.title}
+                      onChange={(e) => setProduct({ ...product, title: e.target.value })}
+                      placeholder="e.g., Premium PVC Banner - Weather Resistant"
+                      className="mt-1"
+                    />
+                    <p className="mt-1 text-xs text-gray-500">
+                      Optional display title (defaults to name if empty)
+                    </p>
+                  </div>
+                  <div>
                     <Label htmlFor="slug">URL Slug</Label>
                     <Input
                       id="slug"
@@ -354,6 +376,17 @@ export default function AdminProductEditPage({ params }) {
                       onChange={(e) => setProduct({ ...product, description: e.target.value })}
                       placeholder="Describe your product..."
                       rows={4}
+                      className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="specs">Specifications</Label>
+                    <textarea
+                      id="specs"
+                      value={product.specs}
+                      onChange={(e) => setProduct({ ...product, specs: e.target.value })}
+                      placeholder="Product specifications (dimensions, weight, materials, etc.)"
+                      rows={3}
                       className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                     />
                   </div>
@@ -426,6 +459,69 @@ export default function AdminProductEditPage({ params }) {
                       </div>
                     </div>
                   </div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <CardTitle>Badges</CardTitle>
+                      <CardDescription>Product badges (e.g., "Best Seller", "New")</CardDescription>
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => addArrayItem('badges', { label: '', color: 'emerald' })}
+                    >
+                      <Plus className="mr-1 h-4 w-4" />
+                      Add Badge
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  {product.badges.length === 0 ? (
+                    <p className="text-center text-sm text-gray-500 py-4">No badges defined</p>
+                  ) : (
+                    <div className="space-y-3">
+                      {product.badges.map((badge, index) => (
+                        <div
+                          key={badge.id || index}
+                          className="flex items-center gap-3 rounded-lg border p-3"
+                        >
+                          <Input
+                            value={badge.label}
+                            onChange={(e) =>
+                              updateArrayItem('badges', index, { label: e.target.value })
+                            }
+                            placeholder="Badge label (e.g., Best Seller)"
+                            className="flex-1"
+                          />
+                          <select
+                            value={badge.color || 'emerald'}
+                            onChange={(e) =>
+                              updateArrayItem('badges', index, { color: e.target.value })
+                            }
+                            className="rounded-md border border-gray-300 px-3 py-2 text-sm"
+                          >
+                            <option value="emerald">Green</option>
+                            <option value="blue">Blue</option>
+                            <option value="red">Red</option>
+                            <option value="yellow">Yellow</option>
+                            <option value="purple">Purple</option>
+                            <option value="gray">Gray</option>
+                          </select>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => removeArrayItem('badges', index)}
+                            className="text-red-600 hover:bg-red-50"
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </>

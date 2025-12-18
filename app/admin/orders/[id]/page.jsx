@@ -291,68 +291,49 @@ export default function AdminOrderDetailPage({ params }) {
 
   React.useEffect(() => {
     async function fetchOrder() {
-      const supabase = createClient();
-      const { id } = await params;
+      try {
+        const { id } = await params;
+        const response = await fetch(`/api/admin/orders/${id}`);
+        const result = await response.json();
 
-      const { data, error } = await supabase
-        .from('orders')
-        .select(
-          `
-          *,
-          profiles:user_id (
-            id,
-            first_name,
-            last_name,
-            email,
-            phone
-          ),
-          order_items (
-            id,
-            quantity,
-            unit_price,
-            product_name,
-            product_options,
-            artwork_url
-          )
-        `
-        )
-        .eq('id', id)
-        .single();
+        if (!response.ok || !result.order) {
+          setError('Order not found');
+          setIsLoading(false);
+          return;
+        }
 
-      if (error || !data) {
-        setError('Order not found');
-        setIsLoading(false);
-        return;
+        const data = result.order;
+        setOrder(data);
+        setStatus(data.status);
+        setTrackingNumber(data.tracking_number || '');
+        setTrackingCarrier(data.tracking_carrier || 'canada_post');
+        setNotes(data.admin_notes || '');
+
+        // Mock activity log - in production this would come from a separate table
+        setActivityLog([
+          {
+            id: 1,
+            type: 'status',
+            message: 'Order created',
+            timestamp: data.created_at,
+            user: 'System',
+          },
+          ...(data.status !== 'pending'
+            ? [
+                {
+                  id: 2,
+                  type: 'status',
+                  message: 'Order confirmed',
+                  timestamp: data.updated_at,
+                  user: 'Admin',
+                },
+              ]
+            : []),
+        ]);
+      } catch (err) {
+        console.error('Error fetching order:', err);
+        setError('Failed to load order');
       }
-
-      setOrder(data);
-      setStatus(data.status);
-      setTrackingNumber(data.tracking_number || '');
-      setTrackingCarrier(data.tracking_carrier || 'canada_post');
-      setNotes(data.admin_notes || '');
-
-      // Mock activity log - in production this would come from a separate table
-      setActivityLog([
-        {
-          id: 1,
-          type: 'status',
-          message: 'Order created',
-          timestamp: data.created_at,
-          user: 'System',
-        },
-        ...(data.status !== 'pending'
-          ? [
-              {
-                id: 2,
-                type: 'status',
-                message: 'Order confirmed',
-                timestamp: data.updated_at,
-                user: 'Admin',
-              },
-            ]
-          : []),
-      ]);
-
       setIsLoading(false);
     }
 
@@ -364,24 +345,25 @@ export default function AdminOrderDetailPage({ params }) {
     setIsSaving(true);
     setError(null);
 
+    // If moving to shipped, prompt for tracking
+    if (newStatus === 'shipped' && !trackingNumber) {
+      setShowShippingForm(true);
+      setIsSaving(false);
+      return;
+    }
+
     try {
-      const supabase = createClient();
       const { id } = await params;
+      const response = await fetch(`/api/admin/orders/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus }),
+      });
 
-      const updates = {
-        status: newStatus,
-        updated_at: new Date().toISOString(),
-      };
-
-      // If moving to shipped, prompt for tracking
-      if (newStatus === 'shipped' && !trackingNumber) {
-        setShowShippingForm(true);
-        setIsSaving(false);
-        return;
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to update status');
       }
-
-      const { error } = await supabase.from('orders').update(updates).eq('id', id);
-      if (error) throw error;
 
       setStatus(newStatus);
       setOrder({ ...order, status: newStatus });
@@ -413,20 +395,21 @@ export default function AdminOrderDetailPage({ params }) {
     setError(null);
 
     try {
-      const supabase = createClient();
       const { id } = await params;
-
-      const { error } = await supabase
-        .from('orders')
-        .update({
+      const response = await fetch(`/api/admin/orders/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
           status: 'shipped',
           tracking_number: trackingNumber,
           tracking_carrier: trackingCarrier,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', id);
+        }),
+      });
 
-      if (error) throw error;
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to save shipping info');
+      }
 
       setStatus('shipped');
       setOrder({
@@ -450,21 +433,21 @@ export default function AdminOrderDetailPage({ params }) {
     setIsSaving(true);
 
     try {
-      const supabase = createClient();
       const { id } = await params;
       const updatedNotes = notes
         ? `${notes}\n\n[${new Date().toLocaleString()}] ${newNote}`
         : `[${new Date().toLocaleString()}] ${newNote}`;
 
-      const { error } = await supabase
-        .from('orders')
-        .update({
-          admin_notes: updatedNotes,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', id);
+      const response = await fetch(`/api/admin/orders/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ admin_notes: updatedNotes }),
+      });
 
-      if (error) throw error;
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to add note');
+      }
 
       setNotes(updatedNotes);
       setNewNote('');
@@ -882,32 +865,30 @@ export default function AdminOrderDetailPage({ params }) {
             <CardContent className="space-y-3">
               <div>
                 <p className="font-medium text-gray-900">
-                  {order.profiles?.first_name || order.profiles?.last_name
-                    ? `${order.profiles?.first_name || ''} ${order.profiles?.last_name || ''}`.trim()
-                    : 'Guest Customer'}
+                  {order.customer_name || 'Guest Customer'}
                 </p>
               </div>
-              {order.profiles?.email && (
+              {(order.customer_email || order.profiles?.email) && (
                 <a
-                  href={`mailto:${order.profiles.email}`}
+                  href={`mailto:${order.customer_email || order.profiles?.email}`}
                   className="flex items-center gap-2 text-sm text-gray-600 hover:text-emerald-600"
                 >
                   <Mail className="h-4 w-4" />
-                  {order.profiles.email}
+                  {order.customer_email || order.profiles?.email}
                 </a>
               )}
-              {order.profiles?.phone && (
+              {(order.customer_phone || order.profiles?.phone) && (
                 <a
-                  href={`tel:${order.profiles.phone}`}
+                  href={`tel:${order.customer_phone || order.profiles?.phone}`}
                   className="flex items-center gap-2 text-sm text-gray-600 hover:text-emerald-600"
                 >
                   <Phone className="h-4 w-4" />
-                  {order.profiles.phone}
+                  {order.customer_phone || order.profiles?.phone}
                 </a>
               )}
-              {order.profiles?.id && (
+              {order.user_id && (
                 <Link
-                  href={`/admin/customers/${order.profiles.id}`}
+                  href={`/admin/customers/${order.user_id}`}
                   className="mt-2 inline-block text-sm text-emerald-600 hover:underline"
                 >
                   View Customer Profile →

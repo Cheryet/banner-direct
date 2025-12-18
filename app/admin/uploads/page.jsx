@@ -1,4 +1,3 @@
-import { createClient } from '@/lib/supabase/server';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { LinkButton } from '@/components/ui/link-button';
 import Link from 'next/link';
@@ -20,7 +19,9 @@ import {
   Image as ImageIcon,
   FileText,
   File,
+  RefreshCw,
 } from 'lucide-react';
+import { getUploads, getUploadStats, formatFileSize } from '@/lib/db/uploads';
 
 export const metadata = {
   title: 'Uploads - Admin',
@@ -37,18 +38,6 @@ function formatDate(dateString) {
   });
 }
 
-function formatFileSize(bytes) {
-  if (!bytes) return '—';
-  const units = ['B', 'KB', 'MB', 'GB'];
-  let size = bytes;
-  let unitIndex = 0;
-  while (size >= 1024 && unitIndex < units.length - 1) {
-    size /= 1024;
-    unitIndex++;
-  }
-  return `${size.toFixed(1)} ${units[unitIndex]}`;
-}
-
 function getFileIcon(mimeType) {
   if (mimeType?.startsWith('image/')) return ImageIcon;
   if (mimeType?.includes('pdf')) return FileText;
@@ -58,6 +47,7 @@ function getFileIcon(mimeType) {
 function getStatusBadge(status) {
   const styles = {
     pending: { bg: 'bg-yellow-100', text: 'text-yellow-700', icon: Clock, label: 'Pending Review' },
+    processing: { bg: 'bg-blue-100', text: 'text-blue-700', icon: RefreshCw, label: 'Processing' },
     approved: {
       bg: 'bg-emerald-100',
       text: 'text-emerald-700',
@@ -81,7 +71,6 @@ function getStatusBadge(status) {
 }
 
 export default async function AdminUploadsPage({ searchParams }) {
-  const supabase = await createClient();
   const params = await searchParams;
 
   const statusFilter = params?.status || 'all';
@@ -89,38 +78,26 @@ export default async function AdminUploadsPage({ searchParams }) {
   const perPage = 20;
   const offset = (page - 1) * perPage;
 
-  // Build query
-  let query = supabase
-    .from('uploads')
-    .select(
-      `
-      *,
-      profiles:user_id (
-        first_name,
-        last_name,
-        email
-      )
-    `,
-      { count: 'exact' }
-    )
-    .order('created_at', { ascending: false })
-    .range(offset, offset + perPage - 1);
+  // Fetch uploads and stats using modular utilities
+  const [uploadsResult, uploadStats] = await Promise.all([
+    getUploads({
+      status: statusFilter !== 'all' ? statusFilter : null,
+      limit: perPage,
+      offset,
+      sortBy: 'created_at',
+      sortOrder: 'desc',
+    }),
+    getUploadStats(),
+  ]);
 
-  if (statusFilter !== 'all') {
-    query = query.eq('status', statusFilter);
-  }
-
-  const { data: uploads, count, error } = await query;
-
-  // Get stats
-  const { data: allUploads } = await supabase.from('uploads').select('status, file_size');
+  const { uploads, count } = uploadsResult;
 
   const stats = {
-    total: allUploads?.length || 0,
-    pending: allUploads?.filter((u) => u.status === 'pending').length || 0,
-    approved: allUploads?.filter((u) => u.status === 'approved').length || 0,
-    rejected: allUploads?.filter((u) => u.status === 'rejected').length || 0,
-    totalSize: allUploads?.reduce((sum, u) => sum + (u.file_size || 0), 0) || 0,
+    total: uploadStats?.total || 0,
+    pending: uploadStats?.pending || 0,
+    processing: uploadStats?.processing || 0,
+    approved: uploadStats?.approved || 0,
+    rejected: uploadStats?.rejected || 0,
   };
 
   const totalPages = Math.ceil((count || 0) / perPage);
@@ -266,9 +243,9 @@ export default async function AdminUploadsPage({ searchParams }) {
                       <div className="flex items-center gap-1.5">
                         <User className="h-3.5 w-3.5" />
                         <span className="truncate">
-                          {upload.profiles?.first_name || upload.profiles?.last_name
-                            ? `${upload.profiles?.first_name || ''} ${upload.profiles?.last_name || ''}`.trim()
-                            : upload.profiles?.email || 'Unknown'}
+                          {upload.profile?.first_name || upload.profile?.last_name
+                            ? `${upload.profile?.first_name || ''} ${upload.profile?.last_name || ''}`.trim()
+                            : upload.profile?.email || 'Unknown'}
                         </span>
                       </div>
                       <div className="flex items-center gap-1.5">

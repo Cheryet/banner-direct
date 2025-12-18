@@ -1,4 +1,3 @@
-import { createClient } from '@/lib/supabase/server';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
 import {
@@ -18,24 +17,36 @@ import {
   RefreshCw,
   ClipboardCheck,
 } from 'lucide-react';
+import { getOrderStats, getRecentOrders } from '@/lib/db/orders';
+import { getCustomerStats } from '@/lib/db/customers';
+import { getUploadStats } from '@/lib/db/uploads';
+import { getProducts } from '@/lib/products';
+import { createClient } from '@/lib/supabase/server';
 
 /**
  * Admin Dashboard
  * Overview of key metrics and recent activity
  */
 export default async function AdminDashboard() {
-  const supabase = await createClient();
+  // Fetch all dashboard data in parallel using modular utilities
+  const [orderStats, customerStats, uploadStats, products, recentOrdersData] = await Promise.all([
+    getOrderStats(),
+    getCustomerStats(),
+    getUploadStats(),
+    getProducts({ limit: 100 }), // Get count of active products
+    getRecentOrders(10), // Get recent orders for display
+  ]);
 
-  // Handle unconfigured Supabase
-  if (!supabase) {
+  // Handle case where data couldn't be fetched
+  if (!orderStats) {
     return (
       <div className="flex min-h-[400px] items-center justify-center">
         <Card className="max-w-md">
           <CardContent className="pt-6 text-center">
             <AlertTriangle className="mx-auto h-12 w-12 text-yellow-500" />
-            <h2 className="mt-4 text-xl font-semibold">Supabase Not Configured</h2>
+            <h2 className="mt-4 text-xl font-semibold">Unable to Load Dashboard</h2>
             <p className="mt-2 text-muted-foreground">
-              Please set up your Supabase environment variables to use the admin dashboard.
+              Please check your database connection and try again.
             </p>
           </CardContent>
         </Card>
@@ -43,53 +54,27 @@ export default async function AdminDashboard() {
     );
   }
 
-  // Fetch dashboard stats (exclude admins from customer count)
-  const [ordersResult, productsResult, customersResult] = await Promise.all([
-    supabase
-      .from('orders')
-      .select('id, total, status, created_at, order_number, profiles:user_id(first_name, last_name)', {
-        count: 'exact',
-      }),
-    supabase.from('products').select('id', { count: 'exact' }),
-    supabase
-      .from('profiles')
-      .select('id', { count: 'exact' })
-      .eq('is_anonymous', false)
-      .neq('role', 'admin'),
-  ]);
-
-  const orders = ordersResult.data || [];
-  const totalOrders = ordersResult.count || 0;
-  const totalProducts = productsResult.count || 0;
-  const totalCustomers = customersResult.count || 0;
-
-  // Calculate revenue
-  const totalRevenue = orders.reduce((sum, order) => sum + (parseFloat(order.total) || 0), 0);
+  const totalOrders = orderStats.total;
+  const totalProducts = products.length;
+  const totalCustomers = customerStats?.total || 0;
+  const totalRevenue = orderStats.totalRevenue || 0;
 
   // Order status counts for pipeline
   const ordersByStatus = {
-    pending: orders.filter((o) => o.status === 'pending').length,
-    confirmed: orders.filter((o) => o.status === 'confirmed').length,
-    processing: orders.filter((o) => o.status === 'processing').length,
-    printing: orders.filter((o) => o.status === 'printing').length,
-    quality_check: orders.filter((o) => o.status === 'quality_check').length,
-    shipped: orders.filter((o) => o.status === 'shipped').length,
-    delivered: orders.filter((o) => o.status === 'delivered').length,
+    pending: orderStats.pending,
+    confirmed: orderStats.confirmed,
+    processing: orderStats.processing,
+    printing: orderStats.printing,
+    quality_check: orderStats.quality_check,
+    shipped: orderStats.shipped,
+    delivered: orderStats.delivered,
   };
 
   const needsAction = ordersByStatus.pending + ordersByStatus.confirmed;
-  const inProduction =
-    ordersByStatus.processing + ordersByStatus.printing + ordersByStatus.quality_check;
 
-  // Recent orders
-  const recentOrders = orders
-    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-    .slice(0, 5);
-
-  // Orders needing attention (pending/confirmed)
-  const urgentOrders = orders
+  // Filter urgent orders (pending/confirmed) from recent orders
+  const urgentOrders = recentOrdersData
     .filter((o) => o.status === 'pending' || o.status === 'confirmed')
-    .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
     .slice(0, 3);
 
   const stats = [
@@ -351,9 +336,7 @@ export default async function AdminDashboard() {
                           {order.order_number || `#${order.id.slice(0, 8)}`}
                         </p>
                         <p className="text-sm text-gray-500">
-                          {order.profiles?.first_name || order.profiles?.last_name
-                            ? `${order.profiles?.first_name || ''} ${order.profiles?.last_name || ''}`.trim()
-                            : 'Guest'}
+                          {order.customer_name || 'Guest'}
                         </p>
                       </div>
                     </div>

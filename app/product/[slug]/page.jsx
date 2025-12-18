@@ -2,8 +2,9 @@
 
 import * as React from 'react';
 import { useParams } from 'next/navigation';
-import { products, calculatePrice } from '@/lib/mock-data';
+import { createClient } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -61,40 +62,114 @@ const galleryImages = [
 ];
 
 // =============================================================================
+// PRICE CALCULATION HELPER
+// =============================================================================
+function calculatePrice(product, options) {
+  if (!product) return null;
+  const { sizeId, materialId, finishingIds = [], leadTimeId, quantity } = options;
+
+  const sizes = product.sizes || [];
+  const materials = product.materials || [];
+  const finishings = product.finishings || [];
+  const leadTimes = product.lead_times || [];
+  const tierPricing = product.tier_pricing || [];
+
+  const size = sizes.find((s) => s.id === sizeId);
+  const material = materials.find((m) => m.id === materialId);
+  const leadTime = leadTimes.find((l) => l.id === leadTimeId);
+  const selectedFinishings = finishings.filter((f) => finishingIds.includes(f.id));
+
+  if (!size || !material || !leadTime) return null;
+
+  let basePrice = size.price || product.base_price || 0;
+  basePrice += material.price || 0;
+  basePrice += selectedFinishings.reduce((sum, f) => sum + (f.price || 0), 0);
+
+  const tier = tierPricing.find(
+    (t) => quantity >= t.minQty && (t.maxQty === null || quantity <= t.maxQty)
+  );
+  const discount = tier ? tier.discount : 0;
+  const discountedPrice = basePrice * (1 - discount / 100);
+  const rushFee = leadTime.price || 0;
+
+  return {
+    unitPrice: discountedPrice,
+    quantity,
+    subtotal: discountedPrice * quantity,
+    rushFee,
+    total: discountedPrice * quantity + rushFee,
+    discount,
+  };
+}
+
+// =============================================================================
 // MAIN COMPONENT
 // =============================================================================
 export default function ProductPage() {
   const params = useParams();
-  const product = products.find((p) => p.slug === params.slug) || products[0];
-
+  
   // ---------------------------------------------------------------------------
   // STATE
   // ---------------------------------------------------------------------------
+  const [product, setProduct] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
   const [config, setConfig] = React.useState({
-    sizeId: product.sizes[0]?.id || '',
-    materialId: product.materials[0]?.id || '',
-    finishingIds: ['hemmed', 'grommets'], // Pre-select defaults to reduce friction
-    leadTimeId: product.leadTimes[0]?.id || '',
+    sizeId: '',
+    materialId: '',
+    finishingIds: ['hemmed', 'grommets'],
+    leadTimeId: '',
     quantity: 1,
   });
   const [files, setFiles] = React.useState([]);
-  const [proofOption, setProofOption] = React.useState('print'); // 'print' or 'proof'
+  const [proofOption, setProofOption] = React.useState('print');
   const [activeImageIndex, setActiveImageIndex] = React.useState(0);
   const [lightboxOpen, setLightboxOpen] = React.useState(false);
+
+  // ---------------------------------------------------------------------------
+  // FETCH PRODUCT FROM SUPABASE
+  // ---------------------------------------------------------------------------
+  React.useEffect(() => {
+    async function fetchProduct() {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('slug', params.slug)
+        .eq('is_active', true)
+        .single();
+
+      if (error || !data) {
+        setError('Product not found');
+        setIsLoading(false);
+        return;
+      }
+
+      setProduct(data);
+      // Initialize config with product defaults
+      setConfig((prev) => ({
+        ...prev,
+        sizeId: data.sizes?.[0]?.id || '',
+        materialId: data.materials?.[0]?.id || '',
+        leadTimeId: data.lead_times?.[0]?.id || '',
+      }));
+      setIsLoading(false);
+    }
+    fetchProduct();
+  }, [params.slug]);
 
   // ---------------------------------------------------------------------------
   // DERIVED STATE
   // ---------------------------------------------------------------------------
   const pricing = calculatePrice(product, config);
   const isValid = config.sizeId && config.materialId && files.length > 0;
-  const selectedSize = product.sizes.find((s) => s.id === config.sizeId);
-  const selectedLeadTime = product.leadTimes.find((l) => l.id === config.leadTimeId);
+  const selectedSize = product?.sizes?.find((s) => s.id === config.sizeId);
+  const selectedLeadTime = product?.lead_times?.find((l) => l.id === config.leadTimeId);
 
   // Calculate estimated delivery date
   const getEstimatedDate = (leadTimeId) => {
     const days = leadTimeId === 'same-day' ? 1 : leadTimeId === 'rush' ? 3 : 7;
     const date = new Date();
-    // Skip weekends for business days
     let addedDays = 0;
     while (addedDays < days) {
       date.setDate(date.getDate() + 1);
@@ -107,13 +182,34 @@ export default function ProductPage() {
 
   // Get tier hint for quantity
   const getTierHint = () => {
-    const nextTier = product.tierPricing.find((t) => config.quantity < t.minQty);
+    if (!product?.tier_pricing) return null;
+    const nextTier = product.tier_pricing.find((t) => config.quantity < t.minQty);
     if (nextTier && nextTier.discount > (pricing?.discount || 0)) {
       const unitsNeeded = nextTier.minQty - config.quantity;
       return `Order ${unitsNeeded} more to save ${nextTier.discount}%`;
     }
     return null;
   };
+
+  // ---------------------------------------------------------------------------
+  // LOADING & ERROR STATES
+  // ---------------------------------------------------------------------------
+  if (isLoading) {
+    return (
+      <div className="container flex items-center justify-center py-24">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (error || !product) {
+    return (
+      <div className="container py-24 text-center">
+        <h1 className="text-2xl font-bold">Product Not Found</h1>
+        <p className="mt-2 text-muted-foreground">The product you're looking for doesn't exist.</p>
+      </div>
+    );
+  }
 
   // ---------------------------------------------------------------------------
   // HANDLERS
@@ -166,7 +262,7 @@ export default function ProductPage() {
     addOns.push({ name: 'Design proof', price: 10 });
   }
   config.finishingIds.forEach((id) => {
-    const finishing = product.finishings.find((f) => f.id === id);
+    const finishing = (product.finishings || []).find((f) => f.id === id);
     if (finishing && finishing.price > 0) {
       addOns.push({ name: finishing.label, price: finishing.price * config.quantity });
     }
@@ -325,7 +421,7 @@ export default function ProductPage() {
               <div className="lg:col-span-7">
                 {/* Section 1: Product Intro */}
                 <div className="mb-6">
-                  <h1 className="text-2xl font-bold md:text-3xl">{product.title}</h1>
+                  <h1 className="text-2xl font-bold md:text-3xl">{product.title || product.name}</h1>
                   <p className="mt-2 text-muted-foreground">
                     Durable vinyl banners printed in Canada for indoor and outdoor use.
                   </p>
@@ -337,7 +433,7 @@ export default function ProductPage() {
                 <div className="mb-6">
                   <Label className="mb-3 block text-base font-semibold">Size</Label>
                   <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                    {product.sizes.map((size) => (
+                    {(product.sizes || []).map((size) => (
                       <button
                         key={size.id}
                         type="button"
@@ -372,7 +468,7 @@ export default function ProductPage() {
                 <div className="mb-6">
                   <Label className="mb-3 block text-base font-semibold">Material</Label>
                   <div className="space-y-2">
-                    {product.materials.map((material) => {
+                    {(product.materials || []).map((material) => {
                       const helper = materialHelpers[material.id] || {};
                       return (
                         <button
@@ -425,11 +521,11 @@ export default function ProductPage() {
                 </div>
 
                 {/* Section 4: Finishing Options */}
-                {product.finishings.length > 0 && (
+                {(product.finishings || []).length > 0 && (
                   <div className="mb-6">
                     <Label className="mb-3 block text-base font-semibold">Finishing Options</Label>
                     <div className="grid gap-2 sm:grid-cols-2">
-                      {product.finishings.map((finishing) => (
+                      {(product.finishings || []).map((finishing) => (
                         <button
                           key={finishing.id}
                           type="button"
@@ -526,7 +622,7 @@ export default function ProductPage() {
                 <div className="mb-6">
                   <Label className="mb-3 block text-base font-semibold">Turnaround Time</Label>
                   <div className="space-y-2">
-                    {product.leadTimes.map((leadTime) => {
+                    {(product.lead_times || []).map((leadTime) => {
                       const isRush = leadTime.id === 'rush' || leadTime.id === 'same-day';
                       return (
                         <button

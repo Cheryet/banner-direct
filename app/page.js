@@ -1,5 +1,7 @@
 import Link from 'next/link';
-import { products } from '@/lib/mock-data';
+import { getProducts } from '@/lib/products';
+import { getSettings } from '@/lib/db/settings';
+import { getCategories } from '@/lib/db/categories';
 import { Card, CardContent } from '@/components/ui/card';
 import { ProductCard } from '@/components/product/product-card';
 import { LinkButton } from '@/components/ui/link-button';
@@ -15,58 +17,68 @@ import {
   Store,
   Users,
   Check,
+  Shield,
 } from 'lucide-react';
 
-// Use cases for the "Perfect for Any Occasion" section
-const useCases = [
-  {
-    icon: PartyPopper,
-    title: 'Events & Fundraisers',
-    description: 'Birthdays, weddings, charity runs, and community events.',
-  },
-  {
-    icon: Building2,
-    title: 'Trade Shows',
-    description: 'Professional displays that make your booth stand out.',
-  },
-  {
-    icon: Store,
-    title: 'Small Businesses',
-    description: 'Storefronts, sales, grand openings, and promotions.',
-  },
-  {
-    icon: Users,
-    title: 'Corporate & Bulk Orders',
-    description: 'Consistent branding across locations with volume pricing.',
-  },
+// Icon mapping for dynamic content
+const iconMap = {
+  PartyPopper,
+  Building2,
+  Store,
+  Users,
+  Package,
+  Upload,
+  Truck,
+  MapPin,
+  Printer,
+  Shield,
+  Check,
+};
+
+// Default fallback data (used if settings not available)
+const defaultUseCases = [
+  { icon: 'PartyPopper', title: 'Events & Fundraisers', description: 'Birthdays, weddings, charity runs, and community events.' },
+  { icon: 'Building2', title: 'Trade Shows', description: 'Professional displays that make your booth stand out.' },
+  { icon: 'Store', title: 'Small Businesses', description: 'Storefronts, sales, grand openings, and promotions.' },
+  { icon: 'Users', title: 'Corporate & Bulk Orders', description: 'Consistent branding across locations with volume pricing.' },
 ];
 
-// How it works steps
-const steps = [
-  {
-    number: 1,
-    icon: Package,
-    title: 'Choose your banner',
-    description: 'Pick a size and material that fits your needs.',
-  },
-  {
-    number: 2,
-    icon: Upload,
-    title: 'Upload artwork or start from a template',
-    description: 'We accept most file formats and check every upload.',
-  },
-  {
-    number: 3,
-    icon: Truck,
-    title: 'We print & ship fast across Canada',
-    description: 'Standard, rush, or same-day options available.',
-  },
+const defaultHowItWorks = [
+  { number: 1, icon: 'Package', title: 'Choose your banner', description: 'Pick a size and material that fits your needs.' },
+  { number: 2, icon: 'Upload', title: 'Upload artwork or start from a template', description: 'We accept most file formats and check every upload.' },
+  { number: 3, icon: 'Truck', title: 'We print & ship fast across Canada', description: 'Standard, rush, or same-day options available.' },
 ];
 
-// Featured banner sizes for the money section
-const featuredProducts = products.slice(0, 4);
+const defaultHero = {
+  title: 'Your banner, your way',
+  subtitle: 'Custom banners printed on commercial equipment. Fast turnaround, durable materials, and shipped across Canada.',
+  cta_primary: { text: 'Start Creating →', href: '/products' },
+  cta_secondary: { text: 'Get Bulk Pricing', href: '/bulk' },
+};
 
-export default function Home() {
+const defaultTrustBadges = [
+  { icon: 'check', text: 'Free artwork review' },
+  { icon: 'check', text: 'Fast shipping' },
+  { icon: 'check', text: 'Quality guarantee' },
+];
+
+export default async function Home() {
+  // Fetch all data in parallel for performance
+  const [settings, featuredProducts, fallbackProducts, categories] = await Promise.all([
+    getSettings(),
+    getProducts({ featured: true, limit: 4 }),
+    getProducts({ limit: 4 }),
+    getCategories(),
+  ]);
+
+  // Use featured products or fallback to any products
+  const displayProducts = featuredProducts.length > 0 ? featuredProducts : fallbackProducts;
+
+  // Get dynamic content from settings with fallbacks
+  const heroContent = settings.hero_content || defaultHero;
+  const useCases = settings.use_cases || defaultUseCases;
+  const howItWorks = settings.how_it_works || defaultHowItWorks;
+  const trustBadges = settings.trust_badges || defaultTrustBadges;
   return (
     <>
       {/* ============================================
@@ -91,37 +103,32 @@ export default function Home() {
               </div>
 
               <h1 className="text-4xl font-bold tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
-                Your banner, <span className="text-primary">your way</span>
+                {heroContent.title?.split(',').map((part, i) => 
+                  i === 0 ? part + ',' : <span key={i} className="text-primary">{part}</span>
+                ) || 'Your banner, your way'}
               </h1>
               <p className="mt-6 text-lg leading-relaxed text-gray-600 md:text-xl">
-                Custom banners printed on commercial equipment. Fast turnaround, durable materials,
-                and shipped across Canada.
+                {heroContent.subtitle}
               </p>
 
               {/* CTAs - Premium button styling */}
               <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-                <LinkButton href="/product/pvc-banner-3x6" size="lg">
-                  Start Creating →
+                <LinkButton href={heroContent.cta_primary?.href || '/products'} size="lg">
+                  {heroContent.cta_primary?.text || 'Start Creating →'}
                 </LinkButton>
-                <LinkButton href="/bulk" variant="outline" size="lg">
-                  Get Bulk Pricing
+                <LinkButton href={heroContent.cta_secondary?.href || '/bulk'} variant="outline" size="lg">
+                  {heroContent.cta_secondary?.text || 'Get Bulk Pricing'}
                 </LinkButton>
               </div>
 
               {/* Trust indicators - Clean horizontal layout */}
               <div className="mt-12 flex flex-wrap items-center gap-6 text-sm text-gray-500">
-                <span className="flex items-center gap-2">
-                  <Check className="h-5 w-5 text-emerald-500" aria-hidden="true" />
-                  Free artwork review
-                </span>
-                <span className="flex items-center gap-2">
-                  <Check className="h-5 w-5 text-emerald-500" aria-hidden="true" />
-                  Fast shipping
-                </span>
-                <span className="flex items-center gap-2">
-                  <Check className="h-5 w-5 text-emerald-500" aria-hidden="true" />
-                  Quality guarantee
-                </span>
+                {trustBadges.map((badge, index) => (
+                  <span key={index} className="flex items-center gap-2">
+                    <Check className="h-5 w-5 text-emerald-500" aria-hidden="true" />
+                    {badge.text}
+                  </span>
+                ))}
               </div>
             </div>
 
@@ -144,7 +151,9 @@ export default function Home() {
                 {/* Floating badge */}
                 <div className="absolute bottom-4 left-4 rounded-lg bg-white/95 px-4 py-2 shadow-lg backdrop-blur">
                   <p className="text-xs font-medium text-gray-500">Starting from</p>
-                  <p className="text-xl font-bold text-gray-900">$49.99</p>
+                  <p className="text-xl font-bold text-gray-900">
+                    ${displayProducts[0]?.base_price?.toFixed(2) || '49.99'}
+                  </p>
                 </div>
               </div>
             </div>
@@ -167,20 +176,23 @@ export default function Home() {
             </p>
           </div>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {useCases.map((useCase) => (
-              <Card
-                key={useCase.title}
-                className="group cursor-pointer border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-emerald-200 hover:shadow-md"
-              >
-                <CardContent className="p-6">
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 transition-colors group-hover:bg-emerald-100">
-                    <useCase.icon className="h-6 w-6 text-emerald-600" aria-hidden="true" />
-                  </div>
-                  <h3 className="mb-2 font-semibold text-gray-900">{useCase.title}</h3>
-                  <p className="text-sm leading-relaxed text-gray-600">{useCase.description}</p>
-                </CardContent>
-              </Card>
-            ))}
+            {useCases.map((useCase) => {
+              const IconComponent = iconMap[useCase.icon] || Package;
+              return (
+                <Card
+                  key={useCase.title}
+                  className="group cursor-pointer border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-emerald-200 hover:shadow-md"
+                >
+                  <CardContent className="p-6">
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 transition-colors group-hover:bg-emerald-100">
+                      <IconComponent className="h-6 w-6 text-emerald-600" aria-hidden="true" />
+                    </div>
+                    <h3 className="mb-2 font-semibold text-gray-900">{useCase.title}</h3>
+                    <p className="text-sm leading-relaxed text-gray-600">{useCase.description}</p>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -198,30 +210,33 @@ export default function Home() {
 
           {/* Steps - Clean horizontal layout */}
           <div className="mt-16 grid gap-8 md:grid-cols-3">
-            {steps.map((step, index) => (
-              <div key={step.number} className="relative text-center">
-                {/* Connector line (desktop only) */}
-                {index < steps.length - 1 && (
-                  <div
-                    className="absolute left-[60%] right-0 top-8 hidden h-px bg-gray-200 md:block"
-                    aria-hidden="true"
-                  />
-                )}
+            {howItWorks.map((step, index) => {
+              const IconComponent = iconMap[step.icon] || Package;
+              return (
+                <div key={step.number} className="relative text-center">
+                  {/* Connector line (desktop only) */}
+                  {index < howItWorks.length - 1 && (
+                    <div
+                      className="absolute left-[60%] right-0 top-8 hidden h-px bg-gray-200 md:block"
+                      aria-hidden="true"
+                    />
+                  )}
 
-                {/* Step number */}
-                <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500 text-2xl font-bold text-white shadow-lg shadow-emerald-500/30">
-                  {step.number}
+                  {/* Step number */}
+                  <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500 text-2xl font-bold text-white shadow-lg shadow-emerald-500/30">
+                    {step.number}
+                  </div>
+
+                  {/* Icon */}
+                  <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-gray-100">
+                    <IconComponent className="h-7 w-7 text-gray-600" aria-hidden="true" />
+                  </div>
+
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900">{step.title}</h3>
+                  <p className="text-gray-600">{step.description}</p>
                 </div>
-
-                {/* Icon */}
-                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-gray-100">
-                  <step.icon className="h-7 w-7 text-gray-600" aria-hidden="true" />
-                </div>
-
-                <h3 className="mb-2 text-lg font-semibold text-gray-900">{step.title}</h3>
-                <p className="text-gray-600">{step.description}</p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -239,15 +254,15 @@ export default function Home() {
             </p>
           </div>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {featuredProducts.map((product) => (
+            {displayProducts.map((product) => (
               <ProductCard
                 key={product.id}
                 slug={product.slug}
-                title={product.title}
-                image={product.image}
+                title={product.title || product.name}
+                image={product.image_url}
                 specs={product.specs}
-                priceFrom={product.priceFrom}
-                badges={product.badges}
+                priceFrom={product.base_price}
+                badges={product.badges || []}
               />
             ))}
           </div>

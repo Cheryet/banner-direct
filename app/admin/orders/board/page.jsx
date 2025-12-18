@@ -135,9 +135,10 @@ function OrderCard({ order, onDragStart }) {
             {order.order_number || `#${order.id.slice(0, 8)}`}
           </Link>
           <p className="truncate text-xs text-gray-500">
-            {order.profiles?.first_name || order.profiles?.last_name
-              ? `${order.profiles?.first_name || ''} ${order.profiles?.last_name || ''}`.trim()
-              : 'Guest'}
+            {order.customer_name || 
+              (order.profiles?.first_name || order.profiles?.last_name
+                ? `${order.profiles?.first_name || ''} ${order.profiles?.last_name || ''}`.trim()
+                : 'Guest')}
           </p>
         </div>
         <span className="text-xs text-gray-400">{formatTimeAgo(order.created_at)}</span>
@@ -230,25 +231,21 @@ export default function FulfillmentBoardPage() {
   const scrollRef = React.useRef(null);
   const boardRef = React.useRef(null);
 
-  // Fetch orders
+  // Fetch orders - exclude cancelled and refunded from fulfillment workflow
   React.useEffect(() => {
     async function fetchOrders() {
-      const supabase = createClient();
-      const { data, error } = await supabase
-        .from('orders')
-        .select(
-          `
-          *,
-          profiles:user_id (first_name, last_name, email),
-          order_items (id, quantity, product_name)
-        `
-        )
-        .order('created_at', { ascending: false });
-
-      if (error) {
+      try {
+        const response = await fetch('/api/admin/orders?exclude=cancelled,refunded');
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to load orders');
+        }
+        
+        setOrders(data.orders || []);
+      } catch (err) {
+        console.error('Fulfillment board fetch error:', err);
         setError('Failed to load orders');
-      } else {
-        setOrders(data || []);
       }
       setIsLoading(false);
     }
@@ -279,13 +276,16 @@ export default function FulfillmentBoardPage() {
     setOrders((prev) => prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o)));
 
     try {
-      const supabase = createClient();
-      const { error } = await supabase
-        .from('orders')
-        .update({ status: newStatus, updated_at: new Date().toISOString() })
-        .eq('id', orderId);
+      const response = await fetch('/api/admin/orders', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId, status: newStatus }),
+      });
 
-      if (error) throw error;
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to update order');
+      }
     } catch (err) {
       // Revert on error
       setOrders((prev) => prev.map((o) => (o.id === orderId ? { ...o, status: order.status } : o)));
