@@ -80,6 +80,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${poppins.variable}`} suppressHydrationWarning>
       <body className="flex min-h-screen flex-col font-sans antialiased" suppressHydrationWarning>
+        {/* Skip link for keyboard users */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-emerald-600 focus:px-4 focus:py-2 focus:text-white"
+        >
+          Skip to main content
+        </a>
         <Providers>{children}</Providers>
       </body>
     </html>
