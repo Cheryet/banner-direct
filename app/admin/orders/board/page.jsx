@@ -24,41 +24,14 @@ import {
   AlertCircle,
 } from 'lucide-react';
 import { formatCurrency, formatRelativeTime } from '@/lib/format';
+import { ORDER_PIPELINE, STATUS_COLORS } from '@/lib/constants/orders';
 
-const PIPELINE_STAGES = [
-  { id: 'pending', label: 'Pending', icon: Clock, color: 'yellow', description: 'Awaiting review' },
-  {
-    id: 'confirmed',
-    label: 'Confirmed',
-    icon: CheckCircle,
-    color: 'blue',
-    description: 'Ready to process',
-  },
-  {
-    id: 'processing',
-    label: 'Processing',
-    icon: RefreshCw,
-    color: 'blue',
-    description: 'Preparing artwork',
-  },
-  {
-    id: 'printing',
-    label: 'Printing',
-    icon: Printer,
-    color: 'purple',
-    description: 'In production',
-  },
-  {
-    id: 'quality_check',
-    label: 'QC',
-    icon: ClipboardCheck,
-    color: 'indigo',
-    description: 'Final check',
-  },
-  { id: 'shipped', label: 'Shipped', icon: Truck, color: 'emerald', description: 'On the way' },
-  { id: 'delivered', label: 'Delivered', icon: Package, color: 'emerald', description: 'Complete' },
-];
+// Board uses a subset of pipeline stages
+const PIPELINE_STAGES = ORDER_PIPELINE.filter(s => 
+  ['pending', 'confirmed', 'processing', 'printing', 'quality_check', 'shipped'].includes(s.id)
+);
 
+// Board-specific color mappings (extends STATUS_COLORS with header variants)
 const COLORS = {
   yellow: {
     bg: 'bg-yellow-50',

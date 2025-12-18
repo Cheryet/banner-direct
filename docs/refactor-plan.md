@@ -23,10 +23,17 @@
 - [x] Extract ProductAddonsTab (product add-ons)
 - [x] Product edit page: 1224 → 691 lines (44% reduction)
 
-### Next Steps (Phase 4)
-- [ ] Extract ProductCard component variations
-- [ ] Review and optimize client/server component boundaries
-- [ ] Extract remaining large page sections as needed
+### Phase 4 - Completed
+- [x] Extract AdminProductCard, ProductsEmptyState, ProductsGrid components
+- [x] Update admin products page to use ProductsGrid (279 → 203 lines)
+- [x] Update board page to use shared ORDER_PIPELINE constants
+- [x] Review client/server component boundaries (all appropriate)
+
+### Summary
+**Total file size reductions:**
+- `app/admin/orders/[id]/page.jsx`: 957 → 602 lines (37%)
+- `app/admin/products/[id]/page.jsx`: 1224 → 691 lines (44%)
+- `app/admin/products/page.jsx`: 279 → 203 lines (27%)
 
 ---
 
