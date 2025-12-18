@@ -19,13 +19,7 @@ import {
   Plus,
   Trash2,
 } from 'lucide-react';
-
-function formatCurrency(amount) {
-  return new Intl.NumberFormat('en-CA', {
-    style: 'currency',
-    currency: 'CAD',
-  }).format(amount);
-}
+import { formatCurrency } from '@/lib/format';
 
 export default function ReorderPage({ params }) {
   const router = useRouter();

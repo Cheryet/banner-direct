@@ -16,27 +16,13 @@ import {
   Eye,
   Clock,
 } from 'lucide-react';
+import { formatCurrency, formatDate } from '@/lib/format';
 
 export async function generateMetadata({ params }) {
   return {
     title: 'Customer Details - Admin',
     description: 'View customer information and order history',
   };
-}
-
-function formatDate(dateString) {
-  return new Date(dateString).toLocaleDateString('en-CA', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-  });
-}
-
-function formatCurrency(amount) {
-  return new Intl.NumberFormat('en-CA', {
-    style: 'currency',
-    currency: 'CAD',
-  }).format(amount);
 }
 
 function getStatusBadge(status) {

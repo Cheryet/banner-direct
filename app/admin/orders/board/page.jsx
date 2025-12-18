@@ -23,6 +23,7 @@ import {
   ExternalLink,
   AlertCircle,
 } from 'lucide-react';
+import { formatCurrency, formatRelativeTime } from '@/lib/format';
 
 const PIPELINE_STAGES = [
   { id: 'pending', label: 'Pending', icon: Clock, color: 'yellow', description: 'Awaiting review' },
@@ -97,21 +98,7 @@ const COLORS = {
 };
 
 function formatTimeAgo(dateString) {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diffMs = now - date;
-  const diffMins = Math.floor(diffMs / 60000);
-  const diffHours = Math.floor(diffMs / 3600000);
-  const diffDays = Math.floor(diffMs / 86400000);
-
-  if (diffMins < 60) return `${diffMins}m`;
-  if (diffHours < 24) return `${diffHours}h`;
-  if (diffDays < 7) return `${diffDays}d`;
-  return date.toLocaleDateString('en-CA', { month: 'short', day: 'numeric' });
-}
-
-function formatCurrency(amount) {
-  return new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD' }).format(amount);
+  return formatRelativeTime(dateString);
 }
 
 function OrderCard({ order, onDragStart }) {

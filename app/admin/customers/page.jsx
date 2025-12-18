@@ -18,26 +18,12 @@ import {
 import { getCustomers, getCustomerStats } from '@/lib/db/customers';
 import { getOrderStats } from '@/lib/db/orders';
 import { createClient } from '@/lib/supabase/server';
+import { formatCurrency, formatDate } from '@/lib/format';
 
 export const metadata = {
   title: 'Customers - Admin',
   description: 'Manage customer accounts',
 };
-
-function formatDate(dateString) {
-  return new Date(dateString).toLocaleDateString('en-CA', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
-}
-
-function formatCurrency(amount) {
-  return new Intl.NumberFormat('en-CA', {
-    style: 'currency',
-    currency: 'CAD',
-  }).format(amount);
-}
 
 export default async function AdminCustomersPage({ searchParams }) {
   const params = await searchParams;

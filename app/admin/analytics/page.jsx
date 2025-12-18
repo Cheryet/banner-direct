@@ -12,20 +12,12 @@ import {
   ArrowUpRight,
   ArrowDownRight,
 } from 'lucide-react';
+import { formatCurrency } from '@/lib/format';
 
 export const metadata = {
   title: 'Analytics - Admin',
   description: 'View store analytics and insights',
 };
-
-function formatCurrency(amount) {
-  return new Intl.NumberFormat('en-CA', {
-    style: 'currency',
-    currency: 'CAD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
-}
 
 function formatPercent(value) {
   const sign = value >= 0 ? '+' : '';

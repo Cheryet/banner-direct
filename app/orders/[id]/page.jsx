@@ -19,6 +19,7 @@ import {
   PackageCheck,
 } from 'lucide-react';
 import Link from 'next/link';
+import { formatCurrency, formatDate } from '@/lib/format';
 
 export async function generateMetadata({ params }) {
   return {
@@ -88,21 +89,6 @@ function getStatusInfo(status) {
   return statusMap[status] || statusMap.pending;
 }
 
-function formatDate(dateString) {
-  return new Date(dateString).toLocaleDateString('en-CA', {
-    weekday: 'long',
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-  });
-}
-
-function formatCurrency(amount) {
-  return new Intl.NumberFormat('en-CA', {
-    style: 'currency',
-    currency: 'CAD',
-  }).format(amount);
-}
 
 export default async function OrderDetailPage({ params }) {
   const { id } = await params;

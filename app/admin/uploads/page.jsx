@@ -22,6 +22,7 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import { getUploads, getUploadStats, formatFileSize } from '@/lib/db/uploads';
+import { formatDateTime } from '@/lib/format';
 
 export const metadata = {
   title: 'Uploads - Admin',
@@ -29,13 +30,7 @@ export const metadata = {
 };
 
 function formatDate(dateString) {
-  return new Date(dateString).toLocaleDateString('en-CA', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
+  return formatDateTime(dateString);
 }
 
 function getFileIcon(mimeType) {

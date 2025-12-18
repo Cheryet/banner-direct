@@ -42,3 +42,8 @@ export { FileUpload } from './file-upload';
 export { Stepper } from './stepper';
 export { Skeleton } from './skeleton';
 export { Separator } from './separator';
+export { LoadingSpinner, InlineSpinner } from './loading-spinner';
+export { AlertMessage } from './alert-message';
+export { EmptyState } from './empty-state';
+export { PageHeader } from './page-header';
+export { StatsCard } from './stats-card';

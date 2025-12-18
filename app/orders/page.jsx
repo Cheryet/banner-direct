@@ -13,6 +13,8 @@ import {
   Truck,
 } from 'lucide-react';
 import Link from 'next/link';
+import { formatCurrency, formatDate } from '@/lib/format';
+import { STATUS_COLORS, getStatusById } from '@/lib/constants/orders';
 
 export const metadata = {
   title: 'Order History',
@@ -53,21 +55,6 @@ function getStatusBadge(status) {
   );
 }
 
-function formatDate(dateString) {
-  return new Date(dateString).toLocaleDateString('en-CA', {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
-}
-
-function formatCurrency(amount) {
-  return new Intl.NumberFormat('en-CA', {
-    style: 'currency',
-    currency: 'CAD',
-  }).format(amount);
-}
 
 export default async function OrdersPage() {
   const supabase = await createClient();

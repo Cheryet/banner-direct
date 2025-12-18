@@ -11,141 +11,19 @@ import {
   ShoppingCart,
   Search,
   Eye,
-  Clock,
-  CheckCircle,
-  Truck,
-  Package,
-  XCircle,
-  RefreshCw,
   Download,
   LayoutGrid,
-  Printer,
-  ClipboardCheck,
   AlertCircle,
-  ArrowRight,
   X,
+  CheckCircle,
+  RefreshCw,
+  Truck,
 } from 'lucide-react';
-
-const ORDER_STATUSES = [
-  {
-    id: 'pending',
-    label: 'Pending',
-    color: 'yellow',
-    icon: Clock,
-    description: 'Awaiting confirmation',
-  },
-  {
-    id: 'confirmed',
-    label: 'Confirmed',
-    color: 'blue',
-    icon: CheckCircle,
-    description: 'Payment received',
-  },
-  {
-    id: 'processing',
-    label: 'Processing',
-    color: 'blue',
-    icon: RefreshCw,
-    description: 'Preparing artwork',
-  },
-  {
-    id: 'printing',
-    label: 'Printing',
-    color: 'purple',
-    icon: Printer,
-    description: 'In production',
-  },
-  {
-    id: 'quality_check',
-    label: 'Quality Check',
-    color: 'indigo',
-    icon: ClipboardCheck,
-    description: 'Final inspection',
-  },
-  { id: 'shipped', label: 'Shipped', color: 'emerald', icon: Truck, description: 'On the way' },
-  {
-    id: 'delivered',
-    label: 'Delivered',
-    color: 'emerald',
-    icon: Package,
-    description: 'Completed',
-  },
-  {
-    id: 'cancelled',
-    label: 'Cancelled',
-    color: 'gray',
-    icon: XCircle,
-    description: 'Order cancelled',
-  },
-];
-
-const STATUS_COLORS = {
-  pending: {
-    bg: 'bg-yellow-100',
-    text: 'text-yellow-700',
-    border: 'border-yellow-300',
-    accent: 'bg-yellow-500',
-  },
-  confirmed: {
-    bg: 'bg-blue-100',
-    text: 'text-blue-700',
-    border: 'border-blue-300',
-    accent: 'bg-blue-500',
-  },
-  processing: {
-    bg: 'bg-blue-100',
-    text: 'text-blue-700',
-    border: 'border-blue-300',
-    accent: 'bg-blue-500',
-  },
-  printing: {
-    bg: 'bg-purple-100',
-    text: 'text-purple-700',
-    border: 'border-purple-300',
-    accent: 'bg-purple-500',
-  },
-  quality_check: {
-    bg: 'bg-indigo-100',
-    text: 'text-indigo-700',
-    border: 'border-indigo-300',
-    accent: 'bg-indigo-500',
-  },
-  shipped: {
-    bg: 'bg-emerald-100',
-    text: 'text-emerald-700',
-    border: 'border-emerald-300',
-    accent: 'bg-emerald-500',
-  },
-  delivered: {
-    bg: 'bg-emerald-100',
-    text: 'text-emerald-700',
-    border: 'border-emerald-300',
-    accent: 'bg-emerald-500',
-  },
-  cancelled: {
-    bg: 'bg-gray-100',
-    text: 'text-gray-700',
-    border: 'border-gray-300',
-    accent: 'bg-gray-500',
-  },
-};
+import { ORDER_STATUSES, STATUS_COLORS } from '@/lib/constants/orders';
+import { formatCurrency, formatRelativeTime } from '@/lib/format';
 
 function formatDate(dateString) {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diffMs = now - date;
-  const diffMins = Math.floor(diffMs / 60000);
-  const diffHours = Math.floor(diffMs / 3600000);
-  const diffDays = Math.floor(diffMs / 86400000);
-
-  if (diffMins < 60) return `${diffMins}m ago`;
-  if (diffHours < 24) return `${diffHours}h ago`;
-  if (diffDays < 7) return `${diffDays}d ago`;
-  return date.toLocaleDateString('en-CA', { month: 'short', day: 'numeric' });
-}
-
-function formatCurrency(amount) {
-  return new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD' }).format(amount);
+  return formatRelativeTime(dateString);
 }
 
 function StatusBadge({ status }) {

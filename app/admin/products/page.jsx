@@ -9,25 +9,14 @@ import {
   Trash2,
   Eye,
   EyeOff,
-  Search,
-  Filter,
-  MoreHorizontal,
   DollarSign,
-  TrendingUp,
-  Archive,
 } from 'lucide-react';
+import { formatCurrency } from '@/lib/format';
 
 export const metadata = {
   title: 'Products - Admin',
   description: 'Manage your product catalog',
 };
-
-function formatCurrency(amount) {
-  return new Intl.NumberFormat('en-CA', {
-    style: 'currency',
-    currency: 'CAD',
-  }).format(amount);
-}
 
 export default async function AdminProductsPage({ searchParams }) {
   const supabase = await createClient();
