@@ -7,6 +7,8 @@ import { createClient } from '@/lib/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { CurrencyInput } from '@/components/ui/currency-input';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import {
   ArrowLeft,
@@ -428,39 +430,23 @@ export default function AdminProductEditPage({ params }) {
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
                       <Label htmlFor="base_price">Base Price (CAD) *</Label>
-                      <div className="relative mt-1">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
-                          $
-                        </span>
-                        <Input
+                      <div className="mt-1">
+                        <CurrencyInput
                           id="base_price"
-                          type="number"
-                          step="0.01"
-                          min="0"
                           value={product.base_price}
-                          onChange={(e) => setProduct({ ...product, base_price: e.target.value })}
+                          onChange={(val) => setProduct({ ...product, base_price: val })}
                           placeholder="0.00"
-                          className="pl-7"
                         />
                       </div>
                     </div>
                     <div>
                       <Label htmlFor="compare_price">Compare at Price</Label>
-                      <div className="relative mt-1">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
-                          $
-                        </span>
-                        <Input
+                      <div className="mt-1">
+                        <CurrencyInput
                           id="compare_price"
-                          type="number"
-                          step="0.01"
-                          min="0"
                           value={product.compare_price}
-                          onChange={(e) =>
-                            setProduct({ ...product, compare_price: e.target.value })
-                          }
+                          onChange={(val) => setProduct({ ...product, compare_price: val })}
                           placeholder="0.00"
-                          className="pl-7"
                         />
                       </div>
                     </div>
@@ -628,30 +614,18 @@ export default function AdminProductEditPage({ params }) {
               <CardTitle>Status</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={product.is_active}
-                  onChange={(e) => setProduct({ ...product, is_active: e.target.checked })}
-                  className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
-                />
-                <div>
-                  <p className="font-medium text-gray-900">Active</p>
-                  <p className="text-sm text-gray-500">Visible on storefront</p>
-                </div>
-              </label>
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={product.is_featured}
-                  onChange={(e) => setProduct({ ...product, is_featured: e.target.checked })}
-                  className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
-                />
-                <div>
-                  <p className="font-medium text-gray-900">Featured</p>
-                  <p className="text-sm text-gray-500">Show on homepage</p>
-                </div>
-              </label>
+              <Checkbox
+                checked={product.is_active}
+                onCheckedChange={(checked) => setProduct({ ...product, is_active: checked })}
+                label="Active"
+                description="Visible on storefront"
+              />
+              <Checkbox
+                checked={product.is_featured}
+                onCheckedChange={(checked) => setProduct({ ...product, is_featured: checked })}
+                label="Featured"
+                description="Show on homepage"
+              />
             </CardContent>
           </Card>
           <Card>

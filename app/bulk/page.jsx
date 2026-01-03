@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
@@ -241,17 +242,17 @@ export default function BulkPage() {
           HERO SECTION - Enterprise variant with paper texture
           ==================================================================== */}
       <HeroSection
-        title="Bulk Banner Printing,"
-        titleAccent=" Made Easy"
-        subtitle="Volume pricing. Consistent quality. Printed in Canada and shipped fast."
+        title="Bulk Banner Printing"
+        titleAccent="Made Easy"
+        subtitle="Volume pricing with dedicated support. Consistent quality across every order. Printed in Canada and shipped fast to your locations."
         eyebrow="Enterprise & Volume Orders"
         eyebrowIcon={<Building2 className="h-4 w-4" />}
         primaryCta={{
-          text: 'Request Bulk Quote',
+          text: 'Get Your Custom Quote',
           href: '#quote-form',
         }}
         secondaryCta={{
-          text: 'Talk to a Specialist',
+          text: 'Call a Specialist',
           href: 'tel:+18005551234',
         }}
         texture="paper"
@@ -259,22 +260,25 @@ export default function BulkPage() {
       />
 
       {/* ====================================================================
-          WHO THIS IS FOR - Self-qualifying
+          WHO THIS IS FOR - Self-qualifying (Dark Emerald)
           ==================================================================== */}
-      <section className="py-16 md:py-20">
+      <section className="bg-emerald-950 py-16 md:py-24">
         <div className="container">
-          <h2 className="mb-10 text-center text-2xl font-semibold md:text-3xl">
-            Built for Teams Who Need More
-          </h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-sm font-medium uppercase tracking-wider text-emerald-300">Who We Serve</p>
+            <h2 className="mt-2 text-3xl font-bold text-white md:text-4xl">
+              Built for Teams Who Need More
+            </h2>
+          </div>
+          <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {audiences.map((audience) => (
-              <Card key={audience.title} className="text-center">
-                <CardContent className="p-6">
-                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-                    <audience.icon className="h-6 w-6 text-foreground" aria-hidden="true" />
+              <Card key={audience.title} className="border-emerald-800/50 bg-emerald-900/30 text-center transition-transform duration-200 hover:-translate-y-1">
+                <CardContent className="p-8">
+                  <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-500/20">
+                    <audience.icon className="h-7 w-7 text-emerald-300" aria-hidden="true" />
                   </div>
-                  <h3 className="font-semibold">{audience.title}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground">{audience.description}</p>
+                  <h3 className="text-lg font-semibold text-white">{audience.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-emerald-100">{audience.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -285,23 +289,23 @@ export default function BulkPage() {
       {/* ====================================================================
           WHY BULK WITH US - Enterprise value
           ==================================================================== */}
-      <section className="bg-muted/30 py-16 md:py-20">
+      <section className="bg-gray-50 py-16 md:py-24">
         <div className="container">
           <div className="grid items-center gap-12 lg:grid-cols-2">
             {/* Content */}
             <div>
-              <h2 className="mb-6 text-2xl font-semibold md:text-3xl">Why Order in Bulk With Us</h2>
-              <p className="mb-8 text-muted-foreground">
+              <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">Why Order in Bulk With Us</h2>
+              <p className="mt-6 text-lg text-gray-700">
                 We're built for this. Our production facility handles orders from 10 to 10,000+
                 banners with the same attention to quality and timing.
               </p>
-              <ul className="space-y-4">
+              <ul className="mt-8 space-y-4">
                 {valueProps.map((prop) => (
-                  <li key={prop} className="flex items-start gap-3">
-                    <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                      <Check className="h-3 w-3 text-primary" aria-hidden="true" />
+                  <li key={prop} className="flex items-start gap-4">
+                    <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-100">
+                      <Check className="h-4 w-4 text-emerald-600" aria-hidden="true" />
                     </div>
-                    <span>{prop}</span>
+                    <span className="text-gray-700">{prop}</span>
                   </li>
                 ))}
               </ul>
@@ -309,14 +313,14 @@ export default function BulkPage() {
 
             {/* Visual placeholder */}
             <div className="relative">
-              <div className="aspect-[4/3] overflow-hidden rounded-xl bg-muted">
-                <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-muted to-muted/50">
+              <div className="aspect-[4/3] overflow-hidden rounded-2xl bg-gradient-to-br from-gray-100 to-gray-50 shadow-xl">
+                <div className="flex h-full w-full items-center justify-center">
                   <div className="text-center p-8">
-                    <Printer
-                      className="mx-auto mb-4 h-16 w-16 text-muted-foreground/40"
-                      aria-hidden="true"
-                    />
-                    <p className="text-muted-foreground">Production facility</p>
+                    <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-2xl bg-white shadow-lg">
+                      <Printer className="h-10 w-10 text-emerald-500" aria-hidden="true" />
+                    </div>
+                    <p className="text-lg font-semibold text-gray-700">Production Facility</p>
+                    <p className="mt-1 text-sm text-gray-500">Commercial printing equipment</p>
                   </div>
                 </div>
               </div>
@@ -328,16 +332,16 @@ export default function BulkPage() {
       {/* ====================================================================
           BULK PRICING ESTIMATOR
           ==================================================================== */}
-      <section className="py-16 md:py-20">
+      <section className="bg-white py-16 md:py-24">
         <div className="container">
           <div className="mx-auto max-w-2xl">
             <div className="mb-8 text-center">
-              <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1 text-sm">
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-sm text-emerald-700">
                 <Calculator className="h-4 w-4" aria-hidden="true" />
                 Pricing Estimator
               </div>
-              <h2 className="text-2xl font-semibold md:text-3xl">Get a Quick Estimate</h2>
-              <p className="mt-2 text-muted-foreground">
+              <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">Get a Quick Estimate</h2>
+              <p className="mt-4 text-lg text-gray-700">
                 Adjust the options below to see approximate pricing.
               </p>
             </div>
@@ -446,12 +450,12 @@ export default function BulkPage() {
       {/* ====================================================================
           BULK QUOTE FORM
           ==================================================================== */}
-      <section id="quote-form" className="bg-muted/30 py-16 md:py-20">
+      <section id="quote-form" className="bg-gray-50 py-16 md:py-24">
         <div className="container">
           <div className="mx-auto max-w-2xl">
             <div className="mb-8 text-center">
-              <h2 className="text-2xl font-semibold md:text-3xl">Request a Bulk Quote</h2>
-              <p className="mt-2 text-muted-foreground">
+              <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">Request a Bulk Quote</h2>
+              <p className="mt-4 text-lg text-gray-700">
                 Tell us about your project and we'll get back to you with pricing.
               </p>
             </div>
@@ -662,26 +666,20 @@ export default function BulkPage() {
 
                     {/* Optional: Multiple locations & Repeat orders */}
                     <div className="flex flex-wrap gap-6">
-                      <label className="flex items-center gap-2 text-sm">
-                        <input
-                          type="checkbox"
-                          name="multipleLocations"
-                          checked={formData.multipleLocations}
-                          onChange={handleInputChange}
-                          className="h-4 w-4 rounded border-gray-300"
-                        />
-                        Ship to multiple locations
-                      </label>
-                      <label className="flex items-center gap-2 text-sm">
-                        <input
-                          type="checkbox"
-                          name="repeatOrders"
-                          checked={formData.repeatOrders}
-                          onChange={handleInputChange}
-                          className="h-4 w-4 rounded border-gray-300"
-                        />
-                        This will be a recurring order
-                      </label>
+                      <Checkbox
+                        checked={formData.multipleLocations}
+                        onCheckedChange={(checked) =>
+                          setFormData({ ...formData, multipleLocations: checked })
+                        }
+                        label="Ship to multiple locations"
+                      />
+                      <Checkbox
+                        checked={formData.repeatOrders}
+                        onCheckedChange={(checked) =>
+                          setFormData({ ...formData, repeatOrders: checked })
+                        }
+                        label="This will be a recurring order"
+                      />
                     </div>
 
                     {/* Notes */}
@@ -761,17 +759,17 @@ export default function BulkPage() {
       {/* ====================================================================
           FAQ - Bulk-specific
           ==================================================================== */}
-      <section className="py-16 md:py-20">
+      <section className="bg-white py-16 md:py-24">
         <div className="container">
           <div className="mx-auto max-w-2xl">
-            <h2 className="mb-8 text-center text-2xl font-semibold md:text-3xl">
+            <h2 className="mb-8 text-center text-3xl font-bold text-gray-900 md:text-4xl">
               Frequently Asked Questions
             </h2>
             <Accordion type="single" collapsible className="w-full">
               {faqs.map((faq, index) => (
                 <AccordionItem key={index} value={`faq-${index}`}>
                   <AccordionTrigger className="text-left">{faq.question}</AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground">
+                  <AccordionContent className="text-gray-700">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>
@@ -782,16 +780,16 @@ export default function BulkPage() {
       </section>
 
       {/* ====================================================================
-          FINAL CTA STRIP
+          FINAL CTA - Light section before footer
           ==================================================================== */}
-      <section className="bg-muted/30 py-12 md:py-16">
+      <section className="bg-gray-100 py-16 md:py-24">
         <div className="container">
           <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-2xl font-semibold md:text-3xl">Ready to get started?</h2>
-            <p className="mt-3 text-muted-foreground">
+            <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">Ready to get started?</h2>
+            <p className="mt-4 text-lg text-gray-700">
               From dozens to thousands — we've got the capacity.
             </p>
-            <Button size="lg" className="mt-6" onClick={scrollToForm}>
+            <Button size="lg" className="mt-8" onClick={scrollToForm}>
               Request Bulk Quote
               <ChevronRight className="ml-2 h-5 w-5" aria-hidden="true" />
             </Button>

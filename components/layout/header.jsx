@@ -193,7 +193,7 @@ function Header() {
               </Link>
               <Link
                 href={ctaHref}
-                className="ml-2 flex h-10 items-center rounded-full bg-emerald-600 px-5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-emerald-700 hover:shadow"
+                className="ml-2 flex h-10 items-center rounded-lg bg-emerald-500 px-4 text-sm font-medium text-white shadow-sm transition-all hover:bg-emerald-600"
               >
                 Get Started
               </Link>

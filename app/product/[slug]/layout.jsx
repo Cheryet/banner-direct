@@ -11,11 +11,12 @@ export async function generateMetadata({ params }) {
     };
   }
 
-  const title = product.meta_title || `${product.title || product.name} | Banner Direct`;
+  const productName = product.title || product.name;
+  const title = product.meta_title || `${productName} | Custom Banner Printing Canada`;
   const description =
     product.meta_description ||
     product.description ||
-    `Order custom ${product.title || product.name}. Made in Canada with fast shipping.`;
+    `Order ${productName} printed in Canada. Durable vinyl banners for outdoor events, trade shows, and business signage. Fast nationwide shipping.`;
 
   return {
     title,

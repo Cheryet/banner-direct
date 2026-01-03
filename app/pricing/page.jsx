@@ -140,16 +140,17 @@ export default async function PricingPage() {
           HERO SECTION - Premium with dots texture
           ==================================================================== */}
       <HeroSection
-        title="Clear, Competitive Banner Pricing"
-        subtitle="High-quality banners printed in Canada — with pricing that scales as you do."
-        eyebrow="Transparent Pricing"
+        title="Transparent Banner Pricing"
+        titleAccent="No Hidden Fees"
+        subtitle="See your exact price before checkout. Volume discounts applied automatically. Quality banners printed in Canada."
+        eyebrow="Simple & Clear"
         eyebrowIcon={<DollarSign className="h-4 w-4" />}
         primaryCta={{
-          text: 'Price Your Banner',
+          text: 'Build & Price Your Banner',
           href: products[0] ? `/product/${products[0].slug}` : '/products',
         }}
         secondaryCta={{
-          text: 'Request Bulk Quote',
+          text: 'Get Bulk Quote',
           href: '/bulk',
         }}
         texture="dots"
@@ -159,18 +160,21 @@ export default async function PricingPage() {
       {/* ====================================================================
           HOW PRICING WORKS - Educational strip
           ==================================================================== */}
-      <section className="border-y py-12 md:py-16">
+      <section className="bg-emerald-950 py-16 md:py-20">
         <div className="container">
-          <h2 className="mb-10 text-center text-xl font-semibold md:text-2xl">How Pricing Works</h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-sm font-medium uppercase tracking-wider text-emerald-300">Simple Process</p>
+            <h2 className="mt-2 text-3xl font-bold text-white md:text-4xl">How Pricing Works</h2>
+          </div>
+          <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {pricingSteps.map((step, index) => (
               <div key={step.title} className="flex items-start gap-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-lg font-bold text-white shadow-lg shadow-emerald-500/30">
                   {index + 1}
                 </div>
                 <div>
-                  <h3 className="font-semibold">{step.title}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">{step.description}</p>
+                  <h3 className="font-semibold text-white">{step.title}</h3>
+                  <p className="mt-1 text-sm text-emerald-100">{step.description}</p>
                 </div>
               </div>
             ))}
@@ -181,10 +185,10 @@ export default async function PricingPage() {
       {/* ====================================================================
           BASE PRICING TABLE
           ==================================================================== */}
-      <section className="py-16 md:py-20">
+      <section className="bg-white py-16 md:py-24">
         <div className="container">
           <div className="mx-auto max-w-4xl">
-            <h2 className="mb-8 text-center text-2xl font-semibold md:text-3xl">
+            <h2 className="mb-8 text-center text-3xl font-bold text-gray-900 md:text-4xl">
               Base Pricing by Size
             </h2>
 
@@ -290,20 +294,20 @@ export default async function PricingPage() {
       </section>
 
       {/* ====================================================================
-          VOLUME SAVINGS CALLOUT
+          VOLUME SAVINGS CALLOUT (Dark Emerald)
           ==================================================================== */}
-      <section className="bg-muted/30 py-12 md:py-16">
+      <section className="bg-emerald-950 py-12 md:py-16">
         <div className="container">
           <div className="mx-auto max-w-2xl text-center">
-            <TrendingDown className="mx-auto mb-4 h-10 w-10 text-primary" aria-hidden="true" />
-            <h2 className="text-xl font-semibold md:text-2xl">
+            <TrendingDown className="mx-auto mb-4 h-10 w-10 text-emerald-300" aria-hidden="true" />
+            <h2 className="text-xl font-semibold text-white md:text-2xl">
               The more you order, the lower your per-unit cost.
             </h2>
-            <p className="mt-3 text-muted-foreground">
+            <p className="mt-3 text-emerald-100">
               Volume savings are applied automatically in the product builder. For orders of 25+
               banners, our bulk team can provide custom quotes.
             </p>
-            <LinkButton href="/bulk" variant="outline" className="mt-6">
+            <LinkButton href="/bulk" variant="outline" className="mt-6 border-white text-white hover:bg-white hover:text-emerald-950">
               Learn About Bulk Pricing
             </LinkButton>
           </div>
@@ -313,22 +317,22 @@ export default async function PricingPage() {
       {/* ====================================================================
           WHAT'S INCLUDED IN THE PRICE
           ==================================================================== */}
-      <section className="py-16 md:py-20">
+      <section className="bg-gray-50 py-16 md:py-24">
         <div className="container">
           <div className="mx-auto max-w-3xl">
-            <h2 className="mb-8 text-center text-2xl font-semibold md:text-3xl">
+            <h2 className="mb-8 text-center text-3xl font-bold text-gray-900 md:text-4xl">
               What's Included in Every Order
             </h2>
             <div className="grid gap-4 sm:grid-cols-2">
               {includedFeatures.map((feature) => (
                 <div
                   key={feature.text}
-                  className="flex items-center gap-3 rounded-lg border bg-background p-4"
+                  className="flex items-center gap-4 rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-md"
                 >
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                    <feature.icon className="h-5 w-5 text-primary" aria-hidden="true" />
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50">
+                    <feature.icon className="h-6 w-6 text-emerald-600" aria-hidden="true" />
                   </div>
-                  <span className="font-medium">{feature.text}</span>
+                  <span className="font-medium text-gray-900">{feature.text}</span>
                 </div>
               ))}
             </div>
@@ -339,7 +343,7 @@ export default async function PricingPage() {
       {/* ====================================================================
           SHIPPING & TIMELINES
           ==================================================================== */}
-      <section className="bg-muted/30 py-16 md:py-20">
+      <section className="bg-white py-16 md:py-24">
         <div className="container">
           <div className="mx-auto max-w-3xl">
             <div className="mb-8 text-center">
@@ -347,8 +351,8 @@ export default async function PricingPage() {
                 <MapPin className="h-3 w-3" aria-hidden="true" />
                 Printed in Canada
               </Badge>
-              <h2 className="text-2xl font-semibold md:text-3xl">Shipping & Timelines</h2>
-              <p className="mt-2 text-muted-foreground">
+              <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">Shipping & Timelines</h2>
+              <p className="mt-4 text-lg text-gray-700">
                 Printed and shipped from Canada for faster, more reliable delivery.
               </p>
             </div>
@@ -390,7 +394,7 @@ export default async function PricingPage() {
               </CardContent>
             </Card>
 
-            <div className="mt-6 flex flex-col gap-2 text-center text-sm text-muted-foreground">
+            <div className="mt-6 flex flex-col gap-2 text-center text-sm text-gray-700">
               <p>
                 <Clock className="mr-1 inline h-4 w-4" aria-hidden="true" />
                 Rush production (2–3 days) available for an additional fee.
@@ -402,40 +406,38 @@ export default async function PricingPage() {
       </section>
 
       {/* ====================================================================
-          BULK & ENTERPRISE CTA
+          BULK & ENTERPRISE CTA (Dark Emerald)
           ==================================================================== */}
-      <section className="py-16 md:py-20">
+      <section className="bg-emerald-950 py-16 md:py-20">
         <div className="container">
-          <Card className="mx-auto max-w-3xl border-primary/20 bg-primary/5">
-            <CardContent className="p-8 text-center">
-              <h2 className="text-xl font-semibold md:text-2xl">
-                Ordering 25+ banners or need custom specs?
-              </h2>
-              <p className="mt-3 text-muted-foreground">
-                Volume pricing • Dedicated support • Consistent results
-              </p>
-              <LinkButton href="/bulk" size="lg" className="mt-6">
-                Bulk Orders & Enterprise Pricing
-              </LinkButton>
-            </CardContent>
-          </Card>
+          <div className="mx-auto max-w-3xl rounded-2xl border border-emerald-800/50 bg-emerald-900/30 p-8 text-center">
+            <h2 className="text-xl font-semibold text-white md:text-2xl">
+              Ordering 25+ banners or need custom specs?
+            </h2>
+            <p className="mt-3 text-emerald-100">
+              Volume pricing • Dedicated support • Consistent results
+            </p>
+            <LinkButton href="/bulk" size="lg" className="mt-6 bg-white text-emerald-950 hover:bg-gray-100">
+              Bulk Orders & Enterprise Pricing
+            </LinkButton>
+          </div>
         </div>
       </section>
 
       {/* ====================================================================
           FAQ - Pricing-specific
           ==================================================================== */}
-      <section className="bg-muted/30 py-16 md:py-20">
+      <section className="bg-gray-50 py-16 md:py-24">
         <div className="container">
           <div className="mx-auto max-w-2xl">
-            <h2 className="mb-8 text-center text-2xl font-semibold md:text-3xl">
+            <h2 className="mb-8 text-center text-3xl font-bold text-gray-900 md:text-4xl">
               Pricing Questions
             </h2>
             <Accordion type="single" collapsible className="w-full">
               {faqs.map((faq, index) => (
                 <AccordionItem key={index} value={`faq-${index}`}>
                   <AccordionTrigger className="text-left">{faq.question}</AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground">
+                  <AccordionContent className="text-gray-700">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>
@@ -448,11 +450,11 @@ export default async function PricingPage() {
       {/* ====================================================================
           FINAL CTA STRIP
           ==================================================================== */}
-      <section className="py-16 md:py-20">
+      <section className="bg-white py-16 md:py-24">
         <div className="container">
           <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-2xl font-semibold md:text-3xl">Ready to price your banner?</h2>
-            <p className="mt-3 text-muted-foreground">
+            <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">Ready to price your banner?</h2>
+            <p className="mt-4 text-lg text-gray-700">
               See your exact price in the product builder — no surprises.
             </p>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">

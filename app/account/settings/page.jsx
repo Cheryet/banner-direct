@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import {
@@ -719,58 +720,38 @@ export default function SettingsPage() {
                   )}
 
                   <div className="space-y-4">
-                    <label className="flex items-start gap-4 rounded-lg border p-4 cursor-pointer hover:bg-gray-50">
-                      <input
-                        type="checkbox"
+                    <div className="rounded-lg border p-4 hover:bg-gray-50">
+                      <Checkbox
                         checked={notifications.order_updates}
-                        onChange={(e) =>
-                          setNotifications({ ...notifications, order_updates: e.target.checked })
+                        onCheckedChange={(checked) =>
+                          setNotifications({ ...notifications, order_updates: checked })
                         }
-                        className="mt-1 h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                        label="Order Updates"
+                        description="Receive emails about your order status, shipping updates, and delivery confirmations."
                       />
-                      <div>
-                        <p className="font-medium text-gray-900">Order Updates</p>
-                        <p className="text-sm text-gray-500">
-                          Receive emails about your order status, shipping updates, and delivery
-                          confirmations.
-                        </p>
-                      </div>
-                    </label>
+                    </div>
 
-                    <label className="flex items-start gap-4 rounded-lg border p-4 cursor-pointer hover:bg-gray-50">
-                      <input
-                        type="checkbox"
+                    <div className="rounded-lg border p-4 hover:bg-gray-50">
+                      <Checkbox
                         checked={notifications.promotions}
-                        onChange={(e) =>
-                          setNotifications({ ...notifications, promotions: e.target.checked })
+                        onCheckedChange={(checked) =>
+                          setNotifications({ ...notifications, promotions: checked })
                         }
-                        className="mt-1 h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                        label="Promotions & Discounts"
+                        description="Get notified about special offers, seasonal sales, and exclusive discounts."
                       />
-                      <div>
-                        <p className="font-medium text-gray-900">Promotions & Discounts</p>
-                        <p className="text-sm text-gray-500">
-                          Get notified about special offers, seasonal sales, and exclusive
-                          discounts.
-                        </p>
-                      </div>
-                    </label>
+                    </div>
 
-                    <label className="flex items-start gap-4 rounded-lg border p-4 cursor-pointer hover:bg-gray-50">
-                      <input
-                        type="checkbox"
+                    <div className="rounded-lg border p-4 hover:bg-gray-50">
+                      <Checkbox
                         checked={notifications.newsletter}
-                        onChange={(e) =>
-                          setNotifications({ ...notifications, newsletter: e.target.checked })
+                        onCheckedChange={(checked) =>
+                          setNotifications({ ...notifications, newsletter: checked })
                         }
-                        className="mt-1 h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                        label="Newsletter"
+                        description="Monthly updates with design tips, new products, and industry news."
                       />
-                      <div>
-                        <p className="font-medium text-gray-900">Newsletter</p>
-                        <p className="text-sm text-gray-500">
-                          Monthly updates with design tips, new products, and industry news.
-                        </p>
-                      </div>
-                    </label>
+                    </div>
                   </div>
 
                   <div className="flex justify-end">

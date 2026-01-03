@@ -99,7 +99,14 @@ export function useProducts({ category = null, featured = false, limit = null } 
 export function calculatePrice(product, options) {
   if (!product) return null;
 
-  const { sizeId, materialId, finishingIds = [], leadTimeId, quantity = 1, addonIds = [] } = options;
+  const {
+    sizeId,
+    materialId,
+    finishingIds = [],
+    leadTimeId,
+    quantity = 1,
+    addonIds = [],
+  } = options;
 
   const sizes = product.sizes || [];
   const materials = product.materials || [];
@@ -139,7 +146,7 @@ export function calculatePrice(product, options) {
     addonsTotal,
     total: subtotal + rushFee + addonsTotal,
     discount,
-    savings: discount > 0 ? (basePrice * quantity * discount / 100) : 0,
+    savings: discount > 0 ? (basePrice * quantity * discount) / 100 : 0,
   };
 }
 

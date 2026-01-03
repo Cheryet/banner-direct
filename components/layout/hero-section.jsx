@@ -5,13 +5,13 @@ import { LinkButton } from '@/components/ui/link-button';
 
 /**
  * HeroSection Component - Premium E-Commerce Hero
- * 
+ *
  * Features:
  * - Subtle background textures (linen, paper, noise, dots)
  * - Layered depth with soft shadows
  * - Responsive layout with graceful stacking
  * - Customizable via props
- * 
+ *
  * @param {string} title - Main headline
  * @param {string} titleAccent - Optional accent portion of title (displayed in primary color)
  * @param {string} subtitle - Supporting text below headline
@@ -47,12 +47,7 @@ function HeroSection({
   const isCentered = variant === 'centered';
 
   return (
-    <section
-      className={cn(
-        'relative overflow-hidden',
-        className
-      )}
-    >
+    <section className={cn('relative overflow-hidden', className)}>
       {/* Background texture layer */}
       <TextureBackground texture={texture} />
 
@@ -67,9 +62,7 @@ function HeroSection({
         <div
           className={cn(
             'grid min-h-[70vh] items-center gap-10 py-16 lg:gap-16 lg:py-24',
-            isCentered
-              ? 'justify-center text-center'
-              : 'lg:grid-cols-2',
+            isCentered ? 'justify-center text-center' : 'lg:grid-cols-2',
             isImageLeft && 'lg:[&>*:first-child]:order-2'
           )}
         >
@@ -87,12 +80,12 @@ function HeroSection({
               </div>
             )}
 
-            {/* Headline with optional accent */}
+            {/* Headline with optional accent - two lines on desktop only */}
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
               {titleAccent ? (
                 <>
-                  {title}
-                  <span className="text-primary">{titleAccent}</span>
+                  <span className="md:block">{title} </span>
+                  <span className="text-emerald-600 md:block">{titleAccent}</span>
                 </>
               ) : (
                 title
@@ -101,9 +94,7 @@ function HeroSection({
 
             {/* Subtitle */}
             {subtitle && (
-              <p className="mt-6 text-lg leading-relaxed text-gray-600 md:text-xl">
-                {subtitle}
-              </p>
+              <p className="mt-6 text-lg leading-relaxed text-gray-600 md:text-xl">{subtitle}</p>
             )}
 
             {/* CTA Buttons */}
@@ -138,20 +129,14 @@ function HeroSection({
 
             {/* Trust badges */}
             {trustBadges && (
-              <div className={cn('mt-12', isCentered && 'flex justify-center')}>
-                {trustBadges}
-              </div>
+              <div className={cn('mt-12', isCentered && 'flex justify-center')}>{trustBadges}</div>
             )}
           </div>
 
           {/* Image Column */}
           {!isCentered && (
             <div className="relative lg:pl-4">
-              <HeroImage
-                src={imageSrc}
-                alt={imageAlt}
-                placeholder={imagePlaceholder}
-              />
+              <HeroImage src={imageSrc} alt={imageAlt} placeholder={imagePlaceholder} />
             </div>
           )}
         </div>
@@ -194,13 +179,7 @@ function TextureBackground({ texture }) {
 
   const style = textureStyles[texture] || textureStyles.linen;
 
-  return (
-    <div
-      className="absolute inset-0"
-      style={style}
-      aria-hidden="true"
-    />
-  );
+  return <div className="absolute inset-0" style={style} aria-hidden="true" />;
 }
 
 /**
@@ -215,7 +194,7 @@ function HeroImage({ src, alt, placeholder }) {
         className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-gray-200/50 to-gray-300/30 blur-2xl"
         aria-hidden="true"
       />
-      
+
       {/* Image container with layered styling */}
       <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-gradient-to-br from-gray-100 to-gray-50 shadow-2xl ring-1 ring-gray-900/5 lg:aspect-[5/4]">
         {/* Subtle inner vignette for focus */}
@@ -254,9 +233,7 @@ function HeroImage({ src, alt, placeholder }) {
                   </svg>
                 </div>
                 <p className="text-base font-medium text-gray-600">Hero Image</p>
-                <p className="mt-1 text-sm text-gray-400">
-                  Product or lifestyle photo
-                </p>
+                <p className="mt-1 text-sm text-gray-400">Product or lifestyle photo</p>
               </div>
             </div>
           )

@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { CurrencyInput } from '@/components/ui/currency-input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus, X, GripVertical } from 'lucide-react';
 
@@ -37,14 +38,12 @@ function SizesEditor({ sizes, onAdd, onUpdate, onRemove }) {
                   placeholder="Size label (e.g., 3×6 ft)"
                   className="flex-1"
                 />
-                <div className="relative w-32">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
-                  <Input
-                    type="number"
-                    step="0.01"
-                    value={size.price}
-                    onChange={(e) => onUpdate(index, { price: parseFloat(e.target.value) || 0 })}
-                    className="pl-7"
+                <div className="w-32">
+                  <CurrencyInput
+                    value={size.price?.toString() ?? ''}
+                    onChange={(val) =>
+                      onUpdate(index, { price: val === '' ? 0 : parseFloat(val) || 0 })
+                    }
                   />
                 </div>
                 <Button
@@ -99,18 +98,12 @@ function MaterialsEditor({ materials, onAdd, onUpdate, onRemove }) {
                         placeholder="Material name"
                         className="flex-1"
                       />
-                      <div className="relative w-32">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
-                          $
-                        </span>
-                        <Input
-                          type="number"
-                          step="0.01"
-                          value={material.price}
-                          onChange={(e) =>
-                            onUpdate(index, { price: parseFloat(e.target.value) || 0 })
+                      <div className="w-32">
+                        <CurrencyInput
+                          value={material.price?.toString() ?? ''}
+                          onChange={(val) =>
+                            onUpdate(index, { price: val === '' ? 0 : parseFloat(val) || 0 })
                           }
-                          className="pl-7"
                         />
                       </div>
                     </div>
@@ -173,18 +166,12 @@ function FinishingsEditor({ finishings, onAdd, onUpdate, onRemove }) {
                         placeholder="Finishing name"
                         className="flex-1"
                       />
-                      <div className="relative w-32">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
-                          $
-                        </span>
-                        <Input
-                          type="number"
-                          step="0.01"
-                          value={finishing.price}
-                          onChange={(e) =>
-                            onUpdate(index, { price: parseFloat(e.target.value) || 0 })
+                      <div className="w-32">
+                        <CurrencyInput
+                          value={finishing.price?.toString() ?? ''}
+                          onChange={(val) =>
+                            onUpdate(index, { price: val === '' ? 0 : parseFloat(val) || 0 })
                           }
-                          className="pl-7"
                         />
                       </div>
                     </div>

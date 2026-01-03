@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Clock, Plus, Save, Loader2, Trash2, CheckCircle, Edit2, Zap } from 'lucide-react';
 
@@ -201,24 +202,18 @@ export default function AdminLeadTimesPage() {
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex gap-4">
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={lt.is_active}
-                          onChange={(e) => updateLeadTime(lt.id, { is_active: e.target.checked })}
-                          className="h-4 w-4 rounded border-gray-300 text-emerald-600"
-                        />
-                        <span className="text-sm">Active</span>
-                      </label>
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={lt.is_default}
-                          onChange={(e) => updateLeadTime(lt.id, { is_default: e.target.checked })}
-                          className="h-4 w-4 rounded border-gray-300 text-emerald-600"
-                        />
-                        <span className="text-sm">Default</span>
-                      </label>
+                      <Checkbox
+                        checked={lt.is_active}
+                        onCheckedChange={(checked) => updateLeadTime(lt.id, { is_active: checked })}
+                        label="Active"
+                      />
+                      <Checkbox
+                        checked={lt.is_default}
+                        onCheckedChange={(checked) =>
+                          updateLeadTime(lt.id, { is_default: checked })
+                        }
+                        label="Default"
+                      />
                     </div>
                     <div className="flex gap-2">
                       <Button

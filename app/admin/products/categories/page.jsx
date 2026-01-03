@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import {
   Tag,
@@ -180,15 +181,11 @@ export default function AdminCategoriesPage() {
                     />
                   </div>
                   <div className="flex items-center justify-between">
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={cat.is_active}
-                        onChange={(e) => updateCategory(cat.id, { is_active: e.target.checked })}
-                        className="h-4 w-4 rounded border-gray-300 text-emerald-600"
-                      />
-                      <span className="text-sm">Active</span>
-                    </label>
+                    <Checkbox
+                      checked={cat.is_active}
+                      onCheckedChange={(checked) => updateCategory(cat.id, { is_active: checked })}
+                      label="Active"
+                    />
                     <div className="flex gap-2">
                       <Button
                         variant="outline"

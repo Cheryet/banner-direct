@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { CurrencyInput } from '@/components/ui/currency-input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus, X, GripVertical } from 'lucide-react';
 
@@ -44,20 +45,14 @@ export function ProductAddonsTab({ product, onAddItem, onUpdateItem, onRemoveIte
                         placeholder="Add-on name"
                         className="flex-1"
                       />
-                      <div className="relative w-32">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
-                          $
-                        </span>
-                        <Input
-                          type="number"
-                          step="0.01"
-                          value={addon.price}
-                          onChange={(e) =>
+                      <div className="w-32">
+                        <CurrencyInput
+                          value={addon.price?.toString() ?? ''}
+                          onChange={(val) =>
                             onUpdateItem('addons', index, {
-                              price: parseFloat(e.target.value) || 0,
+                              price: val === '' ? 0 : parseFloat(val) || 0,
                             })
                           }
-                          className="pl-7"
                         />
                       </div>
                     </div>

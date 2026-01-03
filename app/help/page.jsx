@@ -185,9 +185,10 @@ export default function HelpPage() {
           HERO SECTION - Help center with noise texture
           ==================================================================== */}
       <HeroSection
-        title="We're Here to Help"
-        subtitle="Clear answers, fast support, and transparent printing — every step of the way."
-        eyebrow="Support Center"
+        title="Questions? We've Got"
+        titleAccent="Answers"
+        subtitle="Find quick answers to common questions, or reach out to our Canadian support team. We respond within one business day."
+        eyebrow="Help & Support"
         eyebrowIcon={<Mail className="h-4 w-4" />}
         texture="noise"
         variant="centered"
@@ -203,9 +204,9 @@ export default function HelpPage() {
               <button
                 key={section.id}
                 onClick={() => scrollToSection(section.id)}
-                className="flex shrink-0 items-center gap-2 rounded-lg border bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                className="flex shrink-0 items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition-all hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
               >
-                <section.icon className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                <section.icon className="h-4 w-4 text-gray-500" aria-hidden="true" />
                 {section.label}
               </button>
             ))}
@@ -214,20 +215,23 @@ export default function HelpPage() {
       </nav>
 
       {/* ====================================================================
-          HOW IT WORKS STRIP
+          HOW IT WORKS STRIP (Dark Emerald)
           ==================================================================== */}
-      <section className="border-b py-12 md:py-16">
+      <section className="bg-emerald-950 py-16 md:py-20">
         <div className="container">
-          <h2 className="mb-10 text-center text-xl font-semibold md:text-2xl">How It Works</h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-sm font-medium uppercase tracking-wider text-emerald-300">Simple Process</p>
+            <h2 className="mt-2 text-3xl font-bold text-white md:text-4xl">How It Works</h2>
+          </div>
+          <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {howItWorks.map((step, index) => (
               <div key={step.title} className="flex items-start gap-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-lg font-bold text-white shadow-lg shadow-emerald-500/30">
                   {index + 1}
                 </div>
                 <div>
-                  <h3 className="font-semibold">{step.title}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">{step.description}</p>
+                  <h3 className="font-semibold text-white">{step.title}</h3>
+                  <p className="mt-1 text-sm text-emerald-100">{step.description}</p>
                 </div>
               </div>
             ))}
@@ -238,17 +242,17 @@ export default function HelpPage() {
       {/* ====================================================================
           FAQ SECTIONS
           ==================================================================== */}
-      <div className="container py-16 md:py-20">
+      <div className="container py-16 md:py-24">
         <div className="mx-auto max-w-3xl space-y-16">
           {/* Ordering & Pricing */}
           <section id="ordering">
-            <h2 className="mb-2 text-2xl font-semibold">{faqCategories.ordering.title}</h2>
-            <p className="mb-6 text-muted-foreground">{faqCategories.ordering.intro}</p>
+            <h2 className="mb-2 text-2xl font-bold text-gray-900">{faqCategories.ordering.title}</h2>
+            <p className="mb-6 text-gray-700">{faqCategories.ordering.intro}</p>
             <Accordion type="single" collapsible className="w-full">
               {faqCategories.ordering.questions.map((faq, index) => (
                 <AccordionItem key={index} value={`ordering-${index}`}>
                   <AccordionTrigger className="text-left">{faq.q}</AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground">{faq.a}</AccordionContent>
+                  <AccordionContent className="text-gray-700">{faq.a}</AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>
@@ -256,13 +260,13 @@ export default function HelpPage() {
 
           {/* Artwork & Files */}
           <section id="artwork">
-            <h2 className="mb-2 text-2xl font-semibold">{faqCategories.artwork.title}</h2>
-            <p className="mb-6 text-muted-foreground">{faqCategories.artwork.intro}</p>
+            <h2 className="mb-2 text-2xl font-bold text-gray-900">{faqCategories.artwork.title}</h2>
+            <p className="mb-6 text-gray-700">{faqCategories.artwork.intro}</p>
             <Accordion type="single" collapsible className="w-full">
               {faqCategories.artwork.questions.map((faq, index) => (
                 <AccordionItem key={index} value={`artwork-${index}`}>
                   <AccordionTrigger className="text-left">{faq.q}</AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground">{faq.a}</AccordionContent>
+                  <AccordionContent className="text-gray-700">{faq.a}</AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>
@@ -272,8 +276,8 @@ export default function HelpPage() {
           <section id="production">
             <div className="mb-6 flex items-start justify-between">
               <div>
-                <h2 className="mb-2 text-2xl font-semibold">{faqCategories.production.title}</h2>
-                <p className="text-muted-foreground">{faqCategories.production.intro}</p>
+                <h2 className="mb-2 text-2xl font-bold text-gray-900">{faqCategories.production.title}</h2>
+                <p className="text-gray-700">{faqCategories.production.intro}</p>
               </div>
               <Badge variant="canada" className="shrink-0 gap-1.5">
                 <MapPin className="h-3 w-3" aria-hidden="true" />
@@ -284,7 +288,7 @@ export default function HelpPage() {
               {faqCategories.production.questions.map((faq, index) => (
                 <AccordionItem key={index} value={`production-${index}`}>
                   <AccordionTrigger className="text-left">{faq.q}</AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground">{faq.a}</AccordionContent>
+                  <AccordionContent className="text-gray-700">{faq.a}</AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>
@@ -292,13 +296,13 @@ export default function HelpPage() {
 
           {/* Bulk Orders */}
           <section id="bulk">
-            <h2 className="mb-2 text-2xl font-semibold">{faqCategories.bulk.title}</h2>
-            <p className="mb-6 text-muted-foreground">{faqCategories.bulk.intro}</p>
+            <h2 className="mb-2 text-2xl font-bold text-gray-900">{faqCategories.bulk.title}</h2>
+            <p className="mb-6 text-gray-700">{faqCategories.bulk.intro}</p>
             <Accordion type="single" collapsible className="w-full">
               {faqCategories.bulk.questions.map((faq, index) => (
                 <AccordionItem key={index} value={`bulk-${index}`}>
                   <AccordionTrigger className="text-left">{faq.q}</AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground">{faq.a}</AccordionContent>
+                  <AccordionContent className="text-gray-700">{faq.a}</AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>
@@ -315,17 +319,19 @@ export default function HelpPage() {
       {/* ====================================================================
           CONTACT & SUPPORT SECTION
           ==================================================================== */}
-      <section id="contact" className="bg-muted/30 py-16 md:py-20">
+      <section id="contact" className="bg-gray-50 py-16 md:py-24">
         <div className="container">
           <div className="mx-auto max-w-2xl">
-            <Card>
-              <CardContent className="p-8 text-center">
-                <Mail className="mx-auto h-12 w-12 text-primary" aria-hidden="true" />
-                <h2 className="mt-4 text-2xl font-semibold">Have a question before ordering?</h2>
-                <p className="mt-3 text-muted-foreground">
+            <Card className="border-gray-200 shadow-lg">
+              <CardContent className="p-10 text-center">
+                <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-50">
+                  <Mail className="h-8 w-8 text-emerald-600" aria-hidden="true" />
+                </div>
+                <h2 className="text-3xl font-bold text-gray-900">Have a question before ordering?</h2>
+                <p className="mt-4 text-lg text-gray-700">
                   We usually respond within one business day. Real humans, not bots.
                 </p>
-                <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
+                <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
                   <LinkButton href="mailto:support@bannerdirect.ca" size="lg">
                     <Mail className="h-4 w-4" aria-hidden="true" />
                     Email Support
@@ -334,8 +340,8 @@ export default function HelpPage() {
                     Call 1-800-555-1234
                   </LinkButton>
                 </div>
-                <p className="mt-4 text-sm text-muted-foreground">
-                  <Clock className="mr-1 inline h-4 w-4" aria-hidden="true" />
+                <p className="mt-6 text-sm text-gray-600">
+                  <Clock className="mr-1.5 inline h-4 w-4" aria-hidden="true" />
                   Monday–Friday, 9am–5pm EST
                 </p>
               </CardContent>
@@ -347,18 +353,18 @@ export default function HelpPage() {
       {/* ====================================================================
           WHAT WE STAND BEHIND - Trust closer
           ==================================================================== */}
-      <section className="py-16 md:py-20">
+      <section className="bg-white py-16 md:py-24">
         <div className="container">
           <div className="mx-auto max-w-2xl text-center">
-            <Shield className="mx-auto mb-4 h-10 w-10 text-primary" aria-hidden="true" />
-            <h2 className="text-2xl font-semibold">What We Stand Behind</h2>
-            <ul className="mt-6 space-y-3 text-left">
+            <Shield className="mx-auto mb-4 h-10 w-10 text-emerald-600" aria-hidden="true" />
+            <h2 className="text-3xl font-bold text-gray-900">What We Stand Behind</h2>
+            <ul className="mt-8 space-y-4 text-left">
               {trustItems.map((item) => (
-                <li key={item} className="flex items-center gap-3">
-                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                    <Check className="h-4 w-4 text-primary" aria-hidden="true" />
+                <li key={item} className="flex items-center gap-4">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-100">
+                    <Check className="h-5 w-5 text-emerald-600" aria-hidden="true" />
                   </div>
-                  <span>{item}</span>
+                  <span className="text-gray-700">{item}</span>
                 </li>
               ))}
             </ul>
@@ -367,16 +373,16 @@ export default function HelpPage() {
       </section>
 
       {/* ====================================================================
-          FINAL CTA
+          FINAL CTA - Light section before footer
           ==================================================================== */}
-      <section className="bg-muted/30 py-12 md:py-16">
+      <section className="bg-gray-100 py-16 md:py-24">
         <div className="container">
           <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-2xl font-semibold">Still have questions?</h2>
-            <p className="mt-3 text-muted-foreground">
+            <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">Still have questions?</h2>
+            <p className="mt-4 text-lg text-gray-700">
               We're happy to help. Or jump straight into your order.
             </p>
-            <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:justify-center">
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
               <LinkButton href="/product/pvc-banner-3x6" size="lg">
                 Start Your Order
               </LinkButton>

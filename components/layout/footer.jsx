@@ -54,7 +54,7 @@ function Footer() {
   const contactEmail = settings.contact_email || 'hello@bannerdirect.ca';
   const contactPhone = settings.contact_phone || '1-800-555-0123';
   return (
-    <footer className="bg-gray-900" aria-labelledby="footer-heading">
+    <footer className="bg-emerald-950" aria-labelledby="footer-heading">
       <h2 id="footer-heading" className="sr-only">
         Footer
       </h2>
@@ -67,35 +67,35 @@ function Footer() {
           {/* Brand section */}
           <div className="space-y-4">
             <Link href="/" className="inline-block">
-              <span className="font-heading text-xl font-bold text-emerald-400">
+              <span className="font-heading text-xl font-bold text-emerald-300">
                 Banner<span className="text-white">Direct</span>
               </span>
             </Link>
-            <p className="max-w-xs text-sm text-gray-400">
+            <p className="max-w-xs text-sm text-gray-300">
               Custom banners printed in Canada. Quality materials, fast turnaround, and exceptional
               service for events of all sizes.
             </p>
             <div className="flex flex-wrap gap-2">
-              <div className="inline-flex items-center gap-2 rounded-full border border-red-500/30 bg-red-500/10 px-3 py-1 text-sm font-medium text-red-400">
+              <div className="inline-flex items-center gap-2 rounded-full border border-red-500/30 bg-red-500/10 px-3 py-1 text-sm font-medium text-red-300">
                 <MapPin className="h-4 w-4" aria-hidden="true" />
                 <span>Made in Canada</span>
               </div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-sm font-medium text-emerald-400">
+              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-sm font-medium text-emerald-300">
                 <Leaf className="h-4 w-4" aria-hidden="true" />
                 <span>Eco-Friendly</span>
               </div>
             </div>
-            <div className="space-y-2 pt-2 text-sm text-gray-400">
+            <div className="space-y-2 pt-2 text-sm text-gray-300">
               <a
                 href={`mailto:${contactEmail}`}
-                className="flex items-center gap-2 transition-colors hover:text-emerald-400"
+                className="flex items-center gap-2 transition-colors hover:text-emerald-300"
               >
                 <Mail className="h-4 w-4" aria-hidden="true" />
                 {contactEmail}
               </a>
               <a
                 href={`tel:${contactPhone.replace(/[^0-9+]/g, '')}`}
-                className="flex items-center gap-2 transition-colors hover:text-emerald-400"
+                className="flex items-center gap-2 transition-colors hover:text-emerald-300"
               >
                 <Phone className="h-4 w-4" aria-hidden="true" />
                 {contactPhone}
@@ -113,7 +113,7 @@ function Footer() {
                     <li key={item.name}>
                       <Link
                         href={item.href}
-                        className="text-sm text-gray-400 transition-colors hover:text-emerald-400"
+                        className="text-sm text-gray-300 transition-colors hover:text-emerald-200"
                       >
                         {item.name}
                       </Link>
@@ -128,7 +128,7 @@ function Footer() {
                     <li key={item.name}>
                       <Link
                         href={item.href}
-                        className="text-sm text-gray-400 transition-colors hover:text-emerald-400"
+                        className="text-sm text-gray-300 transition-colors hover:text-emerald-200"
                       >
                         {item.name}
                       </Link>
@@ -145,7 +145,7 @@ function Footer() {
                     <li key={item.name}>
                       <Link
                         href={item.href}
-                        className="text-sm text-gray-400 transition-colors hover:text-emerald-400"
+                        className="text-sm text-gray-300 transition-colors hover:text-emerald-200"
                       >
                         {item.name}
                       </Link>
@@ -160,7 +160,7 @@ function Footer() {
                     <li key={item.name}>
                       <Link
                         href={item.href}
-                        className="text-sm text-gray-400 transition-colors hover:text-emerald-400"
+                        className="text-sm text-gray-300 transition-colors hover:text-emerald-200"
                       >
                         {item.name}
                       </Link>
@@ -175,10 +175,10 @@ function Footer() {
         {/* Bottom section */}
         <div className="mt-12 border-t border-gray-800 pt-8">
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-400">
               &copy; {new Date().getFullYear()} Banner Direct. All rights reserved.
             </p>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-400">
               🍁 Proudly serving Canadian businesses coast to coast.
             </p>
           </div>

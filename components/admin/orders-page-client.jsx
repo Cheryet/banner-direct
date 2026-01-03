@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase/client';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   ShoppingCart,
   Search,
@@ -52,11 +53,10 @@ function OrderCard({ order, selected, onSelect, onQuickAction }) {
 
       <div className="flex items-start justify-between">
         <div className="flex items-start gap-3">
-          <input
-            type="checkbox"
+          <Checkbox
             checked={selected}
-            onChange={() => onSelect(order.id)}
-            className="mt-1 h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+            onCheckedChange={() => onSelect(order.id)}
+            className="mt-1"
           />
           <div>
             <Link
@@ -451,14 +451,12 @@ export function OrdersPageClient({ initialOrders }) {
                 <thead className="border-b bg-gray-50">
                   <tr>
                     <th className="px-4 py-3 text-left">
-                      <input
-                        type="checkbox"
+                      <Checkbox
                         checked={
                           selectedOrders.length === filteredOrders.length &&
                           filteredOrders.length > 0
                         }
-                        onChange={handleSelectAll}
-                        className="h-4 w-4 rounded border-gray-300 text-emerald-600"
+                        onCheckedChange={handleSelectAll}
                       />
                     </th>
                     <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">
@@ -494,11 +492,9 @@ export function OrdersPageClient({ initialOrders }) {
                         className={`hover:bg-gray-50 ${selectedOrders.includes(order.id) ? 'bg-emerald-50' : ''}`}
                       >
                         <td className="px-4 py-3">
-                          <input
-                            type="checkbox"
+                          <Checkbox
                             checked={selectedOrders.includes(order.id)}
-                            onChange={() => handleSelectOrder(order.id)}
-                            className="h-4 w-4 rounded border-gray-300 text-emerald-600"
+                            onCheckedChange={() => handleSelectOrder(order.id)}
                           />
                         </td>
                         <td className="px-4 py-3">

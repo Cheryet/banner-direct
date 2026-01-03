@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import {
   ArrowLeft,
@@ -379,30 +380,18 @@ export default function AdminTemplateEditPage({ params }) {
               <CardTitle>Status</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={template.is_active}
-                  onChange={(e) => setTemplate({ ...template, is_active: e.target.checked })}
-                  className="h-4 w-4 rounded border-gray-300 text-emerald-600"
-                />
-                <div>
-                  <p className="font-medium text-gray-900">Active</p>
-                  <p className="text-sm text-gray-500">Visible to customers</p>
-                </div>
-              </label>
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={template.is_premium}
-                  onChange={(e) => setTemplate({ ...template, is_premium: e.target.checked })}
-                  className="h-4 w-4 rounded border-gray-300 text-emerald-600"
-                />
-                <div>
-                  <p className="font-medium text-gray-900">Premium</p>
-                  <p className="text-sm text-gray-500">Requires payment</p>
-                </div>
-              </label>
+              <Checkbox
+                checked={template.is_active}
+                onCheckedChange={(checked) => setTemplate({ ...template, is_active: checked })}
+                label="Active"
+                description="Visible to customers"
+              />
+              <Checkbox
+                checked={template.is_premium}
+                onCheckedChange={(checked) => setTemplate({ ...template, is_premium: checked })}
+                label="Premium"
+                description="Requires payment"
+              />
               {template.is_premium && (
                 <div>
                   <Label htmlFor="price">Price ($)</Label>

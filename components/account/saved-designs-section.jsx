@@ -128,21 +128,26 @@ export function SavedDesignsSection({ uploads }) {
 
                   {/* Hover Actions */}
                   <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
-                    <a
+                    <LinkButton
                       href={upload.file_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="rounded-lg bg-white p-2 text-gray-700 transition-colors hover:bg-gray-100"
+                      variant="secondary"
+                      size="icon"
                     >
-                      <ExternalLink className="h-5 w-5" />
-                    </a>
-                    <button
+                      <ExternalLink className="h-4 w-4" />
+                      <span className="sr-only">View design</span>
+                    </LinkButton>
+                    <Button
                       onClick={() => handleDelete(upload.id)}
                       disabled={deletingId === upload.id}
-                      className="rounded-lg bg-white p-2 text-red-600 transition-colors hover:bg-red-50 disabled:opacity-50"
+                      variant="secondary"
+                      size="icon"
+                      className="text-red-600 hover:bg-red-50 hover:text-red-700"
                     >
-                      <Trash2 className="h-5 w-5" />
-                    </button>
+                      <Trash2 className="h-4 w-4" />
+                      <span className="sr-only">Delete design</span>
+                    </Button>
                   </div>
                 </div>
 

@@ -6,6 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { ProductCard } from '@/components/product/product-card';
 import { LinkButton } from '@/components/ui/link-button';
 import { HeroSection } from '@/components/layout/hero-section';
+import { FAQSection } from '@/components/home/faq-section';
 
 import {
   Printer,
@@ -23,20 +24,20 @@ import {
 } from 'lucide-react';
 
 export const metadata = {
-  title: 'Custom Banners Printed in Canada | Banner Direct',
+  title: 'Custom Banners Canada | Vinyl & Outdoor Banner Printing',
   description:
-    'Order custom vinyl banners, mesh banners, and fabric banners. Printed in Canada with fast shipping. Starting at $49.99. Free artwork review included.',
+    'Order custom banners printed in Canada. Durable vinyl banners, mesh banners, and fabric banners for events, trade shows, and businesses. Fast nationwide shipping.',
   openGraph: {
-    title: 'Custom Banners Printed in Canada | Banner Direct',
+    title: 'Custom Banners Canada | Vinyl & Outdoor Banner Printing',
     description:
-      'Order custom vinyl banners, mesh banners, and fabric banners. Printed in Canada with fast shipping.',
+      'Order custom banners printed in Canada. Durable vinyl banners for events, trade shows, and businesses. Fast nationwide shipping.',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Custom Banners Printed in Canada | Banner Direct',
+    title: 'Custom Banners Canada | Vinyl & Outdoor Banner Printing',
     description:
-      'Order custom vinyl banners, mesh banners, and fabric banners. Printed in Canada with fast shipping.',
+      'Order custom banners printed in Canada. Durable vinyl banners for events, trade shows, and businesses. Fast nationwide shipping.',
   },
 };
 
@@ -59,23 +60,23 @@ const iconMap = {
 const defaultUseCases = [
   {
     icon: 'PartyPopper',
-    title: 'Events & Fundraisers',
-    description: 'Birthdays, weddings, charity runs, and community events.',
+    title: 'Event Banners',
+    description: 'Custom banners for birthdays, weddings, charity runs, and outdoor community events across Canada.',
   },
   {
     icon: 'Building2',
-    title: 'Trade Shows',
-    description: 'Professional displays that make your booth stand out.',
+    title: 'Trade Show Displays',
+    description: 'Professional trade show banners and booth displays that attract attention and build brand presence.',
   },
   {
     icon: 'Store',
-    title: 'Small Businesses',
-    description: 'Storefronts, sales, grand openings, and promotions.',
+    title: 'Business Signage',
+    description: 'Storefront banners, sale signs, grand opening displays, and promotional signage for retail.',
   },
   {
     icon: 'Users',
-    title: 'Corporate & Bulk Orders',
-    description: 'Consistent branding across locations with volume pricing.',
+    title: 'Bulk Banner Orders',
+    description: 'Volume pricing for corporate clients needing consistent branded banners across multiple locations.',
   },
 ];
 
@@ -83,35 +84,35 @@ const defaultHowItWorks = [
   {
     number: 1,
     icon: 'Package',
-    title: 'Choose your banner',
-    description: 'Pick a size and material that fits your needs.',
+    title: 'Select banner size & material',
+    description: 'Choose from vinyl, mesh, or fabric banners in standard or custom sizes.',
   },
   {
     number: 2,
     icon: 'Upload',
-    title: 'Upload artwork or start from a template',
-    description: 'We accept most file formats and check every upload.',
+    title: 'Upload your design',
+    description: 'Upload your artwork or use our templates. Free design review included.',
   },
   {
     number: 3,
     icon: 'Truck',
-    title: 'We print & ship fast across Canada',
-    description: 'Standard, rush, or same-day options available.',
+    title: 'Fast printing & Canada-wide shipping',
+    description: 'Printed on commercial equipment and shipped anywhere in Canada.',
   },
 ];
 
 const defaultHero = {
-  title: 'Your banner, your way',
+  title: 'Custom banners, printed in Canada',
   subtitle:
-    'Custom banners printed on commercial equipment. Fast turnaround, durable materials, and shipped across Canada.',
-  cta_primary: { text: 'Start Creating →', href: '/products' },
+    'Durable vinyl banners, mesh banners, and fabric banners for outdoor events, trade shows, and business signage. Printed on commercial equipment with fast Canada-wide shipping.',
+  cta_primary: { text: 'Shop Banners →', href: '/products' },
   cta_secondary: { text: 'Get Bulk Pricing', href: '/bulk' },
 };
 
 const defaultTrustBadges = [
-  { icon: 'check', text: 'Free artwork review' },
-  { icon: 'check', text: 'Fast shipping' },
-  { icon: 'check', text: 'Quality guarantee' },
+  { icon: 'check', text: 'Free design review' },
+  { icon: 'check', text: 'Ships across Canada' },
+  { icon: 'check', text: 'Weather-resistant materials' },
 ];
 
 export default async function Home() {
@@ -138,7 +139,7 @@ export default async function Home() {
 
   // Build trust badges component
   const trustBadgesComponent = (
-    <div className="flex flex-wrap items-center gap-6 text-sm text-gray-500">
+    <div className="flex flex-wrap items-center gap-6 text-sm text-gray-700">
       {trustBadges.map((badge, index) => (
         <span key={index} className="flex items-center gap-2">
           <Check className="h-5 w-5 text-emerald-500" aria-hidden="true" />
@@ -205,10 +206,10 @@ export default async function Home() {
         <div className="container">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
-              Perfect for any occasion
+              Custom banners for every occasion
             </h2>
-            <p className="mt-4 text-lg text-gray-600">
-              From backyard parties to national trade shows — we've got you covered.
+            <p className="mt-4 text-lg text-gray-700">
+              From backyard parties to national trade shows, our vinyl and fabric banners deliver professional results.
             </p>
           </div>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -224,7 +225,7 @@ export default async function Home() {
                       <IconComponent className="h-6 w-6 text-emerald-600" aria-hidden="true" />
                     </div>
                     <h3 className="mb-2 font-semibold text-gray-900">{useCase.title}</h3>
-                    <p className="text-sm leading-relaxed text-gray-600">{useCase.description}</p>
+                    <p className="text-sm leading-relaxed text-gray-700">{useCase.description}</p>
                   </CardContent>
                 </Card>
               );
@@ -235,44 +236,45 @@ export default async function Home() {
 
       {/* ============================================
           HOW IT WORKS - Clean 3-Step Process
-          White background with emerald accents
+          Dark emerald background for visual rhythm
           ============================================ */}
-      <section className="bg-white py-16 md:py-24">
+      <section className="bg-emerald-950 py-16 md:py-24">
         <div className="container">
           <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">How it works</h2>
-            <p className="mt-4 text-lg text-gray-600">Three simple steps to your custom banner.</p>
+            <p className="text-sm font-medium uppercase tracking-wider text-emerald-300">Simple Process</p>
+            <h2 className="mt-2 text-3xl font-bold text-white md:text-4xl">How banner printing works</h2>
+            <p className="mt-4 text-lg text-emerald-100">Order your custom banner in three simple steps.</p>
           </div>
 
-          {/* Steps - Clean horizontal layout */}
-          <div className="mt-16 grid gap-8 md:grid-cols-3">
-            {howItWorks.map((step, index) => {
-              const IconComponent = iconMap[step.icon] || Package;
-              return (
-                <div key={step.number} className="relative text-center">
-                  {/* Connector line (desktop only) */}
-                  {index < howItWorks.length - 1 && (
-                    <div
-                      className="absolute left-[60%] right-0 top-8 hidden h-px bg-gray-200 md:block"
-                      aria-hidden="true"
-                    />
-                  )}
+          {/* Steps - Card-based layout with connecting line */}
+          <div className="relative mt-16">
+            {/* Horizontal connector line (desktop) */}
+            <div className="absolute left-0 right-0 top-12 hidden h-0.5 bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent md:block" aria-hidden="true" />
+            
+            <div className="grid gap-8 md:grid-cols-3">
+              {howItWorks.map((step) => {
+                const IconComponent = iconMap[step.icon] || Package;
+                return (
+                  <div key={step.number} className="relative">
+                    {/* Card */}
+                    <div className="rounded-2xl border border-emerald-800/50 bg-emerald-900/30 p-6 backdrop-blur-sm">
+                      {/* Step number badge - positioned on the line */}
+                      <div className="mx-auto -mt-12 mb-6 flex h-14 w-14 items-center justify-center rounded-full border-4 border-emerald-950 bg-emerald-500 text-xl font-bold text-white shadow-lg shadow-emerald-500/30">
+                        {step.number}
+                      </div>
 
-                  {/* Step number */}
-                  <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500 text-2xl font-bold text-white shadow-lg shadow-emerald-500/30">
-                    {step.number}
+                      {/* Icon */}
+                      <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-800/50">
+                        <IconComponent className="h-6 w-6 text-emerald-200" aria-hidden="true" />
+                      </div>
+
+                      <h3 className="mb-2 text-center text-lg font-semibold text-white">{step.title}</h3>
+                      <p className="text-center text-sm text-emerald-100">{step.description}</p>
+                    </div>
                   </div>
-
-                  {/* Icon */}
-                  <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-gray-100">
-                    <IconComponent className="h-7 w-7 text-gray-600" aria-hidden="true" />
-                  </div>
-
-                  <h3 className="mb-2 text-lg font-semibold text-gray-900">{step.title}</h3>
-                  <p className="text-gray-600">{step.description}</p>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
@@ -284,9 +286,9 @@ export default async function Home() {
       <section className="bg-gray-50 py-16 md:py-24">
         <div className="container">
           <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">Popular banner sizes</h2>
-            <p className="mt-4 text-lg text-gray-600">
-              Start with our most popular options, or customize your own.
+            <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">Popular vinyl banner sizes</h2>
+            <p className="mt-4 text-lg text-gray-700">
+              Shop our best-selling banner sizes or request a custom size for your project.
             </p>
           </div>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -342,11 +344,11 @@ export default async function Home() {
             {/* Content */}
             <div className="order-1 lg:order-2">
               <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
-                Built locally. <span className="text-emerald-600">Trusted nationally.</span>
+                Canadian banner printing. <span className="text-emerald-600">Quality you can trust.</span>
               </h2>
-              <p className="mt-6 text-lg leading-relaxed text-gray-600">
-                We're not a dropshipper. Every banner is printed in our Canadian facility on
-                commercial-grade equipment.
+              <p className="mt-6 text-lg leading-relaxed text-gray-700">
+                We're not a dropshipper. Every vinyl banner, mesh banner, and fabric banner is printed 
+                in our Canadian facility on commercial-grade equipment.
               </p>
               <ul className="mt-8 space-y-4">
                 <li className="flex items-start gap-4">
@@ -354,9 +356,9 @@ export default async function Home() {
                     <Check className="h-5 w-5 text-emerald-600" aria-hidden="true" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">Commercial equipment</p>
-                    <p className="text-gray-600">
-                      HP & Mimaki printers for vibrant, durable prints
+                    <p className="font-medium text-gray-900">Commercial printing equipment</p>
+                    <p className="text-gray-700">
+                      HP Latex & Mimaki printers for vibrant, UV-resistant prints
                     </p>
                   </div>
                 </li>
@@ -365,8 +367,8 @@ export default async function Home() {
                     <Check className="h-5 w-5 text-emerald-600" aria-hidden="true" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">Indoor & outdoor rated</p>
-                    <p className="text-gray-600">Materials built to last in any environment</p>
+                    <p className="font-medium text-gray-900">Indoor & outdoor banners</p>
+                    <p className="text-gray-700">Weather-resistant materials rated for Canadian climates</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-4">
@@ -374,8 +376,8 @@ export default async function Home() {
                     <Check className="h-5 w-5 text-emerald-600" aria-hidden="true" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">Quality guarantee</p>
-                    <p className="text-gray-600">We'll reprint if something goes wrong</p>
+                    <p className="font-medium text-gray-900">Satisfaction guarantee</p>
+                    <p className="text-gray-700">Free reprints if your banner doesn't meet expectations</p>
                   </div>
                 </li>
               </ul>
@@ -385,53 +387,110 @@ export default async function Home() {
       </section>
 
       {/* ============================================
-          BULK & ENTERPRISE CTA STRIP
-          Emerald accent background
+          BULK ORDERS - Dark emerald accent strip
+          Ties into the dark emerald theme
           ============================================ */}
-      <section className="bg-emerald-600 py-12 md:py-16">
+      <section className="bg-emerald-950 py-4">
         <div className="container">
-          <div className="flex flex-col items-center gap-6 text-center md:flex-row md:justify-between md:text-left">
-            <div>
-              <h3 className="text-xl font-semibold text-white md:text-2xl">
-                Need something big? We've got you covered.
-              </h3>
-              <p className="mt-2 text-emerald-100">
-                Volume pricing • Consistent production • Easy reorders
-              </p>
-            </div>
-            <LinkButton
-              href="/bulk"
-              variant="outline"
-              className="bg-white text-emerald-600 hover:bg-gray-50"
-            >
-              Get Bulk Pricing →
-            </LinkButton>
+          <div className="flex items-center justify-center gap-2 text-sm text-emerald-100">
+            <Users className="h-4 w-4 text-emerald-300" aria-hidden="true" />
+            <span>
+              Ordering 10+ banners?{' '}
+              <Link href="/bulk" className="font-medium text-white hover:text-emerald-200 hover:underline">
+                Get volume pricing →
+              </Link>
+            </span>
           </div>
         </div>
       </section>
 
       {/* ============================================
-          FINAL CTA - Bottom conversion
-          Gray background with strong CTA
+          FINAL CTA - High-Converting Bottom Section
+          Clean gray background before dark footer
           ============================================ */}
-      <section className="bg-gray-50 py-16 md:py-24">
-        <div className="container">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">Ready to get started?</h2>
-            <p className="mt-4 text-lg text-gray-600">
-              Create your custom banner in minutes. Printed in Canada, delivered to your door.
+      <section className="relative overflow-hidden bg-gray-100 py-20 md:py-28">
+
+        <div className="container relative">
+          <div className="mx-auto max-w-3xl text-center">
+            {/* Urgency badge */}
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
+              </span>
+              Orders placed today ship within 48 hours
+            </div>
+
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
+              Order your custom banner today
+            </h2>
+            <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-gray-700">
+              Join thousands of Canadian businesses who trust Banner Direct for vinyl banners, 
+              trade show displays, and event signage. Fast printing, nationwide shipping.
             </p>
-            <div className="mt-10">
-              <LinkButton href="/product/pvc-banner-3x6" size="lg">
-                Start Creating →
+
+            {/* CTA buttons */}
+            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <LinkButton href="/products" size="xl" className="min-w-[200px] shadow-lg shadow-emerald-500/25">
+                Start Your Order →
+              </LinkButton>
+              <LinkButton
+                href="/templates"
+                variant="outline"
+                size="lg"
+              >
+                Browse Templates
               </LinkButton>
             </div>
-            <p className="mt-6 text-sm text-gray-500">
-              No account required • Instant pricing • Free artwork review
-            </p>
+
+            {/* Trust indicators */}
+            <div className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-sm text-gray-700">
+              <span className="flex items-center gap-2">
+                <Check className="h-5 w-5 text-emerald-600" aria-hidden="true" />
+                No account required
+              </span>
+              <span className="flex items-center gap-2">
+                <Check className="h-5 w-5 text-emerald-600" aria-hidden="true" />
+                Instant pricing
+              </span>
+              <span className="flex items-center gap-2">
+                <Check className="h-5 w-5 text-emerald-600" aria-hidden="true" />
+                Free artwork review
+              </span>
+              <span className="flex items-center gap-2">
+                <Shield className="h-5 w-5 text-emerald-600" aria-hidden="true" />
+                Quality guarantee
+              </span>
+            </div>
+
+            {/* Social proof */}
+            <div className="mt-10 border-t border-gray-200 pt-10">
+              <p className="text-sm font-medium text-gray-600">
+                Trusted by businesses across Canada
+              </p>
+              <div className="mt-4 flex items-center justify-center gap-1">
+                {[...Array(5)].map((_, i) => (
+                  <svg
+                    key={i}
+                    className="h-5 w-5 text-amber-400"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    aria-hidden="true"
+                  >
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+                <span className="ml-2 text-sm text-gray-600">
+                  4.9/5 from 500+ orders
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
+
+      {/* FAQ Section - Uses Accordion component */}
+      <FAQSection />
     </>
   );
 }

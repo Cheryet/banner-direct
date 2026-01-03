@@ -15,18 +15,18 @@ export async function generateMetadata({ searchParams }) {
     const category = categories.find((c) => c.slug === categorySlug);
     if (category) {
       return {
-        title: `${category.name} - Custom Banners | Banner Direct`,
+        title: `${category.name} | Custom Banner Printing Canada`,
         description:
           category.description ||
-          `Browse our selection of ${category.name.toLowerCase()}. Made in Canada with fast shipping.`,
+          `Shop ${category.name.toLowerCase()} printed in Canada. Durable materials, vibrant colors, fast nationwide shipping.`,
       };
     }
   }
 
   return {
-    title: 'Products - Custom Banners | Banner Direct',
+    title: 'Custom Banners Canada | Vinyl & Outdoor Banners',
     description:
-      'Browse our selection of custom banners. Vinyl, mesh, fabric, and retractable banners made in Canada.',
+      'Shop custom vinyl banners, mesh banners, fabric banners, and retractable displays. Printed in Canada with fast shipping.',
   };
 }
 
@@ -50,10 +50,10 @@ export default async function ProductsPage({ searchParams }) {
     <div className="container py-8 md:py-12">
       {/* Page Header */}
       <div className="mb-8">
-        <h1 className="mb-2">{currentCategory?.name || 'Custom Banners'}</h1>
+        <h1 className="mb-2">{currentCategory?.name || 'Custom Banners Canada'}</h1>
         <p className="text-lg text-muted-foreground">
           {currentCategory?.description ||
-            'Select a size or start from a template. All banners made in Canada.'}
+            'Shop vinyl banners, mesh banners, and fabric banners. All printed in Canada with fast nationwide shipping.'}
         </p>
       </div>
 

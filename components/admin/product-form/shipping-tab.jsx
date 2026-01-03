@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { CurrencyInput } from '@/components/ui/currency-input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus, X, GripVertical } from 'lucide-react';
@@ -46,15 +47,13 @@ function LeadTimesEditor({ leadTimes, onAdd, onUpdate, onRemove }) {
                     placeholder="Days"
                   />
                 </div>
-                <div className="relative w-28">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
-                  <Input
-                    type="number"
-                    step="0.01"
-                    value={lt.price}
-                    onChange={(e) => onUpdate(index, { price: parseFloat(e.target.value) || 0 })}
+                <div className="w-28">
+                  <CurrencyInput
+                    value={lt.price?.toString() ?? ''}
+                    onChange={(val) =>
+                      onUpdate(index, { price: val === '' ? 0 : parseFloat(val) || 0 })
+                    }
                     placeholder="Fee"
-                    className="pl-7"
                   />
                 </div>
                 <Button
@@ -142,15 +141,11 @@ function ShippingDimensionsEditor({ product, onUpdate }) {
         </div>
         <div>
           <Label>Free Shipping Threshold (CAD)</Label>
-          <div className="relative mt-1">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
-            <Input
-              type="number"
-              step="0.01"
+          <div className="mt-1">
+            <CurrencyInput
               value={product.free_shipping_threshold || ''}
-              onChange={(e) => onUpdate({ free_shipping_threshold: e.target.value })}
+              onChange={(val) => onUpdate({ free_shipping_threshold: val })}
               placeholder="0.00"
-              className="pl-7"
             />
           </div>
           <p className="mt-1 text-xs text-gray-500">

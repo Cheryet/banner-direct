@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import {
@@ -371,22 +372,14 @@ export default function AdminSettingsPage() {
                 <CardDescription>Configure tax rates and collection</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                <label className="flex items-center gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={taxSettings.tax_enabled}
-                    onChange={(e) =>
-                      setTaxSettings({ ...taxSettings, tax_enabled: e.target.checked })
-                    }
-                    className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
-                  />
-                  <div>
-                    <p className="font-medium text-gray-900">Enable Tax Collection</p>
-                    <p className="text-sm text-gray-500">
-                      Automatically calculate and add tax to orders
-                    </p>
-                  </div>
-                </label>
+                <Checkbox
+                  checked={taxSettings.tax_enabled}
+                  onCheckedChange={(checked) =>
+                    setTaxSettings({ ...taxSettings, tax_enabled: checked })
+                  }
+                  label="Enable Tax Collection"
+                  description="Automatically calculate and add tax to orders"
+                />
 
                 {taxSettings.tax_enabled && (
                   <div className="grid gap-6 sm:grid-cols-2 pt-4 border-t">
@@ -423,22 +416,14 @@ export default function AdminSettingsPage() {
                     </div>
 
                     <div className="sm:col-span-2">
-                      <label className="flex items-center gap-3 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={taxSettings.tax_included}
-                          onChange={(e) =>
-                            setTaxSettings({ ...taxSettings, tax_included: e.target.checked })
-                          }
-                          className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
-                        />
-                        <div>
-                          <p className="font-medium text-gray-900">Prices Include Tax</p>
-                          <p className="text-sm text-gray-500">
-                            Display prices with tax already included
-                          </p>
-                        </div>
-                      </label>
+                      <Checkbox
+                        checked={taxSettings.tax_included}
+                        onCheckedChange={(checked) =>
+                          setTaxSettings({ ...taxSettings, tax_included: checked })
+                        }
+                        label="Prices Include Tax"
+                        description="Display prices with tax already included"
+                      />
                     </div>
                   </div>
                 )}
@@ -479,85 +464,61 @@ export default function AdminSettingsPage() {
                 <Separator />
 
                 <div className="space-y-4">
-                  <label className="flex items-center justify-between cursor-pointer rounded-lg border p-4 hover:bg-gray-50">
-                    <div>
-                      <p className="font-medium text-gray-900">New Order Notifications</p>
-                      <p className="text-sm text-gray-500">
-                        Get notified when a new order is placed
-                      </p>
-                    </div>
-                    <input
-                      type="checkbox"
+                  <div className="rounded-lg border p-4 hover:bg-gray-50">
+                    <Checkbox
                       checked={notificationSettings.order_notifications}
-                      onChange={(e) =>
+                      onCheckedChange={(checked) =>
                         setNotificationSettings({
                           ...notificationSettings,
-                          order_notifications: e.target.checked,
+                          order_notifications: checked,
                         })
                       }
-                      className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                      label="New Order Notifications"
+                      description="Get notified when a new order is placed"
                     />
-                  </label>
+                  </div>
 
-                  <label className="flex items-center justify-between cursor-pointer rounded-lg border p-4 hover:bg-gray-50">
-                    <div>
-                      <p className="font-medium text-gray-900">Low Stock Alerts</p>
-                      <p className="text-sm text-gray-500">
-                        Get notified when inventory is running low
-                      </p>
-                    </div>
-                    <input
-                      type="checkbox"
+                  <div className="rounded-lg border p-4 hover:bg-gray-50">
+                    <Checkbox
                       checked={notificationSettings.low_stock_alerts}
-                      onChange={(e) =>
+                      onCheckedChange={(checked) =>
                         setNotificationSettings({
                           ...notificationSettings,
-                          low_stock_alerts: e.target.checked,
+                          low_stock_alerts: checked,
                         })
                       }
-                      className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                      label="Low Stock Alerts"
+                      description="Get notified when inventory is running low"
                     />
-                  </label>
+                  </div>
 
-                  <label className="flex items-center justify-between cursor-pointer rounded-lg border p-4 hover:bg-gray-50">
-                    <div>
-                      <p className="font-medium text-gray-900">Customer Signup Alerts</p>
-                      <p className="text-sm text-gray-500">
-                        Get notified when a new customer registers
-                      </p>
-                    </div>
-                    <input
-                      type="checkbox"
+                  <div className="rounded-lg border p-4 hover:bg-gray-50">
+                    <Checkbox
                       checked={notificationSettings.customer_signup_alerts}
-                      onChange={(e) =>
+                      onCheckedChange={(checked) =>
                         setNotificationSettings({
                           ...notificationSettings,
-                          customer_signup_alerts: e.target.checked,
+                          customer_signup_alerts: checked,
                         })
                       }
-                      className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                      label="Customer Signup Alerts"
+                      description="Get notified when a new customer registers"
                     />
-                  </label>
+                  </div>
 
-                  <label className="flex items-center justify-between cursor-pointer rounded-lg border p-4 hover:bg-gray-50">
-                    <div>
-                      <p className="font-medium text-gray-900">Daily Summary</p>
-                      <p className="text-sm text-gray-500">
-                        Receive a daily summary of store activity
-                      </p>
-                    </div>
-                    <input
-                      type="checkbox"
+                  <div className="rounded-lg border p-4 hover:bg-gray-50">
+                    <Checkbox
                       checked={notificationSettings.daily_summary}
-                      onChange={(e) =>
+                      onCheckedChange={(checked) =>
                         setNotificationSettings({
                           ...notificationSettings,
-                          daily_summary: e.target.checked,
+                          daily_summary: checked,
                         })
                       }
-                      className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                      label="Daily Summary"
+                      description="Receive a daily summary of store activity"
                     />
-                  </label>
+                  </div>
                 </div>
               </CardContent>
             </Card>
